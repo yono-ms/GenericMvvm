@@ -39,20 +39,23 @@ namespace GenericMvvm
             {
                 result = new BizLogic();
             }
-            try
+            else
             {
-                using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+                try
                 {
-                    var ser = new DataContractJsonSerializer(typeof(BizLogic));
-                    result = ser.ReadObject(ms) as BizLogic;
-                }
+                    using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+                    {
+                        var ser = new DataContractJsonSerializer(typeof(BizLogic));
+                        result = ser.ReadObject(ms) as BizLogic;
+                    }
 
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                //await nc.ShowAlertAsync("Exception", ex.Message, "OK", null);
-                result = new BizLogic();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.ToString());
+                    //await nc.ShowAlertAsync("Exception", ex.Message, "OK", null);
+                    result = new BizLogic();
+                }
             }
             // 生成したインスタンスに引数を渡す
             result._nc = nc;
