@@ -45,7 +45,7 @@ namespace GenericMvvm.UWP
                 // 復元する
                 Task.Run(async () =>
                 {
-                    _BizLogic = await BizLogic.LoadBizLogicAsync(null);
+                    _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallUWP());
                     Initialize();
                 });
             }
