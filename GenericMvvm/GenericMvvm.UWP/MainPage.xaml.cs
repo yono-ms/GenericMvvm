@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,6 +33,10 @@ namespace GenericMvvm.UWP
         {
             this.InitializeComponent();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "MainPage" });
+
+            // UWPでは起動時サイズ指定可能
+            ApplicationView.PreferredLaunchViewSize = new Size { Width = 480, Height = 640 };
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             if (_BizLogic == null)
             {
