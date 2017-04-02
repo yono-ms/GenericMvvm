@@ -35,6 +35,8 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BizLogic.cs" />
     <Compile Include="INativeCall.cs" />
+    <Compile Include="ViewModels\MainViewModelSample.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
