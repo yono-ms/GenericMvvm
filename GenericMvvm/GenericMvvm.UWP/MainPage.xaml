@@ -8,6 +8,28 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="gridHeader">
+            <Grid>
+                <StackPanel Padding="10">
+                    <TextBlock>タイトル</TextBlock>
+                </StackPanel>
+                <ProgressBar x:Name="progressBar" VerticalAlignment="Bottom" IsIndeterminate="True"/>
+            </Grid>
+        </Grid>
 
+        <Grid Grid.Row="1" x:Name="gridContent">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">起動中</TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="2" x:Name="gridFooter">
+            <StackPanel Padding="10">
+                <TextBlock>フッター</TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
