@@ -11,9 +11,8 @@ namespace GenericMvvm
         public MainViewModelSample()
         {
             Title = "サンプルのタイトル";
-            Fotter = "サンプルのフッター";
+            Footer = "サンプルのフッター";
             ShowProgress = true;
-            InitialText = "ロード中です";
         }
     }
 }

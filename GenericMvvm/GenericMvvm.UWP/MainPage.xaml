@@ -33,7 +33,7 @@
 
         <Grid Grid.Row="2" x:Name="gridFooter">
             <StackPanel Padding="10">
-                <TextBlock Text="{Binding Path=Fotter}"/>
+                <TextBlock Text="{Binding Path=Footer}"/>
             </StackPanel>
         </Grid>
     </Grid>
