@@ -14,7 +14,7 @@ namespace GenericMvvm
     /// ビューモデル基本クラス
     /// </summary>
     [DataContract]
-    public class BaseViewModel : BaseStruct
+    public class BaseViewModel : BaseCell
     {
         /// <summary>
         /// デザイン時に使えるようにコンストラクタは引数無し

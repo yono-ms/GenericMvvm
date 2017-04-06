@@ -14,7 +14,7 @@ namespace GenericMvvm
     /// プロパティエラー付き構造体
     /// </summary>
     [DataContract]
-    public class BaseStruct : INotifyPropertyChanged
+    public class BaseCell : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
@@ -26,11 +26,11 @@ namespace GenericMvvm
         /// </summary>
         public class ObservableDictionary
         {
-            private BaseStruct _baseStruct;
+            private BaseCell _baseCell;
 
-            public ObservableDictionary(BaseStruct baseStruct)
+            public ObservableDictionary(BaseCell baseCell)
             {
-                this._baseStruct = baseStruct;
+                this._baseCell = baseCell;
             }
 
             public ObservableCollection<string> this[string name]
@@ -38,8 +38,8 @@ namespace GenericMvvm
                 get
                 {
                     if (string.IsNullOrWhiteSpace(name)) return null;
-                    if (!_baseStruct._Dict.ContainsKey(name)) return null;
-                    return _baseStruct._Dict[name];
+                    if (!_baseCell._Dict.ContainsKey(name)) return null;
+                    return _baseCell._Dict[name];
                 }
             }
         }
@@ -59,16 +59,16 @@ namespace GenericMvvm
         /// </summary>
         public class CheckErrors
         {
-            private BaseStruct _baseStruct;
-            public CheckErrors(BaseStruct baseStruct)
+            private BaseCell _baseCell;
+            public CheckErrors(BaseCell baseCell)
             {
-                this._baseStruct = baseStruct;
+                this._baseCell = baseCell;
             }
             public bool this[string name]
             {
                 get
                 {
-                    if (_baseStruct.Errors != null && _baseStruct.Errors[name] != null && _baseStruct.Errors[name].Count > 0)
+                    if (_baseCell.Errors != null && _baseCell.Errors[name] != null && _baseCell.Errors[name].Count > 0)
                     {
                         return true;
                     }
@@ -138,7 +138,7 @@ namespace GenericMvvm
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public BaseStruct()
+        public BaseCell()
         {
             _Dict = new Dictionary<string, ObservableCollection<string>>();
             _Errors = new ObservableDictionary(this);
