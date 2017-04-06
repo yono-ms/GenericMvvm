@@ -1,12 +1,17 @@
 ﻿<Page
-    x:Class="GenericMvvm.UWP.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GenericMvvm.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:GenericMvvm="using:GenericMvvm"
+    x:Class="GenericMvvm.UWP.MainPage"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:MainViewModelSample, IsDesignTimeCreatable=True}">
 
+    <Page.Resources>
+        <local:VisibilityConverter x:Name="VisibilityConverter"/>
+    </Page.Resources>
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -16,19 +21,19 @@
         <Grid Grid.Row="0" x:Name="gridHeader">
             <Grid>
                 <StackPanel Padding="10">
-                    <TextBlock>タイトル</TextBlock>
+                    <TextBlock Text="{Binding Path=Title}"/>
                 </StackPanel>
-                <ProgressBar x:Name="progressBar" VerticalAlignment="Bottom" IsIndeterminate="True"/>
+                <ProgressBar Visibility="{Binding Path=ShowProgress, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom" IsIndeterminate="True"/>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="1" x:Name="gridContent">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">起動中</TextBlock>
+            <TextBlock Text="{Binding Path=InitialText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <Grid Grid.Row="2" x:Name="gridFooter">
             <StackPanel Padding="10">
-                <TextBlock>フッター</TextBlock>
+                <TextBlock Text="{Binding Path=Fotter}"/>
             </StackPanel>
         </Grid>
     </Grid>
