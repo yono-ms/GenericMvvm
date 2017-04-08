@@ -29,6 +29,8 @@ namespace GenericMvvm.UWP
 
         private BizLogic _BizLogic;
 
+        private MainViewModel _VM;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -45,8 +47,13 @@ namespace GenericMvvm.UWP
                 // 復元する
                 Task.Run(async () =>
                 {
+                    // 非同期なので別スレッドで実行する
                     _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallUWP());
-                    Initialize();
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        // UIスレッドに戻す
+                        Initialize();
+                    });
                 });
             }
             else
@@ -58,7 +65,12 @@ namespace GenericMvvm.UWP
 
         private void Initialize()
         {
-            throw new NotImplementedException();
+            // メイン画面の場合はアプリケーションの起動を待ってからVM開始
+            _VM = _BizLogic.GetViewModel<MainViewModel>();
+            // バインド
+            DataContext = _VM;
+            // 起動
+            _VM.KickStart();
         }
     }
 }

@@ -63,6 +63,12 @@ namespace GenericMvvm
             PropertyChangedInvoke(this, new PropertyChangedEventArgs(nameof(ObjectErrors)));
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void KickStart()
+        {
+            System.Diagnostics.Debug.WriteLine("BaseViewModel KickStart");
+        }
     }
 }

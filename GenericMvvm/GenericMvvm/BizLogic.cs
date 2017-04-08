@@ -92,5 +92,54 @@ namespace GenericMvvm
 
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "SaveBizLogicAsync END" });
         }
+        /// <summary>
+        /// ViewModelのインスタンスを生成する
+        /// </summary>
+        /// <typeparam name="T">ViewModelの型</typeparam>
+        /// <returns>インスタンス</returns>
+        public T GetViewModel<T>() where T : BaseViewModel, new()
+        {
+            T instance;
+            if (_Instances.ContainsKey(typeof(T)))
+            {
+                instance = _Instances[typeof(T)] as T;
+            }
+            else
+            {
+                instance = new T();
+                _Instances.Add(typeof(T), instance);
+            }
+            LoadInitialData<T>(instance);
+            return instance;
+        }
+
+        /// <summary>
+        /// 生成したViewModelに初期値を設定する
+        /// </summary>
+        /// <typeparam name="T">ViewModelの型</typeparam>
+        /// <param name="instance">インスタンス</param>
+        private void LoadInitialData<T>(T instance) where T : BaseViewModel, new()
+        {
+            var vm = instance as MainViewModel;
+            if (vm != null)
+            {
+                vm.Title = "生成直後のタイトルです";
+                vm.Footer = "生成直後のフッターです";
+            }
+        }
+
+        /// <summary>
+        /// インスタンス辞書。
+        /// この辞書は不揮発領域に保存しないので、コミットしていない情報は消える。
+        /// </summary>
+        Dictionary<Type, object> _Instances;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public BizLogic()
+        {
+            _Instances = new Dictionary<Type, object>();
+        }
     }
 }
