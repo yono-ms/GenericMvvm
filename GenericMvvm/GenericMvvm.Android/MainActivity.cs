@@ -8,17 +8,20 @@ using Android.Widget;
 using Android.OS;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace GenericMvvm.Droid
 {
-	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/AppTheme")]
 	public class MainActivity : Activity
 	{
         const string FORMAT = "----ActivityEvent---- {0}";
 
-        BizLogic _BizLogic;
+        private BizLogic _BizLogic;
 
-        int count = 1;
+        private MainViewModel _VM;
+
+        private TextView _TextViewFooter;
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -28,6 +31,9 @@ namespace GenericMvvm.Droid
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
+            _TextViewFooter = FindViewById<TextView>(Resource.Id.textViewFooter);
+
+            // この構成ではBizLogicの状態だけでやりなす必要があるかを判断できる
             if (_BizLogic == null)
             {
                 System.Diagnostics.Debug.WriteLine("BizLogic復元ルート");
@@ -36,7 +42,10 @@ namespace GenericMvvm.Droid
                 Task.Run(async () =>
                 {
                     _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallAndroid(this));
-                    Initialize();
+                    RunOnUiThread(() =>
+                    {
+                        Initialize();
+                    });
                 });
             }
             else
@@ -52,7 +61,34 @@ namespace GenericMvvm.Droid
         /// </summary>
         private void Initialize()
         {
-            throw new NotImplementedException();
+            // Mainに限りBizLogic生成を待ってからUI構築を行う
+            _VM = _BizLogic.GetViewModel<MainViewModel>();
+
+            // バインド（初期値）
+            _TextViewFooter.Text = _VM.Footer;
+            ActionBar.Title = _VM.Title;
+
+            // バインド（イベント辞書）
+            Dictionary<string, BindingInfo> bindings = new Dictionary<string, BindingInfo>();
+            bindings.Add(nameof(_VM.Footer), new BindingInfo() { Control = _TextViewFooter, ControlProperty = nameof(_TextViewFooter.Text) });
+            bindings.Add(nameof(_VM.Title), new BindingInfo() { Control = ActionBar, ControlProperty = nameof(ActionBar.Title) });
+
+            _VM.PropertyChanged += (s, e) =>
+            {
+                //var vm = s as MainViewModel;
+                if (bindings.ContainsKey(e.PropertyName))
+                {
+                    var v = s.GetType().GetProperty(e.PropertyName).GetValue(s);
+
+                    var c = bindings[e.PropertyName].Control;
+                    c.GetType().GetProperty(bindings[e.PropertyName].ControlProperty).SetValue(c, v);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Unknown property " + e.PropertyName);
+                }
+            };
+
         }
 
         protected override void OnRestart()
