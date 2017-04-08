@@ -53,5 +53,11 @@ namespace GenericMvvm
         /// </summary>
         [DataMember]
         public string InitialText { get { return "アプリケーション起動"; } }
+
+        public override void KickStart()
+        {
+            base.KickStart();
+            ShowProgress = true;
+        }
     }
 }

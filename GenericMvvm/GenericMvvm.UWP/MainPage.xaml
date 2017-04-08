@@ -10,8 +10,11 @@
 
     <Page.Resources>
         <local:VisibilityConverter x:Name="VisibilityConverter"/>
+        <Style x:Key="ListViewItemStyleObjectErrors" TargetType="ListViewItem">
+            <Setter Property="MinHeight" Value="0"/>
+        </Style>
     </Page.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -20,10 +23,10 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="gridHeader">
             <Grid>
-                <StackPanel Padding="10">
-                    <TextBlock Text="{Binding Path=Title}"/>
+                <StackPanel Padding="10" Background="#3F51B5">
+                    <TextBlock Text="{Binding Path=Title}" Foreground="White"/>
                 </StackPanel>
-                <ProgressBar Visibility="{Binding Path=ShowProgress, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom" IsIndeterminate="True"/>
+                <ProgressBar Visibility="{Binding Path=ShowProgress, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom" IsIndeterminate="True" Foreground="White"/>
             </Grid>
         </Grid>
 
@@ -32,8 +35,17 @@
         </Grid>
 
         <Grid Grid.Row="2" x:Name="gridFooter">
-            <StackPanel Padding="10">
-                <TextBlock Text="{Binding Path=Footer}"/>
+            <StackPanel Padding="10" Background="#3F51B5">
+                <TextBlock Text="{Binding Path=Footer}" Foreground="White"/>
+                <ListView ItemsSource="{Binding Path=ObjectErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleObjectErrors}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding}" Foreground="LightPink" FontSize="10"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </Grid>
     </Grid>

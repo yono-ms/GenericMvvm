@@ -13,6 +13,11 @@ namespace GenericMvvm
             Title = "サンプルのタイトル";
             Footer = "サンプルのフッター";
             ShowProgress = true;
+            var errors = new System.Collections.ObjectModel.ObservableCollection<string>();
+            errors.Add("システムエラー");
+            errors.Add("スタックトレース");
+            errors.Add("メッセージ");
+            ObjectErrors = errors;
         }
     }
 }
