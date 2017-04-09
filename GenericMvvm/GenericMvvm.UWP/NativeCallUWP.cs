@@ -11,7 +11,14 @@ namespace GenericMvvm.UWP
 {
     class NativeCallUWP : INativeCall
     {
+        MainPage _MainPage;
+
         private SemaphoreSlim _Sem = new SemaphoreSlim(1, 1);
+
+        public NativeCallUWP(MainPage mainPage)
+        {
+            _MainPage = mainPage;
+        }
 
         public async Task<string> LoadFileAsync(string name)
         {

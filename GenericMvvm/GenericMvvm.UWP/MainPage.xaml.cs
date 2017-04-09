@@ -31,6 +31,8 @@ namespace GenericMvvm.UWP
 
         private MainViewModel _VM;
 
+        public Frame ContentFrame { get; private set; }
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -40,6 +42,12 @@ namespace GenericMvvm.UWP
             ApplicationView.PreferredLaunchViewSize = new Size { Width = 480, Height = 640 };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
+            // フレームを構築して初期ページを表示
+            ContentFrame = new Frame();
+            gridContent.Children.Add(ContentFrame);
+            ContentFrame.Navigate(typeof(FirstPage));
+
+            // アプリケーションの生存判定（UWPの場合は必ずnull）
             if (_BizLogic == null)
             {
                 System.Diagnostics.Debug.WriteLine("BizLogic復元ルート");
@@ -48,7 +56,7 @@ namespace GenericMvvm.UWP
                 Task.Run(async () =>
                 {
                     // 非同期なので別スレッドで実行する
-                    _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallUWP());
+                    _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallUWP(this));
                     await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
                         // UIスレッドに戻す
