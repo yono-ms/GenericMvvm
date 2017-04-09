@@ -44,13 +44,5 @@ namespace GenericMvvm
         /// <param name="name">ファイル名</param>
         /// <param name="data">文字列</param>
         Task SaveFileAsync(string name, string data);
-        /// <summary>
-        /// プログレスを表示する
-        /// </summary>
-        void ShowProgress();
-        /// <summary>
-        /// プログレスを消す
-        /// </summary>
-        void DismissProgress();
     }
 }

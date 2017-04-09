@@ -25,10 +25,6 @@ namespace GenericMvvm.Droid
             _Activity = activity;
         }
 
-        public void DismissProgress()
-        {
-            throw new NotImplementedException();
-        }
         /// <summary>
         /// •sŠö”­—Ìˆæ‚©‚çæ‚èo‚·
         /// </summary>
@@ -125,9 +121,5 @@ namespace GenericMvvm.Droid
             return result;
         }
 
-        public void ShowProgress()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

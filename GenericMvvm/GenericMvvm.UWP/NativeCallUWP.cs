@@ -13,11 +13,6 @@ namespace GenericMvvm.UWP
     {
         private SemaphoreSlim _Sem = new SemaphoreSlim(1, 1);
 
-        public void DismissProgress()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> LoadFileAsync(string name)
         {
             string ret = null;
@@ -102,9 +97,5 @@ namespace GenericMvvm.UWP
             return result;
         }
 
-        public void ShowProgress()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
