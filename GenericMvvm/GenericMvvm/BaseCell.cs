@@ -117,7 +117,7 @@ namespace GenericMvvm
             else
             {
                 // エラーなし
-                _Dict.Remove(propertyName);
+                _Dict?.Remove(propertyName);
             }
 
             // 通知
