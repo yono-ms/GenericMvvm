@@ -102,37 +102,79 @@ namespace GenericMvvm
             T instance;
             if (_Instances.ContainsKey(typeof(T)))
             {
+                // 過去に生成されたインスタンスが生きている
                 instance = _Instances[typeof(T)] as T;
             }
             else
             {
-                instance = new T();
+                // 再起動後に初めて生成する
+                instance = CreateViewModel<T>();
                 _Instances.Add(typeof(T), instance);
             }
-            LoadInitialData<T>(instance);
             return instance;
         }
-
         /// <summary>
-        /// 生成したViewModelに初期値を設定する
+        /// コミット済み情報からViewModelを生成する
         /// </summary>
-        /// <typeparam name="T">ViewModelの型</typeparam>
-        /// <param name="instance">インスタンス</param>
-        private void LoadInitialData<T>(T instance) where T : BaseViewModel, new()
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private T CreateViewModel<T>() where T : BaseViewModel, new()
         {
-            var vm = instance as MainViewModel;
-            if (vm != null)
+            // 保存情報がある場合はクローンを作成して渡す
+            if (typeof(T) == typeof(MainViewModel))
             {
-                vm.Title = "生成直後のタイトルです";
-                vm.Footer = "生成直後のフッターです";
+                return DeepCopy<MainViewModel>(_SavedMainViewModel) as T;
             }
+            // 保存情報がない場合はそのまま渡す
+            return new T();
         }
 
         /// <summary>
         /// インスタンス辞書。
+        /// ViewModelの実体はここで管理される。
         /// この辞書は不揮発領域に保存しないので、コミットしていない情報は消える。
         /// </summary>
         Dictionary<Type, object> _Instances;
+
+        /// <summary>
+        /// コミット済みの入力情報（Main）
+        /// </summary>
+        [DataMember]
+        MainViewModel _SavedMainViewModel;
+
+        /// <summary>
+        /// ViewModelのディープコピー
+        /// </summary>
+        /// <typeparam name="T">ViewModelの型</typeparam>
+        /// <param name="src">コピー元</param>
+        /// <returns>クローン</returns>
+        private T DeepCopy<T>(T src) where T : BaseViewModel, new()
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "DeepCopy START" });
+
+            T dst;
+
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    var ser = new DataContractJsonSerializer(typeof(T));
+                    // 一度json化
+                    ser.WriteObject(ms, src);
+                    // jsonから復元
+                    ms.Position = 0;
+                    dst = ser.ReadObject(ms) as T;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                dst = new T();
+            }
+
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "DeepCopy END" });
+            return dst;
+        }
 
         /// <summary>
         /// コンストラクタ
@@ -140,6 +182,12 @@ namespace GenericMvvm
         public BizLogic()
         {
             _Instances = new Dictionary<Type, object>();
+
+            _SavedMainViewModel = new MainViewModel
+            {
+                Title = "生成直後のタイトルです",
+                Footer = "生成直後のフッターです"
+            };
         }
     }
 }

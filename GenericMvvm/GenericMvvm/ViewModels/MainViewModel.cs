@@ -51,7 +51,6 @@ namespace GenericMvvm
         /// <summary>
         /// アプリケーション復帰中の文言
         /// </summary>
-        [DataMember]
         public string InitialText { get { return "アプリケーション起動"; } }
 
         public override void KickStart()
