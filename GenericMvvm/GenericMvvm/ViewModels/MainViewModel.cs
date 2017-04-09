@@ -56,7 +56,8 @@ namespace GenericMvvm
         public override void KickStart()
         {
             base.KickStart();
-            ShowProgress = true;
+            // 表示位置の復元をリクエスト
+            _BizLogic.RestorePage();
         }
     }
 }

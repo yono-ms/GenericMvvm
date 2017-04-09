@@ -23,7 +23,7 @@ namespace GenericMvvm
         /// <summary>
         /// OS実装機能
         /// </summary>
-        INativeCall _nc;
+        INativeCall _NC;
         /// <summary>
         /// 不揮発領域からロードする
         /// </summary>
@@ -58,7 +58,7 @@ namespace GenericMvvm
                 }
             }
             // 生成したインスタンスに引数を渡す
-            result._nc = nc;
+            result._NC = nc;
 
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "LoadBizLogicAsync END" });
 
@@ -81,13 +81,13 @@ namespace GenericMvvm
                     var bytes = ms.ToArray();
                     var json = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 
-                    await _nc.SaveFileAsync(Key, json);
+                    await _NC.SaveFileAsync(Key, json);
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                await _nc.ShowAlertAsync("Exception", ex.Message, "OK", null);
+                await _NC.ShowAlertAsync("Exception", ex.Message, "OK", null);
             }
 
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "SaveBizLogicAsync END" });
@@ -109,6 +109,7 @@ namespace GenericMvvm
             {
                 // 再起動後に初めて生成する
                 instance = CreateViewModel<T>();
+                instance._BizLogic = this;
                 _Instances.Add(typeof(T), instance);
             }
             return instance;
@@ -175,7 +176,25 @@ namespace GenericMvvm
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "DeepCopy END" });
             return dst;
         }
-
+        /// <summary>
+        /// 中断画面を復元する
+        /// </summary>
+        public void RestorePage()
+        {
+            if (string.IsNullOrEmpty(CurrentPage))
+            {
+                _NC.NavigateTo("Name", true);
+            }
+            else
+            {
+                _NC.NavigateTo(CurrentPage, true);
+            }
+        }
+        /// <summary>
+        /// 現在表示中のページ
+        /// </summary>
+        [DataMember]
+        public string CurrentPage { get; private set; }
         /// <summary>
         /// コンストラクタ
         /// </summary>

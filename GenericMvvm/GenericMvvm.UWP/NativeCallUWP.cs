@@ -11,13 +11,17 @@ namespace GenericMvvm.UWP
 {
     class NativeCallUWP : INativeCall
     {
-        MainPage _MainPage;
+        private MainPage _MainPage;
 
         private SemaphoreSlim _Sem = new SemaphoreSlim(1, 1);
+
+        private Dictionary<string, Type> _StringToPages;
 
         public NativeCallUWP(MainPage mainPage)
         {
             _MainPage = mainPage;
+            _StringToPages = new Dictionary<string, Type>();
+            _StringToPages.Add("Name", typeof(NamePage));
         }
 
         public async Task<string> LoadFileAsync(string name)
@@ -49,7 +53,14 @@ namespace GenericMvvm.UWP
 
         public void NavigateTo(string page, bool forward)
         {
-            throw new NotImplementedException();
+            if (_StringToPages.ContainsKey(page))
+            {
+                _MainPage.ContentFrame.Navigate(_StringToPages[page]);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("NO PAGE " + page);
+            }
         }
 
         public void Pop()

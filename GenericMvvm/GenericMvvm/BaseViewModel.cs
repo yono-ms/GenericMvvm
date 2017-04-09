@@ -64,11 +64,15 @@ namespace GenericMvvm
             return result;
         }
         /// <summary>
-        /// 
+        /// UI準備完了
         /// </summary>
         public virtual void KickStart()
         {
             System.Diagnostics.Debug.WriteLine("BaseViewModel KickStart");
         }
+        /// <summary>
+        /// アプリケーションの実体を参照する
+        /// </summary>
+        public BizLogic _BizLogic { get; set; }
     }
 }
