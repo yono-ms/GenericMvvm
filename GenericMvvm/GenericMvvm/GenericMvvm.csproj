@@ -35,6 +35,8 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BizLogic.cs" />
     <Compile Include="INativeCall.cs" />
+    <Compile Include="ViewModels\NameViewModelSample.cs" />
+    <Compile Include="ViewModels\NameViewModel.cs" />
     <Compile Include="ViewModels\MainViewModelSample.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
