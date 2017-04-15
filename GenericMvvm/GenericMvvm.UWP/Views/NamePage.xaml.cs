@@ -22,9 +22,14 @@ namespace GenericMvvm.UWP
     /// </summary>
     public sealed partial class NamePage : Page
     {
+        NameViewModel _VM;
+
         public NamePage()
         {
             this.InitializeComponent();
+
+            _VM = (Application.Current as App).BizLogic.GetViewModel<NameViewModel>();
+            DataContext = _VM;
         }
     }
 }

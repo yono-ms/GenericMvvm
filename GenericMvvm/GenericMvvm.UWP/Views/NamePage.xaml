@@ -1,13 +1,26 @@
 ﻿<Page
-    x:Class="GenericMvvm.UWP.NamePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GenericMvvm.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:GenericMvvm="using:GenericMvvm"
+    x:Class="GenericMvvm.UWP.NamePage"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:NameViewModelSample, IsDesignTimeCreatable=True}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock>Name Page</TextBlock>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Assets/bg007_01.gif"/>
+        </Grid.Background>
+        <StackPanel>
+            <TextBlock>
+            <Run Text="Name Page"/>
+            </TextBlock>
+            <ListView ItemsSource="{Binding Path=Errors[LastName]}"/>
+            <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}"/>
+            <ListView ItemsSource="{Binding Path=Errors[FirstName]}"/>
+            <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}"/>
+
+        </StackPanel>
     </Grid>
 </Page>

@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomFrame.cs" />
     <Compile Include="FirstPage.xaml.cs">
       <DependentUpon>FirstPage.xaml</DependentUpon>
     </Compile>
@@ -116,6 +117,14 @@
     <None Include="GenericMvvm.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\bg007_01.gif" />
+    <Content Include="Assets\bg007_02.gif" />
+    <Content Include="Assets\bg007_03.gif" />
+    <Content Include="Assets\bg007_04.gif" />
+    <Content Include="Assets\bg007_05.gif" />
+    <Content Include="Assets\bg007_06.gif" />
+    <Content Include="Assets\bg007_07.gif" />
+    <Content Include="Assets\bg007_08.gif" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
