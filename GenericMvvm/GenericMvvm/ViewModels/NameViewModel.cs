@@ -20,6 +20,7 @@ namespace GenericMvvm
         /// お名前（姓）
         /// </summary>
         [Required(ErrorMessage = "姓を入力してください。")]
+        [RegularExpression("[^0-9A-Za-z]+", ErrorMessage ="英数字は使用できません。")]
         [StringLength(3, ErrorMessage = "お名前（姓）は{1}桁以内で入力してください。")]
         [DataMember]
         public string LastName
@@ -33,6 +34,7 @@ namespace GenericMvvm
         /// お名前（名）
         /// </summary>
         [Required(ErrorMessage = "名を入力してください。")]
+        [RegularExpression("[^0-9A-Za-z]+", ErrorMessage = "英数字は使用できません。")]
         [StringLength(3, ErrorMessage = "お名前（名）は{1}桁以内で入力してください。")]
         [DataMember]
         public string FirstName
