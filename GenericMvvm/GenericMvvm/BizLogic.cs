@@ -126,6 +126,10 @@ namespace GenericMvvm
             {
                 return DeepCopy<MainViewModel>(_SavedMainViewModel) as T;
             }
+            else if (typeof(T) == typeof(NameViewModel))
+            {
+                return DeepCopy<NameViewModel>(_SavedNameViewModel) as T;
+            }
             // 保存情報がない場合はそのまま渡す
             return new T();
         }
@@ -142,6 +146,11 @@ namespace GenericMvvm
         /// </summary>
         [DataMember]
         MainViewModel _SavedMainViewModel;
+        /// <summary>
+        /// コミット済みの入力情報（Name）
+        /// </summary>
+        [DataMember]
+        NameViewModel _SavedNameViewModel;
 
         /// <summary>
         /// ViewModelのディープコピー
@@ -207,6 +216,8 @@ namespace GenericMvvm
                 Title = "生成直後のタイトルです",
                 Footer = "生成直後のフッターです"
             };
+
+            _SavedNameViewModel = new NameViewModel();
         }
     }
 }
