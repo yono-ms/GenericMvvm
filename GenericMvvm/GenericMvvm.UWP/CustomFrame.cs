@@ -72,11 +72,13 @@ namespace GenericMvvm.UWP
                 {
                     // アニメーションで古い画像を消す
                     var sb = new Storyboard();
-                    var anim = new DoubleAnimationUsingKeyFrames();
+                    var anim = new DoubleAnimation
+                    {
+                        From = 1,
+                        To = 0,
+                        Duration = new Duration(TimeSpan.FromSeconds(10))
+                    };
                     sb.Children.Add(anim);
-                    anim.KeyFrames.Add(new LinearDoubleKeyFrame { Value = 100, KeyTime = TimeSpan.FromSeconds(0) });
-                    anim.KeyFrames.Add(new LinearDoubleKeyFrame { Value = 50, KeyTime = TimeSpan.FromSeconds(1) });
-                    anim.KeyFrames.Add(new LinearDoubleKeyFrame { Value = 0, KeyTime = TimeSpan.FromSeconds(2) });
                     //anim.EnableDependentAnimation = true;
                     Storyboard.SetTargetProperty(anim, "Opacity");
                     Storyboard.SetTarget(anim, _OldImage);
