@@ -13,7 +13,8 @@ namespace GenericMvvm
         {
             FirstName = "鈴木";
             LastName = "一郎";
-            _Dict.Add("FirstName", new ObservableCollection<string>(new[] { "エラーサンプル" }));
+            _Dict.Add("LastName", new ObservableCollection<string>(new[] { "エラーサンプル1", "サンプル2" }));
+            _Dict.Add("FirstName", new ObservableCollection<string>(new[] { "エラーサンプル2" }));
         }
     }
 }

@@ -16,10 +16,10 @@
             <TextBlock>
             <Run Text="Name Page"/>
             </TextBlock>
-            <ListView ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
-            <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}"/>
-            <ListView ItemsSource="{Binding Path=Errors[FirstName]}"/>
-            <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}"/>
+            <ListView ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleErrors}"/>
+            <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}" Header="{Binding LastNameTitle, Mode=OneWay}"/>
+            <ListView ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleErrors}"/>
+            <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}"/>
 
         </StackPanel>
     </Grid>
