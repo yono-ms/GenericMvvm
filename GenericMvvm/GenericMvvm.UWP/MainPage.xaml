@@ -32,14 +32,6 @@
 
         <Grid Grid.Row="1" x:Name="gridContent">
             <TextBlock Text="{Binding Path=InitialText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Grid x:Name="gridAnim" Background="#40FF0000" Opacity="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Image x:Name="imageLeft"/>
-                <Image x:Name="imageRight"/>
-            </Grid>
         </Grid>
 
         <Grid Grid.Row="2" x:Name="gridFooter">

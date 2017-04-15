@@ -9,7 +9,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/bg007_08.gif"/>
+            <ImageBrush ImageSource="ms-appx:///Assets/bg007_08.gif"/>
         </Grid.Background>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">準備しています</TextBlock>
     </Grid>
