@@ -16,7 +16,7 @@
             <TextBlock>
             <Run Text="Name Page"/>
             </TextBlock>
-            <ListView ItemsSource="{Binding Path=Errors[LastName]}"/>
+            <ListView ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
             <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}"/>
             <ListView ItemsSource="{Binding Path=Errors[FirstName]}"/>
             <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}"/>

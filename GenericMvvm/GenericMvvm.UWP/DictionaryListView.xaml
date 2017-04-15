@@ -1,0 +1,11 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GenericMvvm.UWP">
+    <DataTemplate x:Key="DataTemplateErrors">
+        <Grid Background="Red" Padding="4">
+            <TextBlock Text="{Binding}" Foreground="White" FontSize="10" VerticalAlignment="Center"/>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
