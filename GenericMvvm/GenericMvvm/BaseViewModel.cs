@@ -78,6 +78,10 @@ namespace GenericMvvm
             System.Diagnostics.Debug.WriteLine("BaseViewModel Commit");
         }
         /// <summary>
+        /// コミットボタンラベル
+        /// </summary>
+        public string CommitLabel { get { return "次へ"; } }
+        /// <summary>
         /// アプリケーションの実体を参照する
         /// </summary>
         public BizLogic _BizLogic { get; set; }
