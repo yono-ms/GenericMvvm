@@ -12,15 +12,22 @@
         <Grid.Background>
             <ImageBrush ImageSource="ms-appx:///Assets/bg007_01.gif"/>
         </Grid.Background>
-        <StackPanel>
-            <TextBlock>
-            <Run Text="Name Page"/>
-            </TextBlock>
-            <ListView ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleErrors}"/>
-            <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}" Header="{Binding LastNameTitle, Mode=OneWay}"/>
-            <ListView ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleErrors}"/>
-            <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}"/>
-
+        <StackPanel Style="{StaticResource StackPanelStyleContent}">
+            <Border Style="{StaticResource BorderStyleContent}">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Description, Mode=OneWay}"/>
+            </Border>
+            <Border Style="{StaticResource BorderStyleContent}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
+                    <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}" Header="{Binding LastNameTitle, Mode=OneWay}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource BorderStyleContent}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
+                    <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>

@@ -49,6 +49,8 @@ namespace GenericMvvm
         public string LastNamePlaceholder { get { return "山田"; } }
         public string FirstNamePlaceholder { get { return "太郎"; } }
 
+        public string Description { get { return "お名前を入力してください。\n必須項目なので入力しないと先に進めません。"; } }
+
         /// <summary>
         /// カスタムバリデーション
         /// </summary>
