@@ -79,5 +79,19 @@ namespace GenericMvvm
 
             // 特になし
         }
+
+        public override void Commit()
+        {
+            base.Commit();
+
+            if (IsValidViewModel(this))
+            {
+                // 画面遷移
+            }
+            else
+            {
+                // エラー表示
+            }
+        }
     }
 }

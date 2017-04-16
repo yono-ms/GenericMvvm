@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -192,11 +193,11 @@ namespace GenericMvvm
         {
             if (string.IsNullOrEmpty(CurrentPage))
             {
-                _NC.NavigateTo("Name", true);
+                NavigateTo("Name", true);
             }
             else
             {
-                _NC.NavigateTo(CurrentPage, true);
+                NavigateTo(CurrentPage, true);
             }
         }
         /// <summary>
@@ -205,10 +206,52 @@ namespace GenericMvvm
         [DataMember]
         public string CurrentPage { get; private set; }
         /// <summary>
+        /// 入力確定
+        /// </summary>
+        public void Commit()
+        {
+            if (CurrentPage.Equals("Name"))
+            {
+                _SavedNameViewModel = DeepCopy(_Instances[typeof(NameViewModel)] as NameViewModel);
+                // 不揮発領域に保存
+                NavigateTo("Birth", true);
+            }
+        }
+        /// <summary>
+        /// 画面遷移
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="forward"></param>
+        private void NavigateTo(string page, bool forward)
+        {
+            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
+
+            if (_ViewModelInfos.ContainsKey(page))
+            {
+                CurrentPage = page;
+
+                mvm.ObjectErrors = null;
+
+                var vmi = _ViewModelInfos[page];
+                mvm.Title = vmi.Title;
+                mvm.Footer = vmi.Footer;
+
+                _NC.NavigateTo(CurrentPage, true);
+            }
+            else
+            {
+                mvm.ObjectErrors = new ObservableCollection<string> { "unknown page " + page };
+            }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public BizLogic()
         {
+            _ViewModelInfos = new Dictionary<string, ViewModelInfo>();
+            _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight" });
+
             _Instances = new Dictionary<Type, object>();
 
             _SavedMainViewModel = new MainViewModel
@@ -218,6 +261,15 @@ namespace GenericMvvm
             };
 
             _SavedNameViewModel = new NameViewModel();
+        }
+
+        private Dictionary<string, ViewModelInfo> _ViewModelInfos;
+
+        public class ViewModelInfo
+        {
+            public Type Type { get; set; }
+            public string Title { get; set; }
+            public string Footer { get; set; }
         }
     }
 }

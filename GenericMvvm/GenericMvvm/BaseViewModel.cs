@@ -71,6 +71,13 @@ namespace GenericMvvm
             System.Diagnostics.Debug.WriteLine("BaseViewModel KickStart");
         }
         /// <summary>
+        /// 入力完了
+        /// </summary>
+        public virtual void Commit()
+        {
+            System.Diagnostics.Debug.WriteLine("BaseViewModel Commit");
+        }
+        /// <summary>
         /// アプリケーションの実体を参照する
         /// </summary>
         public BizLogic _BizLogic { get; set; }
