@@ -140,7 +140,7 @@ namespace GenericMvvm
         /// ViewModelの実体はここで管理される。
         /// この辞書は不揮発領域に保存しないので、コミットしていない情報は消える。
         /// </summary>
-        Dictionary<Type, object> _Instances;
+        Dictionary<Type, BaseViewModel> _Instances;
 
         /// <summary>
         /// コミット済みの入力情報（Main）
@@ -240,8 +240,18 @@ namespace GenericMvvm
             }
             else
             {
-                mvm.ObjectErrors = new ObservableCollection<string> { "unknown page " + page };
+                mvm.ObjectErrors = new ObservableCollection<string>(new[] { "unknown page " + page });
             }
+        }
+        /// <summary>
+        /// メインのエラー領域にVMのエラーを表示する
+        /// </summary>
+        public void ShowError()
+        {
+            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
+            var vmi = _ViewModelInfos[CurrentPage];
+            var page = _Instances[vmi.Type];
+            mvm.ObjectErrors = page.ObjectErrors;
         }
 
         /// <summary>
@@ -252,7 +262,7 @@ namespace GenericMvvm
             _ViewModelInfos = new Dictionary<string, ViewModelInfo>();
             _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight" });
 
-            _Instances = new Dictionary<Type, object>();
+            _Instances = new Dictionary<Type, BaseViewModel>();
 
             _SavedMainViewModel = new MainViewModel
             {

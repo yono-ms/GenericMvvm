@@ -28,7 +28,7 @@
                     <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}"/>
                 </StackPanel>
             </Border>
-            <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}"/>
+            <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>
