@@ -48,6 +48,17 @@ namespace GenericMvvm
             set { _ShowProgress = value; ValidateProperty(nameof(ShowProgress), value); }
         }
 
+        [DataMember]
+        private bool _ShwoBackButton;
+        /// <summary>
+        /// バックボタンを表示するなら真
+        /// </summary>
+        public bool ShwoBackButton
+        {
+            get { return _ShwoBackButton; }
+            set { _ShwoBackButton = value; ValidateProperty(nameof(ShwoBackButton), value); }
+        }
+
         /// <summary>
         /// アプリケーション復帰中の文言
         /// </summary>

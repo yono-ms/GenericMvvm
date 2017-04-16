@@ -117,7 +117,7 @@ namespace GenericMvvm.UWP
                     {
                         From = 0,
                         To = dest,
-                        Duration = new Duration(TimeSpan.FromMilliseconds(200))
+                        Duration = new Duration(TimeSpan.FromMilliseconds(2000))
                     };
                     Storyboard.SetTargetProperty(anim, "(UIElement.RenderTransform).(CompositeTransform.TranslateX)");
                     Storyboard.SetTarget(anim, _StackPanel);

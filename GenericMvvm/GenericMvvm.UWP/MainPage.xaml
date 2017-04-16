@@ -23,8 +23,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="gridHeader">
             <Grid>
-                <StackPanel Padding="10" Background="#3F51B5">
-                    <TextBlock Text="{Binding Path=Title}" Foreground="White"/>
+                <StackPanel Padding="10" Background="#3F51B5" Orientation="Horizontal">
+                    <Button x:Name="buttonBack" Background="Transparent" Foreground="White" Visibility="{Binding Path=ShwoBackButton, Converter={StaticResource VisibilityConverter}}" Click="buttonBack_Click">
+                        <SymbolIcon Symbol="Back"/>
+                    </Button>
+                    <TextBlock Text="{Binding Path=Title}" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
                 <ProgressBar Visibility="{Binding Path=ShowProgress, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom" IsIndeterminate="True" Foreground="White"/>
             </Grid>

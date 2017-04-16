@@ -232,6 +232,13 @@ namespace GenericMvvm
                 NavigateTo("Birth", true);
             }
         }
+        public void GoBack()
+        {
+            if (CurrentPage.Equals("Birth"))
+            {
+                NavigateTo("Name", false);
+            }
+        }
         /// <summary>
         /// 画面遷移
         /// </summary>
@@ -248,8 +255,9 @@ namespace GenericMvvm
                 var vmi = _ViewModelInfos[page];
                 mvm.Title = vmi.Title;
                 mvm.Footer = vmi.Footer;
+                mvm.ShwoBackButton = vmi.ShowBackButton;
 
-                _NC.NavigateTo(page, true);
+                _NC.NavigateTo(page, forward);
 
                 CurrentPage = page;
 
@@ -276,8 +284,8 @@ namespace GenericMvvm
         public BizLogic()
         {
             _ViewModelInfos = new Dictionary<string, ViewModelInfo>();
-            _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight" });
-            _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight" });
+            _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight", ShowBackButton=false });
+            _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight", ShowBackButton=true });
 
             _Instances = new Dictionary<Type, BaseViewModel>();
 
@@ -303,6 +311,7 @@ namespace GenericMvvm
             public Type Type { get; set; }
             public string Title { get; set; }
             public string Footer { get; set; }
+            public bool ShowBackButton { get; set; }
         }
     }
 }

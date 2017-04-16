@@ -82,6 +82,14 @@ namespace GenericMvvm
         /// </summary>
         public string CommitLabel { get { return "次へ"; } }
         /// <summary>
+        /// 戻る
+        /// </summary>
+        public virtual void GoBack()
+        {
+            System.Diagnostics.Debug.WriteLine("BaseViewModel GoBack");
+            _BizLogic.GoBack();
+        }
+        /// <summary>
         /// アプリケーションの実体を参照する
         /// </summary>
         public BizLogic _BizLogic { get; set; }

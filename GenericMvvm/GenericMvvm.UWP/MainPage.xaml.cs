@@ -84,5 +84,10 @@ namespace GenericMvvm.UWP
             // 起動
             _VM.KickStart();
         }
+
+        private void buttonBack_Click(object sender, RoutedEventArgs e)
+        {
+            _VM.GoBack();
+        }
     }
 }
