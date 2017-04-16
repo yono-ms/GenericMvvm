@@ -22,6 +22,7 @@ namespace GenericMvvm.UWP
             _MainPage = mainPage;
             _StringToPages = new Dictionary<string, Type>();
             _StringToPages.Add("Name", typeof(NamePage));
+            _StringToPages.Add("Birth", typeof(BirthPage));
         }
 
         public async Task<string> LoadFileAsync(string name)

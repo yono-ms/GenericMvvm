@@ -131,6 +131,10 @@ namespace GenericMvvm
             {
                 return DeepCopy<NameViewModel>(_SavedNameViewModel) as T;
             }
+            else if (typeof(T) == typeof(BirthViewModel))
+            {
+                return DeepCopy<BirthViewModel>(_SavedBirthViewModel) as T;
+            }
             // 保存情報がない場合はそのまま渡す
             return new T();
         }
@@ -152,6 +156,11 @@ namespace GenericMvvm
         /// </summary>
         [DataMember]
         NameViewModel _SavedNameViewModel;
+        /// <summary>
+        /// コミット済みの入力情報（Birth）
+        /// </summary>
+        [DataMember]
+        BirthViewModel _SavedBirthViewModel;
 
         /// <summary>
         /// ViewModelのディープコピー
@@ -216,6 +225,12 @@ namespace GenericMvvm
                 // 不揮発領域に保存
                 NavigateTo("Birth", true);
             }
+            else if (CurrentPage.Equals("Birth"))
+            {
+                _SavedBirthViewModel = DeepCopy(_Instances[typeof(BirthViewModel)] as BirthViewModel);
+                // 不揮発領域に保存
+                NavigateTo("Birth", true);
+            }
         }
         /// <summary>
         /// 画面遷移
@@ -228,15 +243,16 @@ namespace GenericMvvm
 
             if (_ViewModelInfos.ContainsKey(page))
             {
-                CurrentPage = page;
-
                 mvm.ObjectErrors = null;
 
                 var vmi = _ViewModelInfos[page];
                 mvm.Title = vmi.Title;
                 mvm.Footer = vmi.Footer;
 
-                _NC.NavigateTo(CurrentPage, true);
+                _NC.NavigateTo(page, true);
+
+                CurrentPage = page;
+
             }
             else
             {
@@ -261,6 +277,7 @@ namespace GenericMvvm
         {
             _ViewModelInfos = new Dictionary<string, ViewModelInfo>();
             _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight" });
+            _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight" });
 
             _Instances = new Dictionary<Type, BaseViewModel>();
 
@@ -271,10 +288,16 @@ namespace GenericMvvm
             };
 
             _SavedNameViewModel = new NameViewModel();
+
+            _SavedBirthViewModel = new BirthViewModel();
         }
-
+        /// <summary>
+        /// ページ名からViewModel情報を検索する辞書
+        /// </summary>
         private Dictionary<string, ViewModelInfo> _ViewModelInfos;
-
+        /// <summary>
+        /// ViewModelの静的情報
+        /// </summary>
         public class ViewModelInfo
         {
             public Type Type { get; set; }

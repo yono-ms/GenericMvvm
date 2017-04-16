@@ -132,8 +132,8 @@ namespace GenericMvvm.UWP
                         grid.Children.Remove(_StackPanel);
 
                         // 廃棄
-                        _LeftImage = null;
-                        _RightImage = null;
+                        _LeftImage.Source = null;
+                        _RightImage.Source = null;
                     };
 
                     // スタート

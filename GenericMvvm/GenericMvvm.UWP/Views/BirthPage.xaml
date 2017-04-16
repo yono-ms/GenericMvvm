@@ -1,0 +1,21 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GenericMvvm.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:GenericMvvm="using:GenericMvvm"
+    x:Class="GenericMvvm.UWP.BirthPage"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:BirthViewModelSample, IsDesignTimeCreatable=True}">
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="ms-appx:///Assets/bg007_02.gif"/>
+        </Grid.Background>
+        <StackPanel Style="{StaticResource StackPanelStyleContent}">
+            <Border Style="{StaticResource BorderStyleContent}">
+                <TextBlock Text="{Binding Path=Description}" Style="{StaticResource TitleTextBlockStyle}"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>

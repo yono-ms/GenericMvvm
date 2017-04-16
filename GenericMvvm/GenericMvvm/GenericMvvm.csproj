@@ -33,6 +33,8 @@
   <ItemGroup>
     <Compile Include="BaseCell.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="ViewModels\BirthViewModel.cs" />
+    <Compile Include="ViewModels\BirthViewModelSample.cs" />
     <Compile Include="BizLogic.cs" />
     <Compile Include="INativeCall.cs" />
     <Compile Include="ViewModels\NameViewModelSample.cs" />
