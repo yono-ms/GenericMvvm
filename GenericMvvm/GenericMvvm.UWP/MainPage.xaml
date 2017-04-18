@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="gridHeader">
             <Grid>
-                <StackPanel Padding="10" Background="#3F51B5" Orientation="Horizontal">
+                <StackPanel Padding="10" Background="#3F51B5" Orientation="Horizontal" Height="50">
                     <Button x:Name="buttonBack" Background="Transparent" Foreground="White" Visibility="{Binding Path=ShwoBackButton, Converter={StaticResource VisibilityConverter}}" Click="buttonBack_Click">
                         <SymbolIcon Symbol="Back"/>
                     </Button>
