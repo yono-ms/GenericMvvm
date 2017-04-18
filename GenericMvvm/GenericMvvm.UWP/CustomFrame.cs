@@ -112,10 +112,11 @@ namespace GenericMvvm.UWP
 
                     // アニメーションで土台を移動
                     var sb = new Storyboard();
-                    var dest = (Forward ? -1 : 1) * rtb.PixelWidth;
+                    var orig = (Forward ? 0 : -1) * rtb.PixelWidth;
+                    var dest = (Forward ? -1 : 0) * rtb.PixelWidth;
                     var anim = new DoubleAnimation
                     {
-                        From = 0,
+                        From = orig,
                         To = dest,
                         Duration = new Duration(TimeSpan.FromMilliseconds(2000))
                     };
