@@ -126,6 +126,8 @@ namespace GenericMvvm.UWP
 
                     sb.Completed += (s, e) =>
                     {
+                        this.Visibility = Visibility.Visible;
+
                         // 親のGridを得る
                         var grid = Parent as Grid;
 
@@ -136,6 +138,8 @@ namespace GenericMvvm.UWP
                         _LeftImage.Source = null;
                         _RightImage.Source = null;
                     };
+
+                    this.Visibility = Visibility.Collapsed;
 
                     // スタート
                     sb.Begin();
