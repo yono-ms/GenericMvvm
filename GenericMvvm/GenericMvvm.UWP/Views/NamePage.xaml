@@ -18,13 +18,13 @@
             </Border>
             <Border Style="{StaticResource BorderStyleContent}">
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
                     <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}" Header="{Binding LastNameTitle, Mode=OneWay}" InputScope="Hiragana"/>
                 </StackPanel>
             </Border>
             <Border Style="{StaticResource BorderStyleContent}">
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}"/>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
                     <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}" InputScope="Hiragana"/>
                 </StackPanel>
             </Border>
