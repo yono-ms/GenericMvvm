@@ -7,6 +7,9 @@
     xmlns:GenericMvvm="using:GenericMvvm"
     x:Class="GenericMvvm.UWP.BirthPage"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:BirthViewModelSample, IsDesignTimeCreatable=True}">
+    <Page.Resources>
+        <local:JapaneseYearConverter x:Name="JapaneseYear"/>
+    </Page.Resources>
 
     <Grid>
         <Grid.Background>
@@ -16,6 +19,26 @@
             <Border Style="{StaticResource BorderStyleContent}">
                 <TextBlock Text="{Binding Path=Description}" Style="{StaticResource TitleTextBlockStyle}"/>
             </Border>
+            <Border Style="{StaticResource BorderStyleContent}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[Year]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
+                    <TextBox Text="{Binding Path=Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=YearPlaceholder}" Header="{Binding Path=YearTitle, Mode=OneWay}" InputScope="Number"/>
+                    <TextBlock Text="{Binding Path=Year, Converter={StaticResource JapaneseYear}}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource BorderStyleContent}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[Month]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
+                    <TextBox Text="{Binding Path=Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=MonthPlaceholder}" Header="{Binding Path=MonthTitle, Mode=OneWay}" InputScope="Number"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource BorderStyleContent}">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Errors[Day]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
+                    <TextBox Text="{Binding Path=Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=DatPlaceholder}" Header="{Binding Path=DayTitle, Mode=OneWay}" InputScope="Number"/>
+                </StackPanel>
+            </Border>
+            <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

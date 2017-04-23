@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="JapaneseYearConverter.cs" />
     <Compile Include="Views\BirthPage.xaml.cs">
       <DependentUpon>BirthPage.xaml</DependentUpon>
     </Compile>
