@@ -56,7 +56,7 @@ namespace GenericMvvm.UWP
         {
             if (_StringToPages.ContainsKey(page))
             {
-                _MainPage.ContentFrame.Navigate(_StringToPages[page], forward);
+                _MainPage.NavigateTo(_StringToPages[page], forward);
             }
             else
             {

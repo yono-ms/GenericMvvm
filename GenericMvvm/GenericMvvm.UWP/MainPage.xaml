@@ -13,6 +13,28 @@
         <Style x:Key="ListViewItemStyleObjectErrors" TargetType="ListViewItem">
             <Setter Property="MinHeight" Value="0"/>
         </Style>
+        <Storyboard x:Name="storyboard">
+            <DoubleAnimation
+                x:Name="doubleAnimationContent"
+                Storyboard.TargetName="gridContent"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)"
+                SpeedRatio="2"
+                Duration="0:0:1">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation
+                x:Name="doubleAnimationImage"
+                Storyboard.TargetName="imageOld"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)"
+                SpeedRatio="2"
+                Duration="0:0:1">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -33,8 +55,18 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="gridContent">
+        <Grid Grid.Row="1" x:Name="gridContentAnimation">
             <TextBlock Text="{Binding Path=InitialText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image x:Name="imageOld">
+                <Image.RenderTransform>
+                    <CompositeTransform/>
+                </Image.RenderTransform>
+            </Image>
+            <Grid x:Name="gridContent">
+                <Grid.RenderTransform>
+                    <CompositeTransform/>
+                </Grid.RenderTransform>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="2" x:Name="gridFooter">
@@ -51,5 +83,7 @@
                 </ListView>
             </StackPanel>
         </Grid>
+
+        <Grid x:Name="gridGuard" Grid.RowSpan="3" Background="Transparent" Visibility="Collapsed"/>
     </Grid>
 </Page>
