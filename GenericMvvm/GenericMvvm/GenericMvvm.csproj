@@ -31,6 +31,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\AddressViewModel.cs" />
+    <Compile Include="ViewModels\AddressViewModelSample.cs" />
     <Compile Include="BaseCell.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="ViewModels\BirthViewModel.cs" />
