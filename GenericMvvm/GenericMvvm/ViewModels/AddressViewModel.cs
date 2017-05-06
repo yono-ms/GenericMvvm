@@ -16,6 +16,8 @@ namespace GenericMvvm
         /// 郵便番号
         /// </summary>
         [Required(ErrorMessage = "郵便番号を入力してください。")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "数字で入力してください。")]
+        [StringLength(7, MinimumLength =7, ErrorMessage = "7文字で入力してください。")]
         [DataMember]
         public string PostalCode
         {
@@ -28,6 +30,7 @@ namespace GenericMvvm
         /// 住所
         /// </summary>
         [Required(ErrorMessage = "住所を入力してください。")]
+        [StringLength(10, ErrorMessage = "10文字で入力してください。")]
         [DataMember]
         public string Address
         {
@@ -37,9 +40,11 @@ namespace GenericMvvm
 
         private string _AddressKana;
         /// <summary>
-        /// 住所（フリガナ）
+        /// 住所（ふりがな）
         /// </summary>
-        [Required(ErrorMessage = "住所（フリガナ）を入力してください。")]
+        [Required(ErrorMessage = "住所（ふりがな）を入力してください。")]
+        [RegularExpression(@"^\p{IsHiragana}+$", ErrorMessage = "ひらがなで入力してください。")]
+        [StringLength(20, ErrorMessage = "20文字で入力してください。")]
         [DataMember]
         public string AddressKana
         {
