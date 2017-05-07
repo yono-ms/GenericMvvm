@@ -93,7 +93,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ErrorTextBox.cs" />
+    <Compile Include="Controls\ErrorTextBox.cs" />
     <Compile Include="Views\AddressPage.xaml.cs">
       <DependentUpon>AddressPage.xaml</DependentUpon>
     </Compile>
