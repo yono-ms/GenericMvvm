@@ -1,0 +1,25 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GenericMvvm.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:GenericMvvm="using:GenericMvvm"
+    x:Class="GenericMvvm.UWP.AddressPage"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:AddressViewModelSample, IsDesignTimeCreatable=True}">
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Assets/bg007_03.gif"/>
+        </Grid.Background>
+        <StackPanel Style="{StaticResource StackPanelStyleContent}">
+            <Border Style="{StaticResource BorderStyleContent}">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Path=Description}"/>
+            </Border>
+            <local:CustomTextBox Text="{Binding Path=PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=PostalCodeTitle}" ItemsSource="{Binding Path=Errors[PostalCode]}"/>
+            <local:CustomTextBox Text="{Binding Path=Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressTitle}" ItemsSource="{Binding Path=Errors[Address]}"/>
+            <local:CustomTextBox Text="{Binding Path=AddressKana, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressKanaTitle}" ItemsSource="{Binding Path=Errors[AddressKana]}"/>
+        </StackPanel>
+
+    </Grid>
+</Page>
