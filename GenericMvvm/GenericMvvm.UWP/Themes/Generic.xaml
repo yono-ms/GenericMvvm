@@ -7,10 +7,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ErrorTextBox">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Style="{StaticResource BorderStyleContent}">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" Style="{StaticResource }"/>
+                            <TextBox Text="{TemplateBinding Text}" Header="{TemplateBinding Header}"/>
+                        </StackPanel>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
