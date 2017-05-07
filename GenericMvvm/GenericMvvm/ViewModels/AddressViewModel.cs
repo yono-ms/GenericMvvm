@@ -116,5 +116,9 @@ namespace GenericMvvm
             set { _AddressKana3 = value; ValidateProperty(nameof(AddressKana3), value); }
         }
 
+        public string Description { get { return "住所を入力してください。\n必須項目なので入力しないと先に進めません。"; } }
+        public string PostalCodeTitle { get { return "郵便番号"; } }
+        public string AddressTitle { get { return "住所"; } }
+        public string AddressKanaTitle { get { return "住所（ふりがな）"; } }
     }
 }

@@ -161,7 +161,11 @@ namespace GenericMvvm
         /// </summary>
         [DataMember]
         BirthViewModel _SavedBirthViewModel;
-
+        /// <summary>
+        /// コミット済みの入力情報（Address）
+        /// </summary>
+        [DataMember]
+        AddressViewModel _SavedAddressViewModel;
         /// <summary>
         /// ViewModelのディープコピー
         /// </summary>
@@ -229,7 +233,13 @@ namespace GenericMvvm
             {
                 _SavedBirthViewModel = DeepCopy(_Instances[typeof(BirthViewModel)] as BirthViewModel);
                 // 不揮発領域に保存
-                NavigateTo("Birth", true);
+                NavigateTo("Address", true);
+            }
+            else if (CurrentPage.Equals("Address"))
+            {
+                _SavedAddressViewModel = DeepCopy(_Instances[typeof(AddressViewModel)] as AddressViewModel);
+                // 不揮発領域に保存
+                NavigateTo("Address", true);
             }
         }
         public void GoBack()
@@ -237,6 +247,10 @@ namespace GenericMvvm
             if (CurrentPage.Equals("Birth"))
             {
                 NavigateTo("Name", false);
+            }
+            else if (CurrentPage.Equals("Address"))
+            {
+                NavigateTo("Birth", false);
             }
         }
         /// <summary>
@@ -286,6 +300,7 @@ namespace GenericMvvm
             _ViewModelInfos = new Dictionary<string, ViewModelInfo>();
             _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight", ShowBackButton=false });
             _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight", ShowBackButton=true });
+            _ViewModelInfos.Add("Address", new ViewModelInfo { Type = typeof(AddressViewModel), Title = "住所入力", Footer = "copylight", ShowBackButton = true });
 
             _Instances = new Dictionary<Type, BaseViewModel>();
 
@@ -298,6 +313,8 @@ namespace GenericMvvm
             _SavedNameViewModel = new NameViewModel();
 
             _SavedBirthViewModel = new BirthViewModel();
+
+            _SavedAddressViewModel = new AddressViewModel();
         }
         /// <summary>
         /// ページ名からViewModel情報を検索する辞書

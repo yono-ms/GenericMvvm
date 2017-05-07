@@ -23,6 +23,7 @@ namespace GenericMvvm.UWP
             _StringToPages = new Dictionary<string, Type>();
             _StringToPages.Add("Name", typeof(NamePage));
             _StringToPages.Add("Birth", typeof(BirthPage));
+            _StringToPages.Add("Address", typeof(AddressPage));
         }
 
         public async Task<string> LoadFileAsync(string name)
