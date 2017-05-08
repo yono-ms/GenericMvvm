@@ -16,6 +16,12 @@ using Windows.UI.Xaml.Media;
 
 namespace GenericMvvm.UWP
 {
+    /// <summary>
+    /// テンプレートコントロールから作ったカスタムテキストボックス
+    /// 基本クラスをTextBoxにするとTextBoxが持つプロパティはそのまま使える
+    /// テンプレートはGeneric.xamlにできているがTextBoxの拡張ではないので機能低下する
+    /// UserControlと同じことをテンプレートで作れるがデザイナーが使えるか不明
+    /// </summary>
     public sealed class ErrorTextBox : TextBox
     {
         public ErrorTextBox()

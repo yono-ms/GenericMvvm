@@ -20,6 +20,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace GenericMvvm.UWP
 {
+    /// <summary>
+    /// UserControlから作成したカスタムテキストボックス
+    /// 依存関係プロパティのイベントをすべて個別に設定する必要がある
+    /// xamlはデザイナで作れる
+    /// </summary>
     public sealed partial class CustomTextBox : UserControl
     {
         public CustomTextBox()
