@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="DictionaryListView.xaml"/>
                 <ResourceDictionary Source="DictionaryContent.xaml"/>
                 <ResourceDictionary Source="DictionaryButton.xaml"/>
+                <ResourceDictionary Source="DictionaryTextBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
