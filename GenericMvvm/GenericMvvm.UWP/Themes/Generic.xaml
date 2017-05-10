@@ -29,4 +29,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="local:TCustomTextBox" >
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:TCustomTextBox">
+                    <Border Style="{StaticResource BorderStyleContent}">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
+                            <TextBox Text="{TemplateBinding Text}" Header="{TemplateBinding Header}" PlaceholderText="{TemplateBinding PlaceholderText}" InputScope="{TemplateBinding InputScopeParent}"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
