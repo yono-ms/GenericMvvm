@@ -17,12 +17,6 @@
         </Grid.Background>
         <StackPanel Style="{StaticResource StackPanelStyleContent}">
             <local:TitleTextBlock Text="{Binding Path=Description}"/>
-            <local:ExTextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             PlaceholderText="{Binding Path=LastNamePlaceholder}"
-                             Header="{Binding Path=LastNameTitle}"
-                             Errors="{Binding Path=Errors[LastName]}"
-                             ErrorBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"
-                             InputScope="Hiragana"/>
             <local:TCustomTextBox
                 Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PlaceholderText="{Binding Path=LastNamePlaceholder}"
@@ -30,12 +24,13 @@
                 ItemsSource="{Binding Path=Errors[LastName]}"
                 BorderBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"
                 InputScope="Hiragana"/>
-            <Border Style="{StaticResource BorderStyleContent}">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                    <TextBox Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=FirstNamePlaceholder}" Header="{Binding FirstNameTitle, Mode=OneWay}" InputScope="Hiragana"/>
-                </StackPanel>
-            </Border>
+            <local:TCustomTextBox
+                Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                PlaceholderText="{Binding Path=FirstNamePlaceholder}"
+                Header="{Binding Path=FirstNameTitle}"
+                ItemsSource="{Binding Path=Errors[FirstName]}"
+                BorderBrush="{Binding Path=IsError[FirstName], Converter={StaticResource BrushConverter}}"
+                InputScope="Hiragana"/>
             <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
