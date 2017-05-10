@@ -7,21 +7,25 @@
     xmlns:GenericMvvm="using:GenericMvvm"
     x:Class="GenericMvvm.UWP.NamePage"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:NameViewModelSample, IsDesignTimeCreatable=True}">
+    <Page.Resources>
+        <local:BrushConverter x:Key="BrushConverter"/>
+    </Page.Resources>
 
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="ms-appx:///Assets/bg007_01.gif"/>
         </Grid.Background>
         <StackPanel Style="{StaticResource StackPanelStyleContent}">
-            <Border Style="{StaticResource BorderStyleContent}">
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Description, Mode=OneWay}"/>
-            </Border>
-            <Border Style="{StaticResource BorderStyleContent}">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[LastName]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                    <TextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding Path=LastNamePlaceholder}" Header="{Binding LastNameTitle, Mode=OneWay}" InputScope="Hiragana"/>
-                </StackPanel>
-            </Border>
+            <local:TitleTextBlock Text="{Binding Path=Description}"/>
+            <local:ExTextBox Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             PlaceholderText="{Binding Path=LastNamePlaceholder}"
+                             Header="{Binding Path=LastNameTitle}"
+                             Errors="{Binding Path=Errors[LastName]}"
+                             ErrorBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"
+                             InputScope="Hiragana"/>
+            <local:CustomTextBox PlaceholderText="custom textbox"/>
+            <TextBox PlaceholderText="test style" Style="{StaticResource TestTextBoxStyle}"/>
+            <TextBox PlaceholderText="plane" Style="{StaticResource TextBoxStylePlane}"/>
             <Border Style="{StaticResource BorderStyleContent}">
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding Path=Errors[FirstName]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>

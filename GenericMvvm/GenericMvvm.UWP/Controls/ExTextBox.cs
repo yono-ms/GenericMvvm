@@ -14,6 +14,7 @@ namespace GenericMvvm.UWP
     /// <summary>
     /// コードから作成した単純なTextBox継承クラス
     /// Blendでテンプレートを拡張して機能追加する
+    /// テンプレート拡張時にBorderで囲むとフォーカス効果が消えることがわかった
     /// </summary>
     public class ExTextBox : TextBox
     {

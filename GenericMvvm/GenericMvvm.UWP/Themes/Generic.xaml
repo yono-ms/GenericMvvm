@@ -9,9 +9,21 @@
                 <ControlTemplate TargetType="local:ErrorTextBox">
                     <Border Style="{StaticResource BorderStyleContent}">
                         <StackPanel>
-                            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" Style="{StaticResource }"/>
+                            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}"/>
                             <TextBox Text="{TemplateBinding Text}" Header="{TemplateBinding Header}"/>
                         </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:TitleTextBlock" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:TitleTextBlock">
+                    <Border Style="{StaticResource BorderStyleContent}">
+                        <TextBlock Text="{TemplateBinding Text}" Style="{StaticResource TitleTextBlockStyle}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

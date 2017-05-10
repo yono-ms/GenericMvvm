@@ -96,6 +96,7 @@
     <Compile Include="Converters\BrushConverter.cs" />
     <Compile Include="Controls\ErrorTextBox.cs" />
     <Compile Include="Controls\ExTextBox.cs" />
+    <Compile Include="TitleTextBlock.cs" />
     <Compile Include="Views\AddressPage.xaml.cs">
       <DependentUpon>AddressPage.xaml</DependentUpon>
     </Compile>
