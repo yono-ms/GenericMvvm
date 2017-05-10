@@ -35,7 +35,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:TCustomTextBox">
-                    <Border Style="{StaticResource BorderStyleContent}">
+                    <Border Style="{StaticResource BorderStyleContent}" BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}">
                         <StackPanel>
                             <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
                             <TextBox Text="{TemplateBinding Text}" Header="{TemplateBinding Header}" PlaceholderText="{TemplateBinding PlaceholderText}" InputScope="{TemplateBinding InputScopeParent}"/>

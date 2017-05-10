@@ -28,6 +28,7 @@
                 PlaceholderText="{Binding Path=LastNamePlaceholder}"
                 Header="{Binding Path=LastNameTitle}"
                 ItemsSource="{Binding Path=Errors[LastName]}"
+                BorderBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"
                 InputScope="Hiragana"/>
             <Border Style="{StaticResource BorderStyleContent}">
                 <StackPanel>
