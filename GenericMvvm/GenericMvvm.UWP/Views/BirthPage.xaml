@@ -10,6 +10,7 @@
     <Page.Resources>
         <local:JapaneseYearConverter x:Name="JapaneseYear"/>
         <local:NumberConverter x:Key="Number"/>
+        <local:BrushConverter x:Key="BrushConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -17,28 +18,10 @@
             <ImageBrush Stretch="Fill" ImageSource="ms-appx:///Assets/bg007_02.gif"/>
         </Grid.Background>
         <StackPanel Style="{StaticResource StackPanelStyleContent}">
-            <Border Style="{StaticResource BorderStyleContent}">
-                <TextBlock Text="{Binding Path=Description}" Style="{StaticResource TitleTextBlockStyle}"/>
-            </Border>
-            <Border Style="{StaticResource BorderStyleContent}">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[Year]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                    <TextBox Text="{Binding Path=Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=YearPlaceholder}" Header="{Binding Path=YearTitle, Mode=OneWay}" InputScope="Number"/>
-                    <TextBlock Text="{Binding Path=Year, Converter={StaticResource JapaneseYear}}"/>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource BorderStyleContent}">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[Month]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                    <TextBox Text="{Binding Path=Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=MonthPlaceholder}" Header="{Binding Path=MonthTitle, Mode=OneWay}" InputScope="Number"/>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource BorderStyleContent}">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Errors[Day]}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                    <TextBox Text="{Binding Path=Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=DatPlaceholder}" Header="{Binding Path=DayTitle, Mode=OneWay}" InputScope="Number"/>
-                </StackPanel>
-            </Border>
+            <local:TitleTextBlock Text="{Binding Path=Description}"/>
+            <local:TCustomTextBox Text="{Binding Path=Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=YearPlaceholder}" Header="{Binding Path=YearTitle, Mode=OneWay}" InputScope="Number" ItemsSource="{Binding Path=Errors[Year]}" BorderBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"/>
+            <local:TCustomTextBox Text="{Binding Path=Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=MonthPlaceholder}" Header="{Binding Path=MonthTitle, Mode=OneWay}" InputScope="Number" ItemsSource="{Binding Path=Errors[Month]}" BorderBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"/>
+            <local:TCustomTextBox Text="{Binding Path=Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource Number}}" PlaceholderText="{Binding Path=DatPlaceholder}" Header="{Binding Path=DayTitle, Mode=OneWay}" InputScope="Number" ItemsSource="{Binding Path=Errors[Day]}" BorderBrush="{Binding Path=IsError[LastName], Converter={StaticResource BrushConverter}}"/>
             <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
         </StackPanel>
     </Grid>

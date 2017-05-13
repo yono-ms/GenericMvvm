@@ -38,7 +38,7 @@
                     <Border Style="{StaticResource BorderStyleContent}" BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}">
                         <StackPanel>
                             <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" ItemTemplate="{StaticResource DataTemplateErrors}" IsTabStop="False"/>
-                            <TextBox Text="{TemplateBinding Text}" Header="{TemplateBinding Header}" PlaceholderText="{TemplateBinding PlaceholderText}" InputScope="{TemplateBinding InputScopeParent}"/>
+                            <TextBox Text="{Binding Path=Text, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Header="{TemplateBinding Header}" PlaceholderText="{TemplateBinding PlaceholderText}" InputScope="{TemplateBinding InputScopeParent}"/>
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

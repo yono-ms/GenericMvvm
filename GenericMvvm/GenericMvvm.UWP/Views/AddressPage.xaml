@@ -16,12 +16,11 @@
             <ImageBrush ImageSource="ms-appx:///Assets/bg007_03.gif"/>
         </Grid.Background>
         <StackPanel Style="{StaticResource StackPanelStyleContent}">
-            <Border Style="{StaticResource BorderStyleContent}">
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Path=Description}"/>
-            </Border>
-            <local:CustomTextBox Text="{Binding Path=Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressTitle}" ItemsSource="{Binding Path=Errors[Address]}"/>
-            <local:CustomTextBox Text="{Binding Path=AddressKana, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressKanaTitle}" ItemsSource="{Binding Path=Errors[AddressKana]}"/>
-            <local:ExTextBox Text="{Binding Path=PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=PostalCodeTitle}" Errors="{Binding Path=Errors[PostalCode]}" ErrorBrush="{Binding Path=IsError[PostalCode], Converter={StaticResource BrushConverter}}"/>
+            <local:TitleTextBlock Text="{Binding Path=Description}"/>
+            <local:TCustomTextBox Text="{Binding Path=PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=PostalCodeTitle}" ItemsSource="{Binding Path=Errors[PostalCode]}" BorderBrush="{Binding Path=IsError[PostalCode], Converter={StaticResource BrushConverter}}"/>
+            <local:TCustomTextBox Text="{Binding Path=Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressTitle}" ItemsSource="{Binding Path=Errors[Address]}" BorderBrush="{Binding Path=IsError[Address], Converter={StaticResource BrushConverter}}"/>
+            <local:TCustomTextBox Text="{Binding Path=AddressKana, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressKanaTitle}" ItemsSource="{Binding Path=Errors[AddressKana]}" BorderBrush="{Binding Path=IsError[AddressKana], Converter={StaticResource BrushConverter}}"/>
+            <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
         </StackPanel>
 
     </Grid>

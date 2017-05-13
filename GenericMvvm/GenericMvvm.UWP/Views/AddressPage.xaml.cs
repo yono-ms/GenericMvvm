@@ -31,5 +31,10 @@ namespace GenericMvvm.UWP
             _VM = (Application.Current as App).BizLogic.GetViewModel<AddressViewModel>();
             DataContext = _VM;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _VM.Commit();
+        }
     }
 }
