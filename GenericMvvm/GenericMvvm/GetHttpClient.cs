@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -81,10 +82,12 @@ namespace GenericMvvm
                     }
                     strParam += (e.Key + "=" + e.Value);
                 }
+                var request = url + strParam;
+                Debug.WriteLine("REQUEST=" + request);
 
                 using (var httpClient = new HttpClient())
                 {
-                    var response = await httpClient.GetAsync(url + strParam);
+                    var response = await httpClient.GetAsync(request);
                     if (!response.IsSuccessStatusCode)
                     {
                         _IsError = true;
@@ -95,6 +98,8 @@ namespace GenericMvvm
                     }
                     // デバッグ用に一旦文字列に変換
                     _Json = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine("RESPONSE=" + _Json);
+
                     // 文字列からストリームに変換してからデコード
                     using (var sr = new MemoryStream(Encoding.UTF8.GetBytes(_Json)))
                     {
