@@ -121,5 +121,9 @@ namespace GenericMvvm.Droid
             return result;
         }
 
+        public void RunUIThread(Action callback)
+        {
+            _Activity.RunOnUiThread(callback);
+        }
     }
 }
