@@ -37,6 +37,7 @@ namespace GenericMvvm
             });
 
             ResponseResults = list;
+            ResponseResultHeader = "検索結果のヘッダ";
 
             _Dict.Add("PostalCode", new ObservableCollection<string>(new[] { "エラーサンプル1", "サンプル2" }));
         }

@@ -22,7 +22,11 @@ namespace GenericMvvm
         public string PostalCode
         {
             get { return _PostalCode; }
-            set { _PostalCode = value; ValidateProperty(nameof(PostalCode), value); }
+            set
+            {
+                _PostalCode = value; ValidateProperty(nameof(PostalCode), value);
+                CanCommandGet = !IsError[nameof(PostalCode)];
+            }
         }
 
         private string _Address;
@@ -53,12 +57,36 @@ namespace GenericMvvm
         }
 
         private IEnumerable<ZipCloudResponse.result> _ResponseResults;
-
+        /// <summary>
+        /// 検索結果
+        /// </summary>
         public IEnumerable<ZipCloudResponse.result> ResponseResults
         {
             get { return _ResponseResults; }
-            set { _ResponseResults = value; ValidateProperty(nameof(ResponseResults), value); }
+            set
+            {
+                _ResponseResults = value; ValidateProperty(nameof(ResponseResults), value);
+                if (_ResponseResults == null)
+                {
+                    ResponseResultHeader = "郵便番号に該当する住所は存在しません。";
+                }
+                else
+                {
+                    ResponseResultHeader = null;
+                }
+            }
         }
+
+        private string _ResponseResultHeader;
+        /// <summary>
+        /// 検索結果ヘッダ
+        /// </summary>
+        public string ResponseResultHeader
+        {
+            get { return _ResponseResultHeader; }
+            set { _ResponseResultHeader = value; ValidateProperty(nameof(ResponseResultHeader), value); }
+        }
+
 
         public string Description { get { return "住所を入力してください。\n必須項目なので入力しないと先に進めません。"; } }
         public string PostalCodeTitle { get { return "郵便番号"; } }
@@ -75,7 +103,17 @@ namespace GenericMvvm
         {
             _BizLogic.CommandGetZipCloud();
         }
-        public bool CanCommandGet { get { return !IsError[nameof(PostalCode)]; } }
+
+        private bool _CanCommandGet;
+        /// <summary>
+        /// 郵便番号検索ボタン活性化
+        /// </summary>
+        public bool CanCommandGet
+        {
+            get { return _CanCommandGet; }
+            set { _CanCommandGet = value; ValidateProperty(nameof(CanCommandGet), value); }
+        }
+
         public string CommanGetLabel { get { return "郵便番号検索"; } }
 
     }
