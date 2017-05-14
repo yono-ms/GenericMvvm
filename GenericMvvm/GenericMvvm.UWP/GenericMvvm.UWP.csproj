@@ -93,6 +93,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolConverter.cs" />
     <Compile Include="Converters\BrushConverter.cs" />
     <Compile Include="Controls\ErrorTextBox.cs" />
     <Compile Include="Controls\ExTextBox.cs" />

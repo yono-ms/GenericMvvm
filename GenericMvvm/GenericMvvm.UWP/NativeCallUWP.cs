@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 
 namespace GenericMvvm.UWP
@@ -73,6 +74,17 @@ namespace GenericMvvm.UWP
         public void Push(string page)
         {
             throw new NotImplementedException();
+        }
+
+        public void RunUIThread(Action callback)
+        {
+            Task.Run(async () =>
+            {
+                await _MainPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    callback();
+                });
+            });
         }
 
         public async Task SaveFileAsync(string name, string data)

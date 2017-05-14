@@ -135,6 +135,10 @@ namespace GenericMvvm
             {
                 return DeepCopy<BirthViewModel>(_SavedBirthViewModel) as T;
             }
+            else if (typeof(T) == typeof(AddressViewModel))
+            {
+                return DeepCopy<AddressViewModel>(_SavedAddressViewModel) as T;
+            }
             // 保存情報がない場合はそのまま渡す
             return new T();
         }
@@ -329,6 +333,75 @@ namespace GenericMvvm
             public string Title { get; set; }
             public string Footer { get; set; }
             public bool ShowBackButton { get; set; }
+        }
+
+        /// <summary>
+        /// 郵便番号検索を実行する
+        /// </summary>
+        public void CommandGetZipCloud()
+        {
+            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
+            var avm = _Instances[typeof(AddressViewModel)] as AddressViewModel;
+
+            // エラークリア
+            mvm.ObjectErrors = null;
+            mvm.ObjectErrors = new ObservableCollection<string>();
+
+            if (avm != null)
+            {
+                // プログレス表示
+                mvm.ShowProgress = true;
+                // パラメータ準備
+                var url = "http://zipcloud.ibsnet.co.jp/api/search";
+                var param = new Dictionary<string, string>();
+                param.Add("zipcode", avm.PostalCode);
+
+                // API実行
+                var client = new GetHttpClient();
+                _NC.RunUIThread(async () =>
+                {
+                    var resp = await client.Execute<ZipCloudResponse>(url, param);
+                    if (!client.IsError)
+                    {
+                        if (resp != null)
+                        {
+
+                            if (string.IsNullOrEmpty(resp.status))
+                            {
+                                // とりあえず
+                                mvm.ObjectErrors.Add(resp.status);
+                                mvm.ObjectErrors.Add(resp.message);
+                                mvm.ObjectErrors.Add(client.Json);
+                            }
+                            else
+                            {
+                                // プロパティ更新
+                                avm.ResponseResults = resp.results;
+                            }
+                        }
+                        else
+                        {
+                            // なぜかエラー
+                            mvm.ObjectErrors.Add("ZipCloudResponseがnullです");
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in client.ErrorMessages)
+                        {
+                            mvm.ObjectErrors.Add(item);
+                        }
+                    }
+
+                    // プログレス非表示
+                    mvm.ShowProgress = false;
+                });
+
+            }
+            else
+            {
+                mvm.ObjectErrors.Add("AddresViewModelが存在しません");
+            }
         }
     }
 }

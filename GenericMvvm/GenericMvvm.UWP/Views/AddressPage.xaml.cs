@@ -36,5 +36,10 @@ namespace GenericMvvm.UWP
         {
             _VM.Commit();
         }
+
+        private void buttonGet_Click(object sender, RoutedEventArgs e)
+        {
+            _VM.CommandGet();
+        }
     }
 }

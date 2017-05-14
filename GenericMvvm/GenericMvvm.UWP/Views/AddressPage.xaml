@@ -9,6 +9,21 @@
     mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:AddressViewModelSample, IsDesignTimeCreatable=True}">
     <Page.Resources>
         <local:BrushConverter x:Key="BrushConverter"/>
+        <local:BoolConverter x:Key="BoolConverter"/>
+        <DataTemplate x:Key="DataTemplateResult">
+            <StackPanel Background="AliceBlue">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding address1}"/>
+                    <TextBlock Text="{Binding address2}"/>
+                    <TextBlock Text="{Binding address3}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding kana1}"/>
+                    <TextBlock Text="{Binding kana2}"/>
+                    <TextBlock Text="{Binding kana3}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -18,6 +33,8 @@
         <StackPanel Style="{StaticResource StackPanelStyleContent}">
             <local:TitleTextBlock Text="{Binding Path=Description}"/>
             <local:TCustomTextBox Text="{Binding Path=PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=PostalCodeTitle}" ItemsSource="{Binding Path=Errors[PostalCode]}" BorderBrush="{Binding Path=IsError[PostalCode], Converter={StaticResource BrushConverter}}"/>
+            <Button x:Name="buttonGet" Content="{Binding Path=CommanGetLabel}" IsEnabled="{Binding Path=IsError[PostalCode], Converter={StaticResource BoolConverter}}" Click="buttonGet_Click"/>
+            <ItemsControl ItemsSource="{Binding Path=ResponseResults}" ItemTemplate="{StaticResource DataTemplateResult}"/>
             <local:TCustomTextBox Text="{Binding Path=Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressTitle}" ItemsSource="{Binding Path=Errors[Address]}" BorderBrush="{Binding Path=IsError[Address], Converter={StaticResource BrushConverter}}"/>
             <local:TCustomTextBox Text="{Binding Path=AddressKana, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Path=AddressKanaTitle}" ItemsSource="{Binding Path=Errors[AddressKana]}" BorderBrush="{Binding Path=IsError[AddressKana], Converter={StaticResource BrushConverter}}"/>
             <Button Content="{Binding Path=CommitLabel}" IsEnabled="{Binding Path=CanCommit}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>

@@ -44,5 +44,12 @@ namespace GenericMvvm
         /// <param name="name">ファイル名</param>
         /// <param name="data">文字列</param>
         Task SaveFileAsync(string name, string data);
+        /// <summary>
+        /// UIスレッドに戻して実行する
+        /// 戻り値なしでUIスレッドでawaitしながら処理する
+        /// 呼び出し元をAsyncにしない投げっぱなし関数
+        /// </summary>
+        /// <param name="callback"></param>
+        void RunUIThread(Action callback);
     }
 }

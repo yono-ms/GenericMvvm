@@ -52,73 +52,31 @@ namespace GenericMvvm
             set { _AddressKana = value; ValidateProperty(nameof(AddressKana), value); }
         }
 
-        private string _PrefCode;
-        /// <summary>
-        /// レスポンス表示用住所
-        /// </summary>
-        public string PrefCode
+        private IEnumerable<ZipCloudResponse.result> _ResponseResults;
+
+        public IEnumerable<ZipCloudResponse.result> ResponseResults
         {
-            get { return _PrefCode; }
-            set { _PrefCode = value; ValidateProperty(nameof(PrefCode), value); }
-        }
-        private string _Address1;
-        /// <summary>
-        /// レスポンス表示用住所
-        /// </summary>
-        public string Address1
-        {
-            get { return _Address1; }
-            set { _Address1 = value; ValidateProperty(nameof(Address1), value); }
-        }
-        private string _Address2;
-        /// <summary>
-        /// レスポンス表示用住所
-        /// </summary>
-        public string Address2
-        {
-            get { return _Address2; }
-            set { _Address2 = value; ValidateProperty(nameof(Address2), value); }
-        }
-        private string _Address3;
-        /// <summary>
-        /// レスポンス表示用住所
-        /// </summary>
-        public string Address3
-        {
-            get { return _Address3; }
-            set { _Address3 = value; ValidateProperty(nameof(Address3), value); }
-        }
-        private string _AddressKana1;
-        /// <summary>
-        /// レスポンス表示用住所（フリガナ）
-        /// </summary>
-        public string AddressKana1
-        {
-            get { return _AddressKana1; }
-            set { _AddressKana1 = value; ValidateProperty(nameof(AddressKana1), value); }
-        }
-        private string _AddressKana2;
-        /// <summary>
-        /// レスポンス表示用住所（フリガナ）
-        /// </summary>
-        public string AddressKana2
-        {
-            get { return _AddressKana2; }
-            set { _AddressKana2 = value; ValidateProperty(nameof(AddressKana2), value); }
-        }
-        private string _AddressKana3;
-        /// <summary>
-        /// レスポンス表示用住所（フリガナ）
-        /// </summary>
-        public string AddressKana3
-        {
-            get { return _AddressKana3; }
-            set { _AddressKana3 = value; ValidateProperty(nameof(AddressKana3), value); }
+            get { return _ResponseResults; }
+            set { _ResponseResults = value; ValidateProperty(nameof(ResponseResults), value); }
         }
 
         public string Description { get { return "住所を入力してください。\n必須項目なので入力しないと先に進めません。"; } }
         public string PostalCodeTitle { get { return "郵便番号"; } }
         public string AddressTitle { get { return "住所"; } }
         public string AddressKanaTitle { get { return "住所（ふりがな）"; } }
+        public string PostalCodePlaceholder { get { return "1234567"; } }
+        public string AddressPlaceholder { get { return "東京都港区六本木１－２－３"; } }
+        public string AddressKanaPlaceholder { get { return "とうきょうとみなとくろっぽんぎ"; } }
+
+        /// <summary>
+        /// 郵便番号検索実行
+        /// </summary>
+        public void CommandGet()
+        {
+            _BizLogic.CommandGetZipCloud();
+        }
+        public bool CanCommandGet { get { return !IsError[nameof(PostalCode)]; } }
+        public string CommanGetLabel { get { return "郵便番号検索"; } }
+
     }
 }

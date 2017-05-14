@@ -21,7 +21,7 @@ namespace GenericMvvm
         /// </summary>
         public BaseViewModel() : base()
         {
-
+            _ObjectErrors = new ObservableCollection<string>();
         }
         /// <summary>
         /// 全体エラーの実体
@@ -57,7 +57,7 @@ namespace GenericMvvm
             else
             {
                 // エラーなし
-                ObjectErrors = null;
+                ObjectErrors.Clear();
             }
             // 通知
             PropertyChangedInvoke(this, new PropertyChangedEventArgs(nameof(ObjectErrors)));
