@@ -279,6 +279,8 @@ namespace GenericMvvm
 
                 CurrentPage = page;
 
+                // 画面遷移で保存
+                Task.Run(() => SaveBizLogicAsync());
             }
             else
             {
