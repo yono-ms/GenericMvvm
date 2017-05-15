@@ -34,7 +34,7 @@ namespace GenericMvvm
         /// 住所
         /// </summary>
         [Required(ErrorMessage = "住所を入力してください。")]
-        [StringLength(10, ErrorMessage = "10文字で入力してください。")]
+        [StringLength(20, ErrorMessage = "20文字で入力してください。")]
         [DataMember]
         public string Address
         {
@@ -48,7 +48,7 @@ namespace GenericMvvm
         /// </summary>
         [Required(ErrorMessage = "住所（ふりがな）を入力してください。")]
         [RegularExpression(@"^\p{IsHiragana}+$", ErrorMessage = "ひらがなで入力してください。")]
-        [StringLength(20, ErrorMessage = "20文字で入力してください。")]
+        [StringLength(40, ErrorMessage = "40文字で入力してください。")]
         [DataMember]
         public string AddressKana
         {
@@ -115,6 +115,41 @@ namespace GenericMvvm
         }
 
         public string CommanGetLabel { get { return "郵便番号検索"; } }
+
+        public void CommandCopy()
+        {
+            var item = ResponseResults.ElementAt(SelectedIndex);
+            Address = item.address1 + item.address2 + item.address3;
+            var kana = item.kana1 + item.kana2 + item.kana3;
+            VbStrConv
+            AddressKana = item.kana1 + item.kana2 + item.kana3;
+        }
+        private bool _CanCommandCopy;
+        /// <summary>
+        /// コピー可否
+        /// </summary>
+        public bool CanCommandCopy
+        {
+            get { return _CanCommandCopy; }
+            set { _CanCommandCopy = value; ValidateProperty(nameof(CanCommandCopy), value); }
+        }
+
+        public string CommanCopyLabel { get { return "選択した住所をコピーする"; } }
+
+        private int _SelectedIndex;
+        /// <summary>
+        /// 郵便番号検索結果の選択
+        /// </summary>
+        public int SelectedIndex
+        {
+            get { return _SelectedIndex; }
+            set
+            {
+                _SelectedIndex = value; ValidateProperty(nameof(SelectedIndex), value);
+                CanCommandCopy = true;
+            }
+        }
+
 
     }
 }

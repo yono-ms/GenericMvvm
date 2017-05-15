@@ -41,5 +41,10 @@ namespace GenericMvvm.UWP
         {
             _VM.CommandGet();
         }
+
+        private void buttonCopy_Click(object sender, RoutedEventArgs e)
+        {
+            _VM.CommandCopy();
+        }
     }
 }
