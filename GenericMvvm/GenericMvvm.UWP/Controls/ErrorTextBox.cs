@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 namespace GenericMvvm.UWP
 {
     /// <summary>
+    /// 【不採用】
     /// テンプレートコントロールから作ったカスタムテキストボックス
     /// 基本クラスをTextBoxにするとTextBoxが持つプロパティはそのまま使える
     /// テンプレートはGeneric.xamlにできているがTextBoxの拡張ではないので機能低下する

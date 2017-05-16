@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 namespace GenericMvvm.UWP
 {
     /// <summary>
+    /// 【不採用】
     /// UserControlから作成したカスタムテキストボックス
     /// 依存関係プロパティのイベントをすべて個別に設定する必要がある
     /// xamlはデザイナで作れる

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media;
 namespace GenericMvvm.UWP
 {
     /// <summary>
+    /// 【不採用】
     /// コードから作成した単純なTextBox継承クラス
     /// Blendでテンプレートを拡張して機能追加する
     /// テンプレート拡張時にBorderで囲むとフォーカス効果が消えることがわかった
