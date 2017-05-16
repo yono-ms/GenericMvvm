@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GetHttpClient.cs" />
+    <Compile Include="Utility\Kana.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModelSample.cs" />
     <Compile Include="BaseCell.cs" />

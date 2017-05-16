@@ -121,8 +121,7 @@ namespace GenericMvvm
             var item = ResponseResults.ElementAt(SelectedIndex);
             Address = item.address1 + item.address2 + item.address3;
             var kana = item.kana1 + item.kana2 + item.kana3;
-            VbStrConv
-            AddressKana = item.kana1 + item.kana2 + item.kana3;
+            AddressKana = Kana.ToHiragana(Kana.ToPadding(Kana.ToZenkakuKana(kana)));
         }
         private bool _CanCommandCopy;
         /// <summary>
