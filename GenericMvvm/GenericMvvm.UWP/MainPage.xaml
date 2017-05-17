@@ -10,9 +10,6 @@
 
     <Page.Resources>
         <local:VisibilityConverter x:Name="VisibilityConverter"/>
-        <Style x:Key="ListViewItemStyleObjectErrors" TargetType="ListViewItem">
-            <Setter Property="MinHeight" Value="0"/>
-        </Style>
         <Storyboard x:Name="storyboard">
             <DoubleAnimation
                 x:Name="doubleAnimationContent"
@@ -72,15 +69,13 @@
         <Grid Grid.Row="2" x:Name="gridFooter">
             <StackPanel Padding="10" Background="#3F51B5">
                 <TextBlock Text="{Binding Path=Footer}" Foreground="White"/>
-                <ListView ItemsSource="{Binding Path=ObjectErrors}" ItemContainerStyle="{StaticResource ListViewItemStyleObjectErrors}">
-                    <ListView.ItemTemplate>
+                <ItemsControl ItemsSource="{Binding Path=ObjectErrors}">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding}" Foreground="LightPink" FontSize="10"/>
-                            </StackPanel>
+                            <TextBlock Text="{Binding}" Foreground="LightPink" FontSize="10"/>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
 
