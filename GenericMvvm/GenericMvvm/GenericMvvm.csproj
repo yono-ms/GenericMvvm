@@ -31,6 +31,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ConfirmViewModel.cs" />
+    <Compile Include="ConfirmViewModelSample.cs" />
     <Compile Include="GetHttpClient.cs" />
     <Compile Include="Utility\Kana.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
