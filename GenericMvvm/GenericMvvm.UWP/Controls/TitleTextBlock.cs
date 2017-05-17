@@ -18,6 +18,7 @@ namespace GenericMvvm.UWP
         public TitleTextBlock()
         {
             this.DefaultStyleKey = typeof(TitleTextBlock);
+            IsTabStop = false;
         }
 
         public string Text
