@@ -1,11 +1,12 @@
 ﻿<Page
-    x:Class="GenericMvvm.UWP.ConfirmPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GenericMvvm.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:GenericMvvm="using:GenericMvvm"
+    x:Class="GenericMvvm.UWP.ConfirmPage"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance GenericMvvm:ConfirmViewModelSample, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.Background>
@@ -13,7 +14,7 @@
         </Grid.Background>
         <ScrollViewer>
             <StackPanel Style="{StaticResource StackPanelStyleContent}">
-                <local:TitleTextBlock Text="{Binding}"/>
+                <local:TitleTextBlock Text="{Binding Path=Description}"/>
             </StackPanel>
         </ScrollViewer>
 

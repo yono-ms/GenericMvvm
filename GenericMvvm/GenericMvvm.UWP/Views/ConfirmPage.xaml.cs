@@ -22,9 +22,14 @@ namespace GenericMvvm.UWP
     /// </summary>
     public sealed partial class ConfirmPage : Page
     {
+        ConfirmViewModel _VM;
+
         public ConfirmPage()
         {
             this.InitializeComponent();
+
+            _VM = (Application.Current as App).BizLogic.GetViewModel<ConfirmViewModel>();
+            DataContext = _VM;
         }
     }
 }

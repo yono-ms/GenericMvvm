@@ -264,7 +264,7 @@ namespace GenericMvvm
             {
                 _SavedAddressViewModel = DeepCopy(_Instances[typeof(AddressViewModel)] as AddressViewModel);
                 // 不揮発領域に保存
-                NavigateTo("Address", true);
+                NavigateTo("Confirm", true);
             }
         }
         public void GoBack()
