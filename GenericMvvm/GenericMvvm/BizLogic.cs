@@ -139,8 +139,29 @@ namespace GenericMvvm
             {
                 return DeepCopy<AddressViewModel>(_SavedAddressViewModel) as T;
             }
+            else if (typeof(T) == typeof(ConfirmViewModel))
+            {
+                // 確認画面は保存する必要はない
+                return CreateConfirmViewModel() as T;
+            }
             // 保存情報がない場合はそのまま渡す
             return new T();
+        }
+
+        /// <summary>
+        /// 確認画面を作る
+        /// </summary>
+        /// <returns></returns>
+        private BaseViewModel CreateConfirmViewModel()
+        {
+            var confirmViewModel = new ConfirmViewModel()
+            {
+                Name = _SavedNameViewModel.LastName + " " + _SavedNameViewModel.FirstName,
+                Birth = _SavedBirthViewModel.Year + "年" + _SavedBirthViewModel.Month + "月" + _SavedBirthViewModel.Day,
+                Address = _SavedAddressViewModel.Address,
+                AddressKana = _SavedAddressViewModel.AddressKana
+            };
+            return confirmViewModel;
         }
 
         /// <summary>
@@ -256,6 +277,10 @@ namespace GenericMvvm
             {
                 NavigateTo("Birth", false);
             }
+            else if (CurrentPage.Equals("Confirm"))
+            {
+                NavigateTo("Address", false);
+            }
         }
         /// <summary>
         /// 画面遷移
@@ -307,6 +332,7 @@ namespace GenericMvvm
             _ViewModelInfos.Add("Name", new ViewModelInfo { Type=typeof(NameViewModel), Title="お名前入力", Footer="copylight", ShowBackButton=false });
             _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight", ShowBackButton=true });
             _ViewModelInfos.Add("Address", new ViewModelInfo { Type = typeof(AddressViewModel), Title = "住所入力", Footer = "copylight", ShowBackButton = true });
+            _ViewModelInfos.Add("Confirm", new ViewModelInfo { Type = typeof(ConfirmViewModel), Title = "入力内容の確認", Footer = "copylight", ShowBackButton = true });
 
             _Instances = new Dictionary<Type, BaseViewModel>();
 
