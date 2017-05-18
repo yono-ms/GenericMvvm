@@ -10,10 +10,10 @@ namespace GenericMvvm
     {
         public ConfirmViewModelSample()
         {
-            Name = "山田 太郎";
-            Birth = "2000年12月31日";
-            Address = "神奈川県横浜市神奈川区羽沢南";
-            AddressKana = "あいうえおかきくけこ";
+            ConfirmList.Add(new ConfirmCell { Title = "お名前", Value = "山田 太郎" });
+            ConfirmList.Add(new ConfirmCell { Title = "生年月日", Value = "2000年12月31日" });
+            ConfirmList.Add(new ConfirmCell { Title = "住所", Value = "神奈川県横浜市神奈川区羽沢南" });
+            ConfirmList.Add(new ConfirmCell { Title = "住所（ふりがな）", Value = "あいうえおかきくけこ" });
         }
     }
 }

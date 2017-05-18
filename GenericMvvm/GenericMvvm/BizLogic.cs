@@ -154,13 +154,28 @@ namespace GenericMvvm
         /// <returns></returns>
         private BaseViewModel CreateConfirmViewModel()
         {
-            var confirmViewModel = new ConfirmViewModel()
+            var confirmViewModel = new ConfirmViewModel();
+            confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
             {
-                Name = _SavedNameViewModel.LastName + " " + _SavedNameViewModel.FirstName,
-                Birth = _SavedBirthViewModel.Year + "年" + _SavedBirthViewModel.Month + "月" + _SavedBirthViewModel.Day,
-                Address = _SavedAddressViewModel.Address,
-                AddressKana = _SavedAddressViewModel.AddressKana
-            };
+                Title = "お名前",
+                Value = _SavedNameViewModel.LastName + " " + _SavedNameViewModel.FirstName
+            });
+            confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
+            {
+                Title = "生年月日",
+                Value = _SavedBirthViewModel.Year + "年" + _SavedBirthViewModel.Month + "月" + _SavedBirthViewModel.Day
+            });
+            confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
+            {
+                Title = "住所",
+                Value = _SavedAddressViewModel.Address
+            });
+            confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
+            {
+                Title = "住所（ふりがな）",
+                Value = _SavedAddressViewModel.AddressKana
+            });
+
             return confirmViewModel;
         }
 

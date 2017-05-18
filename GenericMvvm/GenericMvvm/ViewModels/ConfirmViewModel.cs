@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,41 +11,37 @@ namespace GenericMvvm
     {
         public string Description { get { return "入力内容をご確認ください。"; } }
 
-        public string NameTitle { get { return "お名前"; } }
-        private string _Name;
-
-        public string Name
+        public class ConfirmCell : BaseCell
         {
-            get { return _Name; }
-            set { _Name = value; ValidateProperty(nameof(Name), value); }
+            private string _Title;
+
+            public string Title
+            {
+                get { return _Title; }
+                set { _Title = value; ValidateProperty(nameof(Title), value); }
+            }
+
+            private string _Value;
+
+            public string Value
+            {
+                get { return _Value; }
+                set { _Value = value; ValidateProperty(nameof(Value), value); }
+            }
+
         }
 
-        public string BirthTitle { get { return "生年月日"; } }
-        private string _Birth;
+        private ObservableCollection<ConfirmCell> _ConfirmList;
 
-        public string Birth
+        public ObservableCollection<ConfirmCell> ConfirmList
         {
-            get { return _Birth; }
-            set { _Birth = value; ValidateProperty(nameof(Birth), value); }
+            get { return _ConfirmList; }
+            set { _ConfirmList = value; ValidateProperty(nameof(ConfirmList), value); }
         }
 
-        public string AddressTitle { get { return "住所"; } }
-        private string _Address;
-
-        public string Address
+        public ConfirmViewModel()
         {
-            get { return _Address; }
-            set { _Address = value; ValidateProperty(nameof(Address), value); }
+            ConfirmList = new ObservableCollection<ConfirmCell>();
         }
-
-        public string AddressKanaTitle { get { return "住所（ふりがな）"; } }
-        private string _AddressKana;
-
-        public string AddressKana
-        {
-            get { return _AddressKana; }
-            set { _AddressKana = value; ValidateProperty(nameof(AddressKana), value); }
-        }
-
     }
 }
