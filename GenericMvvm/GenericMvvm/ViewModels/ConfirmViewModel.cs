@@ -8,6 +8,8 @@ namespace GenericMvvm
 {
     public class ConfirmViewModel : BaseViewModel
     {
+        public string Description { get { return "入力内容をご確認ください。"; } }
+
         public string NameTitle { get { return "お名前"; } }
         private string _Name;
 
