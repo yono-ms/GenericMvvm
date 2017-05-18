@@ -25,6 +25,7 @@ namespace GenericMvvm.UWP
             _StringToPages.Add("Name", typeof(NamePage));
             _StringToPages.Add("Birth", typeof(BirthPage));
             _StringToPages.Add("Address", typeof(AddressPage));
+            _StringToPages.Add("Confirm", typeof(ConfirmPage));
         }
 
         public async Task<string> LoadFileAsync(string name)
