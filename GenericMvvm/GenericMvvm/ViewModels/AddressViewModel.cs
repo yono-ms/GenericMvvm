@@ -149,6 +149,20 @@ namespace GenericMvvm
             }
         }
 
+        public override void Commit()
+        {
+            base.Commit();
 
+            if (IsValidViewModel(this))
+            {
+                // 画面遷移
+                _BizLogic.Commit();
+            }
+            else
+            {
+                // エラー表示
+                _BizLogic.ShowError();
+            }
+        }
     }
 }
