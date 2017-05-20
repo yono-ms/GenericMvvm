@@ -163,7 +163,7 @@ namespace GenericMvvm
             confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
             {
                 Title = "生年月日",
-                Value = _SavedBirthViewModel.Year + "年" + _SavedBirthViewModel.Month + "月" + _SavedBirthViewModel.Day
+                Value = _SavedBirthViewModel.Year + "年 " + _SavedBirthViewModel.Month + "月 " + _SavedBirthViewModel.Day + "日"
             });
             confirmViewModel.ConfirmList.Add(new ConfirmViewModel.ConfirmCell
             {
