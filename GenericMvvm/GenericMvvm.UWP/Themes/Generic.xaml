@@ -23,7 +23,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:TitleTextBlock">
                     <Border Style="{StaticResource BorderStyleContent}">
-                        <TextBlock Text="{TemplateBinding Text}" Style="{StaticResource TitleTextBlockStyle}"/>
+                        <TextBlock Text="{TemplateBinding Text}" FontFamily="Meiryo" FontSize="20"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
