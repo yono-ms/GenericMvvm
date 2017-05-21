@@ -27,6 +27,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <Button Content="{Binding Path=CommitLabel}" Style="{StaticResource ButtonStyleCommit}" Click="Button_Click"/>
             </StackPanel>
         </ScrollViewer>
 

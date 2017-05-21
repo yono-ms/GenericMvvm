@@ -284,7 +284,37 @@ namespace GenericMvvm
                 // 不揮発領域に保存
                 NavigateTo("Confirm", true);
             }
+            else if (CurrentPage.Equals("Confirm"))
+            {
+                var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
+                mvm.ShowProgress = true;
+                // エントリーする
+                Task.Run(async () =>
+                {
+                    // ふりだけ
+                    await Task.Delay(3000);
+
+                    // 結果画面に遷移
+                    _NC.RunUIThread(() =>
+                    {
+                        mvm.ShowProgress = false;
+                        NavigateTo("Finish", true);
+                    });
+                });
+            }
+            else if (CurrentPage.Equals("Finish"))
+            {
+                // 不揮発領域を削除して終了
+                Task.Run(async () =>
+                {
+                    await _NC.SaveFileAsync(Key, "");
+                    _NC.RunUIThread(() => _NC.ExitApplication());
+                });
+            }
         }
+        /// <summary>
+        /// 戻るボタン
+        /// </summary>
         public void GoBack()
         {
             if (CurrentPage.Equals("Birth"))
@@ -351,6 +381,7 @@ namespace GenericMvvm
             _ViewModelInfos.Add("Birth", new ViewModelInfo { Type = typeof(BirthViewModel), Title = "生年月日入力", Footer = "copylight", ShowBackButton=true });
             _ViewModelInfos.Add("Address", new ViewModelInfo { Type = typeof(AddressViewModel), Title = "住所入力", Footer = "copylight", ShowBackButton = true });
             _ViewModelInfos.Add("Confirm", new ViewModelInfo { Type = typeof(ConfirmViewModel), Title = "入力内容の確認", Footer = "copylight", ShowBackButton = true });
+            _ViewModelInfos.Add("Finish", new ViewModelInfo { Type = typeof(FinishViewModel), Title = "登録完了", Footer = "copylight", ShowBackButton = false });
 
             _Instances = new Dictionary<Type, BaseViewModel>();
 

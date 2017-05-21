@@ -51,5 +51,9 @@ namespace GenericMvvm
         /// </summary>
         /// <param name="callback"></param>
         void RunUIThread(Action callback);
+        /// <summary>
+        /// アプリを終了する
+        /// </summary>
+        void ExitApplication();
     }
 }

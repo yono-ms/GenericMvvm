@@ -43,5 +43,12 @@ namespace GenericMvvm
         {
             ConfirmList = new ObservableCollection<ConfirmCell>();
         }
+
+        public override void Commit()
+        {
+            base.Commit();
+
+            _BizLogic.Commit();
+        }
     }
 }

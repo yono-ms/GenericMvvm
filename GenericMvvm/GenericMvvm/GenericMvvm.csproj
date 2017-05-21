@@ -31,6 +31,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\FinishViewModel.cs" />
+    <Compile Include="ViewModels\FinishViewModelSample.cs" />
     <Compile Include="ViewModels\ConfirmViewModel.cs" />
     <Compile Include="ViewModels\ConfirmViewModelSample.cs" />
     <Compile Include="GetHttpClient.cs" />
