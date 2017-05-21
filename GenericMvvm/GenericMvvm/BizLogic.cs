@@ -111,7 +111,10 @@ namespace GenericMvvm
                 // 再起動後に初めて生成する
                 instance = CreateViewModel<T>();
                 instance._BizLogic = this;
-                _Instances.Add(typeof(T), instance);
+                if (typeof(T) != typeof(ConfirmViewModel))
+                {
+                    _Instances.Add(typeof(T), instance);
+                }
             }
             return instance;
         }
