@@ -101,8 +101,6 @@
     </Compile>
     <Compile Include="Converters\BoolConverter.cs" />
     <Compile Include="Converters\BrushConverter.cs" />
-    <Compile Include="Controls\ErrorTextBox.cs" />
-    <Compile Include="Controls\ExTextBox.cs" />
     <Compile Include="Controls\TCustomTextBox.cs" />
     <Compile Include="Controls\TitleTextBlock.cs" />
     <Compile Include="Views\AddressPage.xaml.cs">
@@ -113,9 +111,6 @@
     </Compile>
     <Compile Include="Converters\JapaneseYearConverter.cs" />
     <Compile Include="Converters\NumberConverter.cs" />
-    <Compile Include="Controls\CustomTextBox.xaml.cs">
-      <DependentUpon>CustomTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BirthPage.xaml.cs">
       <DependentUpon>BirthPage.xaml</DependentUpon>
     </Compile>
@@ -180,10 +175,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddressPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CustomTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
