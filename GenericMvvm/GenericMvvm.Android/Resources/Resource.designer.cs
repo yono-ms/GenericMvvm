@@ -31,6 +31,18 @@ namespace GenericMvvm.Droid
 		public partial class Attribute
 		{
 			
+			// aapt resource value: 0x7f010000
+			public const int layoutManager = 2130771968;
+			
+			// aapt resource value: 0x7f010002
+			public const int reverseLayout = 2130771970;
+			
+			// aapt resource value: 0x7f010001
+			public const int spanCount = 2130771969;
+			
+			// aapt resource value: 0x7f010003
+			public const int stackFromEnd = 2130771971;
+			
 			static Attribute()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -44,14 +56,17 @@ namespace GenericMvvm.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f040002
-			public const int colorAccent = 2130968578;
+			// aapt resource value: 0x7f070002
+			public const int colorAccent = 2131165186;
 			
-			// aapt resource value: 0x7f040000
-			public const int colorPrimary = 2130968576;
+			// aapt resource value: 0x7f070003
+			public const int colorGuard = 2131165187;
 			
-			// aapt resource value: 0x7f040001
-			public const int colorPrimaryDark = 2130968577;
+			// aapt resource value: 0x7f070000
+			public const int colorPrimary = 2131165184;
+			
+			// aapt resource value: 0x7f070001
+			public const int colorPrimaryDark = 2131165185;
 			
 			static Color()
 			{
@@ -63,11 +78,69 @@ namespace GenericMvvm.Droid
 			}
 		}
 		
+		public partial class Dimension
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int item_touch_helper_max_drag_scroll_per_frame = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int item_touch_helper_swipe_escape_max_velocity = 2131034113;
+			
+			// aapt resource value: 0x7f050002
+			public const int item_touch_helper_swipe_escape_velocity = 2131034114;
+			
+			static Dimension()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Dimension()
+			{
+			}
+		}
+		
 		public partial class Drawable
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int background_01 = 2130837504;
+			
+			// aapt resource value: 0x7f020001
+			public const int background_09 = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int bg099_01 = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int bg099_02 = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int bg099_03 = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int bg099_04 = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int bg099_05 = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int bg099_06 = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int bg099_07 = 2130837512;
+			
+			// aapt resource value: 0x7f020009
+			public const int bg099_08 = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int bg099_09 = 2130837514;
+			
+			// aapt resource value: 0x7f02000b
+			public const int bg099_10 = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int Icon = 2130837516;
 			
 			static Drawable()
 			{
@@ -82,14 +155,35 @@ namespace GenericMvvm.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070000
-			public const int frameLayoutContent = 2131165184;
+			// aapt resource value: 0x7f060005
+			public const int frameLayoutContent = 2131099653;
 			
-			// aapt resource value: 0x7f070001
-			public const int frameLayoutFooter = 2131165185;
+			// aapt resource value: 0x7f060006
+			public const int frameLayoutFooter = 2131099654;
 			
-			// aapt resource value: 0x7f070002
-			public const int textViewFooter = 2131165186;
+			// aapt resource value: 0x7f060000
+			public const int item_touch_helper_previous_elevation = 2131099648;
+			
+			// aapt resource value: 0x7f060002
+			public const int linearLayoutBase = 2131099650;
+			
+			// aapt resource value: 0x7f060003
+			public const int linearLayoutGuard = 2131099651;
+			
+			// aapt resource value: 0x7f060004
+			public const int progressBar = 2131099652;
+			
+			// aapt resource value: 0x7f060008
+			public const int recyclerViewObjectErrors = 2131099656;
+			
+			// aapt resource value: 0x7f060009
+			public const int textView = 2131099657;
+			
+			// aapt resource value: 0x7f060001
+			public const int textView1 = 2131099649;
+			
+			// aapt resource value: 0x7f060007
+			public const int textViewFooter = 2131099655;
 			
 			static Id()
 			{
@@ -105,7 +199,19 @@ namespace GenericMvvm.Droid
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int First = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int Main = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int MainBase = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int Name = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int ObjectErrorsCell = 2130903044;
 			
 			static Layout()
 			{
@@ -120,8 +226,8 @@ namespace GenericMvvm.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int app_name = 2131034112;
+			// aapt resource value: 0x7f080000
+			public const int app_name = 2131230720;
 			
 			static String()
 			{
@@ -136,8 +242,8 @@ namespace GenericMvvm.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int AppTheme = 2131099648;
+			// aapt resource value: 0x7f090000
+			public const int AppTheme = 2131296256;
 			
 			static Style()
 			{
@@ -145,6 +251,70 @@ namespace GenericMvvm.Droid
 			}
 			
 			private Style()
+			{
+			}
+		}
+		
+		public partial class Transition
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int enter_transition = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int exit_transition = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int reenter_transition = 2130968578;
+			
+			// aapt resource value: 0x7f040003
+			public const int return_transition = 2130968579;
+			
+			static Transition()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Transition()
+			{
+			}
+		}
+		
+		public partial class Styleable
+		{
+			
+			public static int[] RecyclerView = new int[] {
+					16842948,
+					16842993,
+					2130771968,
+					2130771969,
+					2130771970,
+					2130771971};
+			
+			// aapt resource value: 1
+			public const int RecyclerView_android_descendantFocusability = 1;
+			
+			// aapt resource value: 0
+			public const int RecyclerView_android_orientation = 0;
+			
+			// aapt resource value: 2
+			public const int RecyclerView_layoutManager = 2;
+			
+			// aapt resource value: 4
+			public const int RecyclerView_reverseLayout = 4;
+			
+			// aapt resource value: 3
+			public const int RecyclerView_spanCount = 3;
+			
+			// aapt resource value: 5
+			public const int RecyclerView_stackFromEnd = 5;
+			
+			static Styleable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Styleable()
 			{
 			}
 		}

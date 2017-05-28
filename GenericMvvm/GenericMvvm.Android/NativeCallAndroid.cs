@@ -15,14 +15,18 @@ namespace GenericMvvm.Droid
 {
     class NativeCallAndroid : INativeCall
     {
-        private Activity _Activity;
+        private MainActivity _Activity;
 
         private SemaphoreSlim _Sem = new SemaphoreSlim(1, 1);
         private const string KEY = "AppPreference";
 
-        public NativeCallAndroid(Activity activity)
+        private Dictionary<string, Type> _StringToPages;
+
+        public NativeCallAndroid(MainActivity activity)
         {
             _Activity = activity;
+            _StringToPages = new Dictionary<string, Type>();
+            _StringToPages.Add("Name", typeof(NameFragment));
         }
 
         /// <summary>
@@ -58,7 +62,14 @@ namespace GenericMvvm.Droid
 
         public void NavigateTo(string page, bool forward)
         {
-            throw new NotImplementedException();
+            if (_StringToPages.ContainsKey(page))
+            {
+                _Activity.NavigateTo(_StringToPages[page], forward);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("NO PAGE " + page);
+            }
         }
 
         public void Pop()
@@ -124,6 +135,11 @@ namespace GenericMvvm.Droid
         public void RunUIThread(Action callback)
         {
             _Activity.RunOnUiThread(callback);
+        }
+
+        public void ExitApplication()
+        {
+            _Activity.MoveTaskToBack(true);
         }
     }
 }

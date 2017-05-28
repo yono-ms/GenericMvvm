@@ -4,5 +4,12 @@
     <item name="android:colorPrimary">@color/colorPrimary</item>
     <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="android:colorAccent">@color/colorAccent</item>
+
+    <item name="android:windowContentTransitions">true</item>
+    <!-- ここが有効になってない -->
+    <item name="android:fragmentEnterTransition">@transition/enter_transition</item>
+    <item name="android:fragmentExitTransition">@transition/exit_transition</item>
+    <item name="android:fragmentReenterTransition">@transition/reenter_transition</item>
+    <item name="android:fragmentReturnTransition">@transition/return_transition</item>
   </style>
 </resources>
