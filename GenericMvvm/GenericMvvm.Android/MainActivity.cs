@@ -12,11 +12,13 @@ using System.Collections.Generic;
 using Android.Support.V7.Widget;
 using System.Collections.ObjectModel;
 using Android.Transitions;
+using Android.Support.V7.App;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace GenericMvvm.Droid
 {
 	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/AppTheme")]
-	public class MainActivity : Activity
+	public class MainActivity : AppCompatActivity
 	{
         const string FORMAT = "----ActivityEvent---- {0}";
 
@@ -45,6 +47,9 @@ namespace GenericMvvm.Droid
 
             _ProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
             _LinearLayoutGuard = FindViewById<LinearLayout>(Resource.Id.linearLayoutGuard);
+
+            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(toolbar);
 
             // BizLogicが無くてもUIだけで表示できる初期ページを表示
             var firstFragment = new FirstFragment();
@@ -89,12 +94,12 @@ namespace GenericMvvm.Droid
 
             // バインド（初期値）
             _TextViewFooter.Text = _VM.Footer;
-            ActionBar.Title = _VM.Title;
+            SupportActionBar.Title = _VM.Title;
 
             // バインド（イベント辞書）
             Dictionary<string, BindingInfo> bindings = new Dictionary<string, BindingInfo>();
             bindings.Add(nameof(_VM.Footer), new BindingInfo() { Control = _TextViewFooter, ControlProperty = nameof(_TextViewFooter.Text) });
-            bindings.Add(nameof(_VM.Title), new BindingInfo() { Control = ActionBar, ControlProperty = nameof(ActionBar.Title) });
+            bindings.Add(nameof(_VM.Title), new BindingInfo() { Control = SupportActionBar, ControlProperty = nameof(SupportActionBar.Title) });
 
             _VM.PropertyChanged += (s, e) =>
             {
