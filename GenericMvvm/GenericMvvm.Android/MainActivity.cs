@@ -31,7 +31,7 @@ namespace GenericMvvm.Droid
         private TextView _TextViewFooter;
         private RecyclerView _RecyclerView;
         private ProgressBar _ProgressBar;
-        private LinearLayout _LinearLayoutGuard;
+        private View _LayoutGuard;
 
         protected override void OnCreate (Bundle bundle)
 		{
@@ -47,7 +47,7 @@ namespace GenericMvvm.Droid
             _RecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 
             _ProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
-            _LinearLayoutGuard = FindViewById<LinearLayout>(Resource.Id.linearLayoutGuard);
+            _LayoutGuard = FindViewById(Resource.Id.layoutGuard);
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -121,7 +121,7 @@ namespace GenericMvvm.Droid
                 else if (e.PropertyName.Equals(nameof(_VM.ShowProgress)))
                 {
                     // コンバーターが必要
-                    _LinearLayoutGuard.Visibility = _VM.ShowProgress ? ViewStates.Visible : ViewStates.Visible;
+                    _LayoutGuard.Visibility = _VM.ShowProgress ? ViewStates.Visible : ViewStates.Visible;
                 }
                 else
                 {
