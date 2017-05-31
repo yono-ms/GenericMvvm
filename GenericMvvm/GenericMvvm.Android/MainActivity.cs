@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using Android.Transitions;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
+using Fragment = Android.Support.V4.App.Fragment;
 
 namespace GenericMvvm.Droid
 {
@@ -59,7 +60,7 @@ namespace GenericMvvm.Droid
             firstFragment.ExitTransition = ti.InflateTransition(Resource.Transition.exit_transition);
             firstFragment.ReenterTransition = ti.InflateTransition(Resource.Transition.reenter_transition);
             firstFragment.ReturnTransition = ti.InflateTransition(Resource.Transition.return_transition);
-            FragmentManager.BeginTransaction().Add(Resource.Id.frameLayoutContent, firstFragment).Commit();
+            SupportFragmentManager.BeginTransaction().Add(Resource.Id.frameLayoutContent, firstFragment).Commit();
 
             // この構成ではBizLogicの状態だけでやりなす必要があるかを判断できる
             if (_BizLogic == null)
@@ -146,7 +147,7 @@ namespace GenericMvvm.Droid
             fragment.ExitTransition = ti.InflateTransition(Resource.Transition.exit_transition);
             fragment.ReenterTransition = ti.InflateTransition(Resource.Transition.reenter_transition);
             fragment.ReturnTransition = ti.InflateTransition(Resource.Transition.return_transition);
-            FragmentManager.BeginTransaction().Replace(Resource.Id.frameLayoutContent, fragment).Commit();
+            SupportFragmentManager.BeginTransaction().Replace(Resource.Id.frameLayoutContent, fragment).Commit();
         }
 
         protected override void OnRestart()

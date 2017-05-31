@@ -346,7 +346,7 @@ namespace GenericMvvm
                 var vmi = _ViewModelInfos[page];
                 mvm.Title = vmi.Title;
                 mvm.Footer = vmi.Footer;
-                mvm.ShwoBackButton = vmi.ShowBackButton;
+                mvm.ShowBackButton = vmi.ShowBackButton;
 
                 _NC.NavigateTo(page, forward);
 

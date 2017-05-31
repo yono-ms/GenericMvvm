@@ -13,7 +13,7 @@ namespace GenericMvvm
             Title = "サンプルのタイトル";
             Footer = "サンプルのフッター";
             ShowProgress = true;
-            ShwoBackButton = true;
+            ShowBackButton = true;
             var errors = new System.Collections.ObjectModel.ObservableCollection<string>();
             errors.Add("システムエラー");
             errors.Add("スタックトレース");

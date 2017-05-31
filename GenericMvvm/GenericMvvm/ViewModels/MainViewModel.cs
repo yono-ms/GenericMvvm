@@ -49,14 +49,14 @@ namespace GenericMvvm
         }
 
         [DataMember]
-        private bool _ShwoBackButton;
+        private bool _ShowBackButton;
         /// <summary>
         /// バックボタンを表示するなら真
         /// </summary>
-        public bool ShwoBackButton
+        public bool ShowBackButton
         {
-            get { return _ShwoBackButton; }
-            set { _ShwoBackButton = value; ValidateProperty(nameof(ShwoBackButton), value); }
+            get { return _ShowBackButton; }
+            set { _ShowBackButton = value; ValidateProperty(nameof(ShowBackButton), value); }
         }
 
         /// <summary>
