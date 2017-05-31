@@ -25,10 +25,14 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textInputLayout1">
+        android:id="@+id/textInputLayout1"
+        app:errorEnabled="true"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true">
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:id="@+id/textInputEditText1" />
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>
