@@ -5,6 +5,7 @@ using System.Reflection;
 using Android.Support.V4.App;
 using Android.Widget;
 using Android.Support.Design.Widget;
+using System.Collections.Generic;
 
 namespace GenericMvvm.Droid
 {
@@ -14,6 +15,7 @@ namespace GenericMvvm.Droid
 
         MainActivity _MainActivity;
         NameViewModel _VM;
+        Dictionary<string, BindingInfo> Bindings;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -63,15 +65,52 @@ namespace GenericMvvm.Droid
 
             // 初期値設定
             View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
-            View.FindViewById<TextInputLayout>(Resource.Id.textInputLayout1).Hint = _VM.LastNameTitle;
-            View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).Text = _VM.LastName;
+
+            var lastName = View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName);
+            lastName.Hint = _VM.LastNameTitle;
+            lastName.Text = _VM.LastName;
+
+            var firstName = View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName);
+            firstName.Hint = _VM.FirstNameTitle;
+            firstName.Text = _VM.FirstName;
+
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
+
+            // バインド情報
+            Bindings = new Dictionary<string, BindingInfo>();
+            Bindings.Add(nameof(_VM.LastName), new BindingInfo { Control = lastName, ControlProperty = nameof(lastName.Text) });
+            Bindings.Add(nameof(_VM.FirstName), new BindingInfo { Control = firstName, ControlProperty = nameof(firstName.Text) });
 
             // VMイベント
             _VM.PropertyChanged += VM_PropertyChanged;
 
             // コントロールイベント
-            View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).TextChanged += NameFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged += NameFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged += NameFragment_TextChanged;
         }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+
+            // ここでバインド解除する
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged -= NameFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged -= NameFragment_TextChanged;
+
+            _VM.PropertyChanged -= VM_PropertyChanged;
+
+            Bindings.Clear();
+
+            _VM = null;
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+        }
+
         /// <summary>
         /// コントロールからのイベント
         /// </summary>
@@ -79,11 +118,15 @@ namespace GenericMvvm.Droid
         /// <param name="e"></param>
         private void NameFragment_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            var v = sender as TextInputEditText;
+            var v = sender as TextInputView;
             switch (v.Id)
             {
-                case Resource.Id.textInputEditText1:
+                case Resource.Id.textInputViewLastName:
                     _VM.LastName = e.Text.ToString();
+                    break;
+
+                case Resource.Id.textInputViewFirstName:
+                    _VM.FirstName = e.Text.ToString();
                     break;
 
                 default:
@@ -101,47 +144,44 @@ namespace GenericMvvm.Droid
         {
             switch (e.PropertyName)
             {
+                case nameof(_VM.CanCommit):
+                    View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
+                    break;
+
                 case nameof(_VM.Errors):
                     System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
-                    View.FindViewById<TextInputLayout>(Resource.Id.textInputLayout1).Error = _VM.Errors?[nameof(_VM.LastName)]?[0];
+                    View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).Errors = _VM.Errors?[nameof(_VM.LastName)];
+                    View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).Errors = _VM.Errors?[nameof(_VM.FirstName)];
                     break;
 
                 case nameof(_VM.IsError):
                     System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
-                    View.FindViewById<TextInputLayout>(Resource.Id.textInputLayout1).ErrorEnabled = _VM.IsError[nameof(_VM.LastName)];
-                    break;
-
-                case nameof(_VM.LastName):
-                    System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
-                    var et = View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1);
-                    if (!et.Text.Equals(_VM.LastName))
-                    {
-                        et.Text = _VM.LastName;
-                    }
+                    View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).IsError = _VM.IsError[nameof(_VM.LastName)];
+                    View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).IsError = _VM.IsError[nameof(_VM.FirstName)];
                     break;
 
                 default:
-                    System.Diagnostics.Debug.WriteLine("unknown VM EVENT " + e.PropertyName);
+                    if (Bindings.ContainsKey(e.PropertyName))
+                    {
+                        System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
+                        var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender);
+                        var c = Bindings[e.PropertyName].Control;
+                        var oldValue = c.GetType().GetProperty(Bindings[e.PropertyName].ControlProperty).GetValue(c);
+                        if (v.Equals(oldValue))
+                        {
+                            System.Diagnostics.Debug.WriteLine("SAME VALUE {0} {1}", new[] { e.PropertyName, v });
+                        }
+                        else
+                        {
+                            c.GetType().GetProperty(Bindings[e.PropertyName].ControlProperty).SetValue(c, v);
+                        }
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("unknown VM EVENT " + e.PropertyName);
+                    }
                     break;
             }
-        }
-
-        public override void OnPause()
-        {
-            base.OnPause();
-            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-
-            // ここでバインド解除する
-            _VM.PropertyChanged -= VM_PropertyChanged;
-            _VM = null;
-
-            View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).TextChanged -= NameFragment_TextChanged;
-        }
-
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
         }
     }
 }

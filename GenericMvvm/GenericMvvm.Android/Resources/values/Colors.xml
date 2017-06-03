@@ -7,4 +7,6 @@
   <color name="colorGuard">#20FF0000</color>
 
   <color name="colorDescription">#2000FF00</color>
+  <color name="colorTextInputView">#2000FFFF</color>
+  
 </resources>

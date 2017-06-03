@@ -6,23 +6,28 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_01"
     android:padding="@dimen/content_horizontal_margin">
-  <GenericMvvm.Droid.TitleTextView
-      android:layout_width="match_parent"
+    <GenericMvvm.Droid.TitleTextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/titleTextViewDescription" />
-    <android.support.design.widget.TextInputLayout
+        android:id="@+id/titleTextViewDescription"
+        android:layout_marginBottom="@dimen/content_vertical_margin" />
+    <GenericMvvm.Droid.TextInputView
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textInputLayout1"
-        app:errorEnabled="true"
-        app:hintEnabled="true"
-        app:hintAnimationEnabled="true">
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:id="@+id/textInputEditText1" />
-    </android.support.design.widget.TextInputLayout>
+        android:id="@+id/textInputViewLastName"
+        android:layout_marginBottom="@dimen/content_vertical_margin" />
+    <GenericMvvm.Droid.TextInputView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textInputViewFirstName"
+        android:layout_marginBottom="@dimen/content_vertical_margin" />
+    <Button
+        android:text="Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCommit" />
 </LinearLayout>
