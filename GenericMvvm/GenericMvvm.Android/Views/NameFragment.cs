@@ -62,12 +62,12 @@ namespace GenericMvvm.Droid
             _VM = _MainActivity.BizLogic.GetViewModel<NameViewModel>();
 
             // 初期値設定
-            View.FindViewById<TextView>(Resource.Id.textViewDescription).Text = _VM.Description;
+            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
             View.FindViewById<TextInputLayout>(Resource.Id.textInputLayout1).Hint = _VM.LastNameTitle;
             View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).Text = _VM.LastName;
 
             // VMイベント
-            _VM.PropertyChanged += _VM_PropertyChanged;
+            _VM.PropertyChanged += VM_PropertyChanged;
 
             // コントロールイベント
             View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).TextChanged += NameFragment_TextChanged;
@@ -97,7 +97,7 @@ namespace GenericMvvm.Droid
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -132,7 +132,7 @@ namespace GenericMvvm.Droid
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
 
             // ここでバインド解除する
-            _VM.PropertyChanged -= _VM_PropertyChanged;
+            _VM.PropertyChanged -= VM_PropertyChanged;
             _VM = null;
 
             View.FindViewById<TextInputEditText>(Resource.Id.textInputEditText1).TextChanged -= NameFragment_TextChanged;

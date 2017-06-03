@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="BindingInfo.cs" />
     <Compile Include="CustomApplication.cs" />
+    <Compile Include="TitleTextView.cs" />
     <Compile Include="Views\NameFragment.cs" />
     <Compile Include="Views\FirstFragment.cs" />
     <Compile Include="MainActivity.cs" />
@@ -112,6 +113,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MainContent.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\TitleTextView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -191,6 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Dimens.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
