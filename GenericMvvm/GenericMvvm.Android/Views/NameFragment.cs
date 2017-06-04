@@ -60,26 +60,24 @@ namespace GenericMvvm.Droid
             base.OnResume();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
 
-            // ここでバインドする
-            _VM = _MainActivity.BizLogic.GetViewModel<NameViewModel>();
-
-            // 初期値設定
-            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
-
-            var lastName = View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName);
-            lastName.Hint = _VM.LastNameTitle;
-            lastName.Text = _VM.LastName;
-
-            var firstName = View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName);
-            firstName.Hint = _VM.FirstNameTitle;
-            firstName.Text = _VM.FirstName;
-
-            View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
-
             // バインド情報
             Bindings = new Dictionary<string, BindingInfo>();
+
+            // ビューモデル生成
+            _VM = _MainActivity.BizLogic.GetViewModel<NameViewModel>();
+
+            // 姓
+            var lastName = View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName);
+            lastName.Hint = _VM.LastNameTitle;
             Bindings.Add(nameof(_VM.LastName), new BindingInfo { Control = lastName, ControlProperty = nameof(lastName.Text) });
+
+            // 名
+            var firstName = View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName);
+            firstName.Hint = _VM.FirstNameTitle;
             Bindings.Add(nameof(_VM.FirstName), new BindingInfo { Control = firstName, ControlProperty = nameof(firstName.Text) });
+
+            // 固定値設定
+            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
 
             // VMイベント
             _VM.PropertyChanged += VM_PropertyChanged;
@@ -87,6 +85,9 @@ namespace GenericMvvm.Droid
             // コントロールイベント
             View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged += NameFragment_TextChanged;
             View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged += NameFragment_TextChanged;
+
+            // TwoWay初期値設定
+            //BindingInfo.Start(_VM, Bindings);
         }
 
         public override void OnPause()

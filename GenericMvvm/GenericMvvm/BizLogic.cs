@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -44,11 +45,15 @@ namespace GenericMvvm
             {
                 try
                 {
+#if false
                     using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
                     {
                         var ser = new DataContractJsonSerializer(typeof(BizLogic));
                         result = ser.ReadObject(ms) as BizLogic;
                     }
+#else
+                    result = JsonConvert.DeserializeObject<BizLogic>(json);
+#endif
 
                 }
                 catch (Exception ex)
@@ -75,6 +80,7 @@ namespace GenericMvvm
 
             try
             {
+#if false
                 using (var ms = new MemoryStream())
                 {
                     var ser = new DataContractJsonSerializer(typeof(BizLogic));
@@ -84,6 +90,10 @@ namespace GenericMvvm
 
                     await _NC.SaveFileAsync(Key, json);
                 }
+#else
+                var json = JsonConvert.SerializeObject(this);
+                await _NC.SaveFileAsync(Key, json);
+#endif
             }
             catch (Exception ex)
             {
@@ -223,6 +233,7 @@ namespace GenericMvvm
 
             try
             {
+#if false
                 using (var ms = new MemoryStream())
                 {
                     var ser = new DataContractJsonSerializer(typeof(T));
@@ -232,6 +243,10 @@ namespace GenericMvvm
                     ms.Position = 0;
                     dst = ser.ReadObject(ms) as T;
                 }
+#else
+                var json = JsonConvert.SerializeObject(src);
+                dst = JsonConvert.DeserializeObject<T>(json);
+#endif
             }
             catch (Exception ex)
             {

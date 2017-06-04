@@ -26,5 +26,19 @@ namespace GenericMvvm.Droid
         /// コントロールのプロパティ名
         /// </summary>
         public string ControlProperty { get; set; }
+        /// <summary>
+        /// 辞書のプロパティをリフレッシュする
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="vm"></param>
+        /// <param name="dict"></param>
+        public static void Start<T>(T vm, Dictionary<string, BindingInfo> dict)
+        {
+            foreach (var item in dict)
+            {
+                var v = vm.GetType().GetProperty(item.Key).GetValue(vm);
+                vm.GetType().GetProperty(item.Key).SetValue(vm, v);
+            }
+        }
     }
 }
