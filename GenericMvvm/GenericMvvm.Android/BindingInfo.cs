@@ -36,8 +36,16 @@ namespace GenericMvvm.Droid
         {
             foreach (var item in dict)
             {
-                var v = vm.GetType().GetProperty(item.Key).GetValue(vm);
-                vm.GetType().GetProperty(item.Key).SetValue(vm, v);
+                var i = vm.GetType().GetProperty(item.Key);
+                var v = i.GetValue(vm);
+                System.Diagnostics.Debug.WriteLine("Type={0} Name={1} Value={2}", new[] { i.PropertyType.ToString(), i.Name, v });
+
+                if ((v == null) && (i.PropertyType == typeof(string)))
+                {
+                    System.Diagnostics.Debug.WriteLine("null string convert");
+                    v = "";
+                }
+                i.SetValue(vm, v);
             }
         }
     }

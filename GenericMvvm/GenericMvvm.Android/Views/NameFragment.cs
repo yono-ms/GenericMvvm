@@ -87,7 +87,7 @@ namespace GenericMvvm.Droid
             View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged += NameFragment_TextChanged;
 
             // TwoWayèâä˙ílê›íË
-            //BindingInfo.Start(_VM, Bindings);
+            BindingInfo.Start(_VM, Bindings);
         }
 
         public override void OnPause()
@@ -143,6 +143,7 @@ namespace GenericMvvm.Droid
         /// <param name="e"></param>
         private void VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
             switch (e.PropertyName)
             {
                 case nameof(_VM.CanCommit):
@@ -150,13 +151,11 @@ namespace GenericMvvm.Droid
                     break;
 
                 case nameof(_VM.Errors):
-                    System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
                     View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).Errors = _VM.Errors?[nameof(_VM.LastName)];
                     View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).Errors = _VM.Errors?[nameof(_VM.FirstName)];
                     break;
 
                 case nameof(_VM.IsError):
-                    System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
                     View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).IsError = _VM.IsError[nameof(_VM.LastName)];
                     View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).IsError = _VM.IsError[nameof(_VM.FirstName)];
                     break;
@@ -164,7 +163,6 @@ namespace GenericMvvm.Droid
                 default:
                     if (Bindings.ContainsKey(e.PropertyName))
                     {
-                        System.Diagnostics.Debug.WriteLine("-- PropertyChanged " + e.PropertyName);
                         var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender);
                         var c = Bindings[e.PropertyName].Control;
                         var oldValue = c.GetType().GetProperty(Bindings[e.PropertyName].ControlProperty).GetValue(c);
