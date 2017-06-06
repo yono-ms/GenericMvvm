@@ -4,30 +4,45 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_01"
-    android:padding="@dimen/content_horizontal_margin">
-    <GenericMvvm.Droid.TitleTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleTextViewDescription"
-        android:layout_marginBottom="@dimen/content_vertical_margin" />
-    <GenericMvvm.Droid.TextInputView
+    android:background="@drawable/background_01">
+    <ScrollView
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textInputViewLastName"
-        android:layout_marginBottom="@dimen/content_vertical_margin" />
-    <GenericMvvm.Droid.TextInputView
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textInputViewFirstName"
-        android:layout_marginBottom="@dimen/content_vertical_margin" />
-    <Button
-        android:text="Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonCommit" />
+        android:id="@+id/scrollView">
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_horizontal_margin"
+            android:id="@+id/linearLayoutName">
+            <GenericMvvm.Droid.TitleTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/titleTextViewDescription"
+                android:layout_marginBottom="@dimen/content_vertical_margin" />
+            <GenericMvvm.Droid.TextInputView
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInputViewLastName"
+                android:layout_marginBottom="@dimen/content_vertical_margin" />
+            <GenericMvvm.Droid.TextInputView
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInputViewFirstName"
+                android:layout_marginBottom="@dimen/content_vertical_margin" />
+            <Button
+                android:text="Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonCommit" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
