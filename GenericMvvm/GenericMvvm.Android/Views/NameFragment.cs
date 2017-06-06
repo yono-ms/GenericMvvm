@@ -9,12 +9,25 @@ using System.Collections.Generic;
 
 namespace GenericMvvm.Droid
 {
+    /// <summary>
+    /// 寿命を予測できないインスタンス変数は持たない
+    /// 各プロパティは使うときにOSが保証するライフサイクルから取り出す
+    /// </summary>
     public class NameFragment : Fragment
     {
         const string FORMAT = "----NameFragmentEvent---- {0}";
 
+        /// <summary>
+        /// 親画面はアタッチイベントで管理する
+        /// </summary>
         MainActivity _MainActivity;
+        /// <summary>
+        /// VMはフォアグラウンド復帰で取得しなおす
+        /// </summary>
         NameViewModel _VM;
+        /// <summary>
+        /// VMに依存するためバインド情報もフォアグラウンド復帰で生成しなおす
+        /// </summary>
         Dictionary<string, BindingInfo> Bindings;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -55,6 +68,9 @@ namespace GenericMvvm.Droid
             _MainActivity = null;
         }
 
+        /// <summary>
+        /// フォアグラウンド復帰
+        /// </summary>
         public override void OnResume()
         {
             base.OnResume();
@@ -90,6 +106,9 @@ namespace GenericMvvm.Droid
             BindingInfo.Start(_VM, Bindings);
         }
 
+        /// <summary>
+        /// バックグラウンド移行
+        /// </summary>
         public override void OnPause()
         {
             base.OnPause();
@@ -113,7 +132,7 @@ namespace GenericMvvm.Droid
         }
 
         /// <summary>
-        /// コントロールからのイベント
+        /// コントロールからのイベントは無条件にVMに設定する
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -137,7 +156,7 @@ namespace GenericMvvm.Droid
         }
 
         /// <summary>
-        /// VMからのイベント
+        /// VMからのイベントは循環しないように同じ値を設定しない
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
