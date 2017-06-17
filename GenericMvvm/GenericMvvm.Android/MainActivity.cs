@@ -9,6 +9,7 @@ using Android.OS;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Android.Support.V7.Widget;
 using System.Collections.ObjectModel;
 using Android.Transitions;
@@ -121,11 +122,23 @@ namespace GenericMvvm.Droid
                 else if (e.PropertyName.Equals(nameof(_VM.ShowProgress)))
                 {
                     // コンバーターが必要
-                    _LayoutGuard.Visibility = _VM.ShowProgress ? ViewStates.Visible : ViewStates.Visible;
+                    _LayoutGuard.Visibility = _VM.ShowProgress ? ViewStates.Visible : ViewStates.Invisible;
+                }
+                else if (e.PropertyName.Equals(nameof(_VM.Errors)))
+                {
+                    
+                }
+                else if (e.PropertyName.Equals(nameof(_VM.IsError)))
+                {
+
+                }
+                else if (e.PropertyName.Equals(nameof(_VM.CanCommit)))
+                {
+
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Unknown property " + e.PropertyName);
+                    System.Diagnostics.Debug.WriteLine("MainActivity Unknown property " + e.PropertyName);
                 }
             };
 
@@ -197,7 +210,7 @@ namespace GenericMvvm.Droid
 
             public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
             {
-                return new ViewHolder(_LayoutInflater.Inflate(Resource.Layout.ObjectErrorsCell, parent));
+                return new ViewHolder(_LayoutInflater.Inflate(Resource.Layout.ObjectErrorsCell, parent, false));
             }
 
             class ViewHolder : RecyclerView.ViewHolder

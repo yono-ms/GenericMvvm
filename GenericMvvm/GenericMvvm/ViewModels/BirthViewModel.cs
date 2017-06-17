@@ -15,36 +15,58 @@ namespace GenericMvvm
     [DataContract]
     public class BirthViewModel : BaseViewModel
     {
+        private const int _MinYear = 1900;
+        /// <summary>
+        /// 生年月日（年）最小値
+        /// </summary>
+        public int MinYear
+        {
+            get { return _MinYear; }
+        }
+
+        private const int _MaxYear = 2017;
+        /// <summary>
+        /// 生年月日（年）最大値
+        /// </summary>
+        public int MaxYear
+        {
+            get { return _MaxYear; }
+        }
+
         private int _Year;
         /// <summary>
         /// 生年月日（年）
         /// </summary>
         [Required(ErrorMessage = "年を入力してください。")]
-        [Range(1900, 2017, ErrorMessage ="年は1900から2017の間で入力してください。")]
+        [Range(_MinYear, _MaxYear, ErrorMessage ="年は1900から2017の間で入力してください。")]
         [DataMember]
         public int Year
         {
             get { return _Year; }
             set { _Year = value; ValidateProperty(nameof(Year), value); }
         }
+        public const int MinMonth = 1;
+        public const int MaxMonth = 12;
         private int _Month;
         /// <summary>
         /// 生年月日（月）
         /// </summary>
         [Required(ErrorMessage = "月を入力してください。")]
-        [Range(1, 12, ErrorMessage = "月は1から12の間で入力してください。")]
+        [Range(MinMonth, MaxMonth, ErrorMessage = "月は1から12の間で入力してください。")]
         [DataMember]
         public int Month
         {
             get { return _Month; }
             set { _Month = value; ValidateProperty(nameof(Month), value); }
         }
+        public const int MinDay = 1;
+        public const int MaxDay = 31;
         private int _Day;
         /// <summary>
         /// 生年月日（日）
         /// </summary>
         [Required(ErrorMessage = "日を入力してください。")]
-        [Range(1, 31, ErrorMessage = "日は1から31の間で入力してください。")]
+        [Range(MinDay, MaxDay, ErrorMessage = "日は1から31の間で入力してください。")]
         [DataMember]
         public int Day
         {

@@ -27,6 +27,10 @@ namespace GenericMvvm.Droid
             _Activity = activity;
             _StringToPages = new Dictionary<string, Type>();
             _StringToPages.Add("Name", typeof(NameFragment));
+            _StringToPages.Add("Birth", typeof(BirthFragment));
+            _StringToPages.Add("Address", typeof(AddressFragment));
+            _StringToPages.Add("Confirm", typeof(ConfirmFragment));
+            _StringToPages.Add("Finish", typeof(FinishFragment));
         }
 
         /// <summary>

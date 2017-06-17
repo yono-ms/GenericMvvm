@@ -15,7 +15,7 @@ namespace GenericMvvm.Droid
     /// </summary>
     public class NameFragment : Fragment
     {
-        const string FORMAT = "----NameFragmentEvent---- {0}";
+        const string FORMAT = "----NameFragment Event---- {0}";
 
         /// <summary>
         /// 親画面はアタッチイベントで管理する
@@ -96,11 +96,12 @@ namespace GenericMvvm.Droid
             View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
 
             // VMイベント
-            _VM.PropertyChanged += VM_PropertyChanged;
+            _VM.PropertyChanged += _VM_PropertyChanged;
 
             // コントロールイベント
             View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged += NameFragment_TextChanged;
             View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged += NameFragment_TextChanged;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Click += NameFragment_Click;
 
             // TwoWay初期値設定
             BindingInfo.Start(_VM, Bindings);
@@ -118,7 +119,7 @@ namespace GenericMvvm.Droid
             View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged -= NameFragment_TextChanged;
             View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged -= NameFragment_TextChanged;
 
-            _VM.PropertyChanged -= VM_PropertyChanged;
+            _VM.PropertyChanged -= _VM_PropertyChanged;
 
             Bindings.Clear();
 
@@ -155,12 +156,27 @@ namespace GenericMvvm.Droid
             }
         }
 
+        private void NameFragment_Click(object sender, System.EventArgs e)
+        {
+            var v = sender as Button;
+            switch (v.Id)
+            {
+                case Resource.Id.buttonCommit:
+                    _VM.Commit();
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.WriteLine("unknown CTRL EVENT " + v.Id);
+                    break;
+            }
+        }
+
         /// <summary>
         /// VMからのイベントは循環しないように同じ値を設定しない
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
             switch (e.PropertyName)
