@@ -12,51 +12,44 @@ namespace GenericMvvm.Droid
 
         public override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-
-            // Create your fragment here
+            base.OnCreate(savedInstanceState);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
-            //return base.OnCreateView(inflater, container, savedInstanceState);
-
             return inflater.Inflate(Resource.Layout.First, container, false);
         }
 
         public override void OnAttach(Context context)
         {
-            base.OnAttach(context);
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnAttach(context);
         }
 
         public override void OnDetach()
         {
-            base.OnDetach();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnDetach();
         }
 
         public override void OnResume()
         {
-            base.OnResume();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnResume();
         }
 
         public override void OnPause()
         {
-            base.OnPause();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnPause();
         }
 
         public override void OnDestroy()
         {
-            base.OnDestroy();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnDestroy();
         }
     }
 }

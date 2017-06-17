@@ -32,18 +32,13 @@ namespace GenericMvvm.Droid
 
         public override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-
-            // Create your fragment here
+            base.OnCreate(savedInstanceState);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             return inflater.Inflate(Resource.Layout.Name, container, false);
 
             // テーマに設定したトランジッションアニメーションが効かないのでここでセットしてみるが無駄
@@ -54,16 +49,16 @@ namespace GenericMvvm.Droid
 
         public override void OnAttach(Context context)
         {
-            base.OnAttach(context);
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnAttach(context);
 
             _MainActivity = context as MainActivity;
         }
 
         public override void OnDetach()
         {
-            base.OnDetach();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnDetach();
 
             _MainActivity = null;
         }
@@ -73,8 +68,8 @@ namespace GenericMvvm.Droid
         /// </summary>
         public override void OnResume()
         {
-            base.OnResume();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnResume();
 
             // バインド情報
             Bindings = new Dictionary<string, BindingInfo>();
@@ -112,8 +107,8 @@ namespace GenericMvvm.Droid
         /// </summary>
         public override void OnPause()
         {
-            base.OnPause();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnPause();
 
             // ここでバインド解除する
             View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged -= NameFragment_TextChanged;
@@ -128,8 +123,8 @@ namespace GenericMvvm.Droid
 
         public override void OnDestroy()
         {
-            base.OnDestroy();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnDestroy();
         }
 
         /// <summary>
