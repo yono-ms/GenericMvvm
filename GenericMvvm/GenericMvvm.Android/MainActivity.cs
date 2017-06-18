@@ -16,6 +16,7 @@ using Android.Transitions;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Fragment = Android.Support.V4.App.Fragment;
+using System.ComponentModel;
 
 namespace GenericMvvm.Droid
 {
@@ -29,26 +30,11 @@ namespace GenericMvvm.Droid
 
         private MainViewModel _VM;
 
-        private TextView _TextViewFooter;
-        private RecyclerView _RecyclerView;
-        private ProgressBar _ProgressBar;
-        private View _LayoutGuard;
-
         protected override void OnCreate (Bundle bundle)
 		{
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnCreate (bundle);
-
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-
-            _TextViewFooter = FindViewById<TextView>(Resource.Id.textViewFooter);
-
-            _RecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewObjectErrors);
-            _RecyclerView.SetLayoutManager(new LinearLayoutManager(this));
-
-            _ProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
-            _LayoutGuard = FindViewById(Resource.Id.layoutGuard);
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -94,56 +80,78 @@ namespace GenericMvvm.Droid
             // Mainに限りBizLogic生成を待ってからUI構築を行う
             _VM = _BizLogic.GetViewModel<MainViewModel>();
 
-            // バインド（初期値）
-            _TextViewFooter.Text = _VM.Footer;
+            // VMイベント
+            _VM.PropertyChanged += _VM_PropertyChanged;
+
+            // コントロールイベントは戻るボタンしかない
+
+            // 初期値設定
+            FindViewById<TextView>(Resource.Id.textViewFooter).Text = _VM.Footer;
             SupportActionBar.Title = _VM.Title;
-
-            // バインド（イベント辞書）
-            Dictionary<string, BindingInfo> bindings = new Dictionary<string, BindingInfo>();
-            bindings.Add(nameof(_VM.Footer), new BindingInfo() { Control = _TextViewFooter, ControlProperty = nameof(_TextViewFooter.Text) });
-            bindings.Add(nameof(_VM.Title), new BindingInfo() { Control = SupportActionBar, ControlProperty = nameof(SupportActionBar.Title) });
-
-            _VM.PropertyChanged += (s, e) =>
-            {
-                //var vm = s as MainViewModel;
-                if (bindings.ContainsKey(e.PropertyName))
-                {
-                    var v = s.GetType().GetProperty(e.PropertyName).GetValue(s);
-
-                    var c = bindings[e.PropertyName].Control;
-                    c.GetType().GetProperty(bindings[e.PropertyName].ControlProperty).SetValue(c, v);
-                }
-                else if (e.PropertyName.Equals(nameof(_VM.ObjectErrors)))
-                {
-                    // アダプターの入れ替え
-                    var adapter = new ErrorAdapter(_VM.ObjectErrors);
-                    _RecyclerView.SetAdapter(adapter);
-                }
-                else if (e.PropertyName.Equals(nameof(_VM.ShowProgress)))
-                {
-                    // コンバーターが必要
-                    _LayoutGuard.Visibility = _VM.ShowProgress ? ViewStates.Visible : ViewStates.Invisible;
-                }
-                else if (e.PropertyName.Equals(nameof(_VM.Errors)))
-                {
-                    
-                }
-                else if (e.PropertyName.Equals(nameof(_VM.IsError)))
-                {
-
-                }
-                else if (e.PropertyName.Equals(nameof(_VM.CanCommit)))
-                {
-
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("MainActivity Unknown property " + e.PropertyName);
-                }
-            };
+            SupportActionBar.SetDisplayHomeAsUpEnabled(false);
+            // 初期値設定 Recycler
+            var adapter = new ErrorAdapter(_VM.ObjectErrors);
+            var recycler = FindViewById<RecyclerView>(Resource.Id.recyclerViewObjectErrors);
+            recycler.SetLayoutManager(new LinearLayoutManager(this));
+            recycler.SetAdapter(adapter);
 
             // バインドし終わったら起動する
             _VM.KickStart();
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    _VM.GoBack();
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.WriteLine("MainActivity Unknown option item " + item.ItemId);
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+        private void _VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var vm = sender as MainViewModel;
+            switch (e.PropertyName)
+            {
+                case nameof(vm.Title):
+                    SupportActionBar.Title = vm.Title;
+                    break;
+
+                case nameof(vm.Footer):
+                    FindViewById<TextView>(Resource.Id.textViewFooter).Text = vm.Footer;
+                    break;
+
+                case nameof(vm.ObjectErrors):
+                    // アダプターの入れ替え
+                    var adapter = new ErrorAdapter(vm.ObjectErrors);
+                    FindViewById<RecyclerView>(Resource.Id.recyclerViewObjectErrors).SetAdapter(adapter);
+                    break;
+
+                case nameof(vm.ShowProgress):
+                    var view = FindViewById(Resource.Id.layoutGuard);
+                    view.Visibility = vm.ShowProgress ? ViewStates.Visible : ViewStates.Invisible;
+                    break;
+
+                case nameof(vm.ShowBackButton):
+                    SupportActionBar.SetDisplayHomeAsUpEnabled(vm.ShowBackButton);
+                    break;
+
+                case nameof(vm.Errors):
+                case nameof(vm.IsError):
+                case nameof(vm.CanCommit):
+                    // ここは何もしない
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.WriteLine("MainActivity Unknown property " + e.PropertyName);
+                    break;
+            }
         }
 
         /// <summary>
