@@ -91,8 +91,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressAdapter.cs" />
-    <Compile Include="ConfirmAdapter.cs" />
+    <Compile Include="Adapters\AddressAdapter.cs" />
+    <Compile Include="Adapters\ConfirmAdapter.cs" />
+    <Compile Include="Adapters\ErrorAdapter.cs" />
     <Compile Include="Views\FinishFragment.cs" />
     <Compile Include="Views\ConfirmFragment.cs" />
     <Compile Include="Views\AddressFragment.cs" />

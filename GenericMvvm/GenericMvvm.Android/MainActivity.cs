@@ -36,8 +36,8 @@ namespace GenericMvvm.Droid
 
         protected override void OnCreate (Bundle bundle)
 		{
-			base.OnCreate (bundle);
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnCreate (bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -116,7 +116,7 @@ namespace GenericMvvm.Droid
                 else if (e.PropertyName.Equals(nameof(_VM.ObjectErrors)))
                 {
                     // アダプターの入れ替え
-                    var adapter = new RecyclerAdapter(LayoutInflater, _VM.ObjectErrors);
+                    var adapter = new ErrorAdapter(_VM.ObjectErrors);
                     _RecyclerView.SetAdapter(adapter);
                 }
                 else if (e.PropertyName.Equals(nameof(_VM.ShowProgress)))
@@ -165,63 +165,28 @@ namespace GenericMvvm.Droid
 
         protected override void OnRestart()
         {
-            base.OnRestart();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnRestart();
         }
         protected override void OnStart()
         {
-            base.OnStart();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnStart();
         }
         protected override void OnResume()
         {
-            base.OnResume();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnResume();
         }
         protected override void OnPause()
         {
-            base.OnPause();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnPause();
         }
         protected override void OnStop()
         {
-            base.OnStop();
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
-        }
-
-        class RecyclerAdapter : RecyclerView.Adapter
-        {
-            private LayoutInflater _LayoutInflater;
-            private ObservableCollection<string> _ObjectErrors;
-
-            public RecyclerAdapter(LayoutInflater layoutInflater, ObservableCollection<string> objectErrors)
-            {
-                this._LayoutInflater = layoutInflater;
-                this._ObjectErrors = objectErrors;
-            }
-
-            public override int ItemCount => (_ObjectErrors == null) ? 0 : _ObjectErrors.Count;
-
-            public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-            {
-                var h = holder as ViewHolder;
-                h._TextView.Text = _ObjectErrors[position];
-            }
-
-            public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-            {
-                return new ViewHolder(_LayoutInflater.Inflate(Resource.Layout.ObjectErrorsCell, parent, false));
-            }
-
-            class ViewHolder : RecyclerView.ViewHolder
-            {
-                public TextView _TextView;
-
-                public ViewHolder(View itemView) : base(itemView)
-                {
-                    _TextView = itemView.FindViewById<TextView>(Resource.Id.textView);
-                }
-            }
+            base.OnStop();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace GenericMvvm
 
             BizLogic result;
             var json = await nc.LoadFileAsync(Key);
-            if (json == null)
+            if (string.IsNullOrEmpty(json))
             {
                 result = new BizLogic();
             }
