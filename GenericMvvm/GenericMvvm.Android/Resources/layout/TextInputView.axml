@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/colorTextInputView">
+    android:background="@color/colorTextInputView"
+    android:focusable="true">
     <android.support.design.widget.TextInputLayout
         android:minWidth="25px"
         android:minHeight="25px"
@@ -14,7 +15,8 @@
         android:id="@+id/textInputLayout"
         app:errorEnabled="false"
         app:hintEnabled="true"
-        app:hintAnimationEnabled="true">
+        app:hintAnimationEnabled="true"
+        android:duplicateParentState="true">
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

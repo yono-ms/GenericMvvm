@@ -11,12 +11,19 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Support.Design.Widget;
+using Android.Text;
 
 namespace GenericMvvm.Droid
 {
     public class TextInputView : LinearLayout
     {
         public event EventHandler<Android.Text.TextChangedEventArgs> TextChanged;
+
+        public InputTypes InputType
+        {
+            get { return FindViewById<TextInputEditText>(Resource.Id.textInputEditText).InputType; }
+            set { FindViewById<TextInputEditText>(Resource.Id.textInputEditText).InputType = value; }
+        }
 
         public string Text
         {
