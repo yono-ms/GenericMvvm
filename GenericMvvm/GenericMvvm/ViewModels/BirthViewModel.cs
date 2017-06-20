@@ -45,28 +45,60 @@ namespace GenericMvvm
             get { return _Year; }
             set { _Year = value; ValidateProperty(nameof(Year), value); }
         }
-        public const int MinMonth = 1;
-        public const int MaxMonth = 12;
+
+        private const int _MinMonth = 1;
+        /// <summary>
+        /// 生年月日（月）最小値
+        /// </summary>
+        public int MinMonth
+        {
+            get { return _MinMonth; }
+        }
+        private const int _MaxMonth = 12;
+        /// <summary>
+        /// 生年月日（月）最大値
+        /// </summary>
+        public int MaxMonth
+        {
+            get { return _MaxMonth; }
+        }
+
         private int _Month;
         /// <summary>
         /// 生年月日（月）
         /// </summary>
         [Required(ErrorMessage = "月を入力してください。")]
-        [Range(MinMonth, MaxMonth, ErrorMessage = "月は1から12の間で入力してください。")]
+        [Range(_MinMonth, _MaxMonth, ErrorMessage = "月は1から12の間で入力してください。")]
         [DataMember]
         public int Month
         {
             get { return _Month; }
             set { _Month = value; ValidateProperty(nameof(Month), value); }
         }
-        public const int MinDay = 1;
-        public const int MaxDay = 31;
+
+        private const int _MinDay = 1;
+        /// <summary>
+        /// 生年月日（日）最小値
+        /// </summary>
+        public int MinDay
+        {
+            get { return _MinDay; }
+        }
+        private const int _MaxDay = 31;
+        /// <summary>
+        /// 生年月日（日）最大値
+        /// </summary>
+        public int MaxDay
+        {
+            get { return _MaxDay; }
+        }
+
         private int _Day;
         /// <summary>
         /// 生年月日（日）
         /// </summary>
         [Required(ErrorMessage = "日を入力してください。")]
-        [Range(MinDay, MaxDay, ErrorMessage = "日は1から31の間で入力してください。")]
+        [Range(_MinDay, _MaxDay, ErrorMessage = "日は1から31の間で入力してください。")]
         [DataMember]
         public int Day
         {
