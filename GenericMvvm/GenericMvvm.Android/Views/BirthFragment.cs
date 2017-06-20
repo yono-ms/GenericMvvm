@@ -61,12 +61,6 @@ namespace GenericMvvm.Droid
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnResume();
 
-            // コントロール（変数は無くてもいい）
-            var description = View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription);
-            var year = View.FindViewById<TextInputView>(Resource.Id.textInputViewYear);
-            var month = View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth);
-            var day = View.FindViewById<TextInputView>(Resource.Id.textInputViewDay);
-
             // ビューモデル生成
             _VM = _MainActivity.BizLogic.GetViewModel<BirthViewModel>();
 
@@ -74,19 +68,26 @@ namespace GenericMvvm.Droid
             _VM.PropertyChanged += _VM_PropertyChanged;
 
             // コントロールイベント
-            year.TextChanged += BirthFragment_TextChanged;
-            month.TextChanged += BirthFragment_TextChanged;
-            day.TextChanged += BirthFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).TextChanged += BirthFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).TextChanged += BirthFragment_TextChanged;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).TextChanged += BirthFragment_TextChanged;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click += BirthFragment_Click;
 
             // イベントをバインドした後にコントロールに初期設定するとエラー状態が確定する
-            description.Text = _VM.Description;
-            year.Hint = _VM.YearTitle;
-            year.Text = _VM.Year.ToString();
-            month.Hint = _VM.MonthTitle;
-            month.Text = _VM.Month.ToString();
-            day.Hint = _VM.DayTitle;
-            day.Text = _VM.Day.ToString();
+            // 初期値設定 OneWay
+            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Text = _VM.CommitLabel;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
+            // 初期値設定 EditText
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).Hint = _VM.YearTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).Text = _VM.Year.ToString();
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).InputType = Android.Text.InputTypes.ClassNumber;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).Hint = _VM.MonthTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).Text = _VM.Month.ToString();
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).InputType = Android.Text.InputTypes.ClassNumber;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).Hint = _VM.DayTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).Text = _VM.Day.ToString();
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).InputType = Android.Text.InputTypes.ClassNumber;
         }
 
         public override void OnPause()
