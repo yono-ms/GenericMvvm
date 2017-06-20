@@ -95,8 +95,14 @@ namespace GenericMvvm.Droid
             View.FindViewById<Button>(Resource.Id.buttonCopy).Enabled = _VM.CanCommandCopy;
             // èâä˙ílê›íË EditText
             View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Text = _VM.PostalCode;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Hint = _VM.PostalCodeTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).InputType = Android.Text.InputTypes.ClassNumber;
             View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Text = _VM.Address;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Hint = _VM.AddressTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).InputType = Android.Text.InputTypes.ClassText;
             View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Text = _VM.AddressKana;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Hint = _VM.AddressKanaTitle;
+            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).InputType = Android.Text.InputTypes.ClassText;
             // èâä˙ílê›íË Recycler
             if (string.IsNullOrEmpty(_VM.ResponseResultHeader))
             {
