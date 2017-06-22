@@ -28,7 +28,7 @@ namespace GenericMvvm.Droid
         /// <summary>
         /// VMに依存するためバインド情報もフォアグラウンド復帰で生成しなおす
         /// </summary>
-        Dictionary<string, BindingInfo> Bindings;
+        TextInputViewBind _TextInputViewBind;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -71,35 +71,25 @@ namespace GenericMvvm.Droid
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnResume();
 
-            // バインド情報
-            Bindings = new Dictionary<string, BindingInfo>();
-
             // ビューモデル生成
             _VM = _MainActivity.BizLogic.GetViewModel<NameViewModel>();
 
-            // 姓
-            var lastName = View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName);
-            lastName.Hint = _VM.LastNameTitle;
-            Bindings.Add(nameof(_VM.LastName), new BindingInfo { Control = lastName, ControlProperty = nameof(lastName.Text) });
-
-            // 名
-            var firstName = View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName);
-            firstName.Hint = _VM.FirstNameTitle;
-            Bindings.Add(nameof(_VM.FirstName), new BindingInfo { Control = firstName, ControlProperty = nameof(firstName.Text) });
-
-            // 固定値設定
-            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
+            // カスタムコントロールバインド情報
+            _TextInputViewBind = new TextInputViewBind(View, _VM);
+            _TextInputViewBind.Add(nameof(_VM.LastName), Resource.Id.textInputViewLastName, _VM.LastNameTitle);
+            _TextInputViewBind.Add(nameof(_VM.FirstName), Resource.Id.textInputViewFirstName, _VM.FirstNameTitle);
 
             // VMイベント
             _VM.PropertyChanged += _VM_PropertyChanged;
 
             // コントロールイベント
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged += NameFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged += NameFragment_TextChanged;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click += NameFragment_Click;
 
+            // 固定値設定
+            View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
+
             // TwoWay初期値設定
-            BindingInfo.Start(_VM, Bindings);
+            _TextInputViewBind.Start();
         }
 
         /// <summary>
@@ -111,12 +101,13 @@ namespace GenericMvvm.Droid
             base.OnPause();
 
             // ここでバインド解除する
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).TextChanged -= NameFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).TextChanged -= NameFragment_TextChanged;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Click += NameFragment_Click;
+
+            _TextInputViewBind.Stop();
 
             _VM.PropertyChanged -= _VM_PropertyChanged;
 
-            Bindings.Clear();
+            _TextInputViewBind = null;
 
             _VM = null;
         }
@@ -125,30 +116,6 @@ namespace GenericMvvm.Droid
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
-        }
-
-        /// <summary>
-        /// コントロールからのイベントは無条件にVMに設定する
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NameFragment_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            var v = sender as TextInputView;
-            switch (v.Id)
-            {
-                case Resource.Id.textInputViewLastName:
-                    _VM.LastName = e.Text.ToString();
-                    break;
-
-                case Resource.Id.textInputViewFirstName:
-                    _VM.FirstName = e.Text.ToString();
-                    break;
-
-                default:
-                    System.Diagnostics.Debug.WriteLine("unknown CTRL EVENT " + v.Id);
-                    break;
-            }
         }
 
         private void NameFragment_Click(object sender, System.EventArgs e)
@@ -180,30 +147,10 @@ namespace GenericMvvm.Droid
                     View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
                     break;
 
-                case nameof(_VM.Errors):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).Errors = _VM.Errors?[nameof(_VM.LastName)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).Errors = _VM.Errors?[nameof(_VM.FirstName)];
-                    break;
-
-                case nameof(_VM.IsError):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewLastName).IsError = _VM.IsError[nameof(_VM.LastName)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewFirstName).IsError = _VM.IsError[nameof(_VM.FirstName)];
-                    break;
-
                 default:
-                    if (Bindings.ContainsKey(e.PropertyName))
+                    if (_TextInputViewBind.ContainsKey(e.PropertyName))
                     {
-                        var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender);
-                        var c = Bindings[e.PropertyName].Control;
-                        var oldValue = c.GetType().GetProperty(Bindings[e.PropertyName].ControlProperty).GetValue(c);
-                        if (v.Equals(oldValue))
-                        {
-                            System.Diagnostics.Debug.WriteLine("SAME VALUE {0} {1}", new[] { e.PropertyName, v });
-                        }
-                        else
-                        {
-                            c.GetType().GetProperty(Bindings[e.PropertyName].ControlProperty).SetValue(c, v);
-                        }
+                        _TextInputViewBind.PropertyChanged(sender, e);
                     }
                     else
                     {
