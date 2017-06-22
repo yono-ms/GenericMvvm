@@ -26,6 +26,10 @@ namespace GenericMvvm.Droid
         /// VMはフォアグラウンド復帰で取得しなおす
         /// </summary>
         BirthViewModel _VM;
+        /// <summary>
+        /// バインド情報
+        /// </summary>
+        TextInputViewBind _TextInputViewBind;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -64,13 +68,16 @@ namespace GenericMvvm.Droid
             // ビューモデル生成
             _VM = _MainActivity.BizLogic.GetViewModel<BirthViewModel>();
 
+            // カスタムコントロールバインド情報
+            _TextInputViewBind = new TextInputViewBind(View, _VM);
+            _TextInputViewBind.Add(nameof(_VM.Year), Resource.Id.textInputViewYear, _VM.YearTitle, TextInputViewBind.ConverterType.INT);
+            _TextInputViewBind.Add(nameof(_VM.Month), Resource.Id.textInputViewMonth, _VM.MonthTitle, TextInputViewBind.ConverterType.INT);
+            _TextInputViewBind.Add(nameof(_VM.Day), Resource.Id.textInputViewDay, _VM.DayTitle, TextInputViewBind.ConverterType.INT);
+
             // VMイベント
             _VM.PropertyChanged += _VM_PropertyChanged;
 
             // コントロールイベント
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).TextChanged += BirthFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).TextChanged += BirthFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).TextChanged += BirthFragment_TextChanged;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click += BirthFragment_Click;
 
             // イベントをバインドした後にコントロールに初期設定するとエラー状態が確定する
@@ -79,15 +86,12 @@ namespace GenericMvvm.Droid
             View.FindViewById<Button>(Resource.Id.buttonCommit).Text = _VM.CommitLabel;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
             // 初期値設定 EditText
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).Hint = _VM.YearTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).Text = _VM.Year.ToString();
             View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).InputType = Android.Text.InputTypes.ClassNumber;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).Hint = _VM.MonthTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).Text = _VM.Month.ToString();
             View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).InputType = Android.Text.InputTypes.ClassNumber;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).Hint = _VM.DayTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).Text = _VM.Day.ToString();
             View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).InputType = Android.Text.InputTypes.ClassNumber;
+
+            // TwoWay初期値設定
+            _TextInputViewBind.Start();
         }
 
         public override void OnPause()
@@ -97,11 +101,12 @@ namespace GenericMvvm.Droid
 
             // ここでバインド解除する
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click -= BirthFragment_Click;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).TextChanged -= BirthFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).TextChanged -= BirthFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).TextChanged -= BirthFragment_TextChanged;
+
+            _TextInputViewBind.Stop();
 
             _VM.PropertyChanged -= _VM_PropertyChanged;
+
+            _TextInputViewBind = null;
 
             _VM = null;
         }
@@ -117,87 +122,24 @@ namespace GenericMvvm.Droid
             _VM.Commit();
         }
 
-        private void BirthFragment_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            // 数値変換
-            int num;
-            if (!int.TryParse(e.Text.ToString(), out num))
-            {
-                System.Diagnostics.Debug.WriteLine("invalid value " + e.Text.ToString());
-                num = 0;
-            }
-
-            var v = sender as TextInputView;
-            switch (v.Id)
-            {
-                case Resource.Id.textInputViewYear:
-                    _VM.Year = num;
-                    break;
-
-                case Resource.Id.textInputViewMonth:
-                    _VM.Month = num;
-                    break;
-
-                case Resource.Id.textInputViewDay:
-                    _VM.Day = num;
-                    break;
-
-                default:
-                    System.Diagnostics.Debug.WriteLine("unknown CTRL EVENT " + v.Id);
-                    break;
-            }
-        }
-
         private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
+            //System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
             switch (e.PropertyName)
             {
                 case nameof(_VM.CanCommit):
                     View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
                     break;
 
-                case nameof(_VM.Errors):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).Errors = _VM.Errors?[nameof(_VM.Year)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).Errors = _VM.Errors?[nameof(_VM.Month)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).Errors = _VM.Errors?[nameof(_VM.Day)];
-                    break;
-
-                case nameof(_VM.IsError):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).IsError = _VM.IsError[nameof(_VM.Year)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).IsError = _VM.IsError[nameof(_VM.Month)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).IsError = _VM.IsError[nameof(_VM.Day)];
-                    break;
-
-                case nameof(_VM.Year):
-                case nameof(_VM.Month):
-                case nameof(_VM.Day):
-                    var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender).ToString();
-                    if (v.Equals("0"))
-                    {
-                        v = "";
-                    }
-                    TextInputView c = null;
-                    switch (e.PropertyName)
-                    {
-                        case nameof(_VM.Year):
-                            c = View.FindViewById<TextInputView>(Resource.Id.textInputViewYear);
-                            break;
-                        case nameof(_VM.Month):
-                            c = View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth);
-                            break;
-                        case nameof(_VM.Day):
-                            c = View.FindViewById<TextInputView>(Resource.Id.textInputViewDay);
-                            break;
-                    }
-                    if (!c.Text.Equals(v))
-                    {
-                        c.Text = v;
-                    }
-                    break;
-
                 default:
-                    System.Diagnostics.Debug.WriteLine("unknown VM EVENT " + e.PropertyName);
+                    if (_TextInputViewBind.ContainsKey(e.PropertyName))
+                    {
+                        _TextInputViewBind.PropertyChanged(sender, e);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("unknown VM EVENT " + e.PropertyName);
+                    }
                     break;
             }
 

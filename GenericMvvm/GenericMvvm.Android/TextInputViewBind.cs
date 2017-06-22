@@ -117,6 +117,7 @@ namespace GenericMvvm.Droid
             if (PropName.ContainsKey(view.Id))
             {
                 var vmValue = ConvToViewModel(e.Text.ToString(), PropType[PropName[view.Id]]);
+                System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name, vmValue });
                 _VM.GetType().GetProperty(PropName[view.Id]).SetValue(_VM, vmValue);
             }
             else
@@ -124,17 +125,48 @@ namespace GenericMvvm.Droid
                 System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name, "UNKNOWN ResId=" + view.Id });
             }
         }
-
+        /// <summary>
+        /// コンバーター（コントロールからVMプロパティ型）
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="converterType"></param>
+        /// <returns></returns>
         private object ConvToViewModel(string v, ConverterType converterType)
         {
             if (converterType == ConverterType.INT)
             {
-                var result = Convert.ChangeType(v, TypeCode.Int32);
+                System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name, v });
+                var result = string.IsNullOrEmpty(v) ? 0 : Convert.ChangeType(v, TypeCode.Int32);
                 return result;
             }
             else
             {
                 return v;
+            }
+        }
+        /// <summary>
+        /// コンバーター（VMプロパティ型からコントロール）
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="converterType"></param>
+        /// <returns></returns>
+        private string ConvFromViewModel(object v, ConverterType converterType)
+        {
+            if (converterType == ConverterType.INT)
+            {
+                System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name, v.ToString() });
+                if ((int)v == 0)
+                {
+                    return "";
+                }
+                else
+                {
+                    return v.ToString();
+                }
+            }
+            else
+            {
+                return v.ToString();
             }
         }
 
@@ -164,7 +196,9 @@ namespace GenericMvvm.Droid
                 default:
                     if (ResId.ContainsKey(e.PropertyName))
                     {
-                        var value = sender.GetType().GetProperty(e.PropertyName).GetValue(sender) as string;
+                        var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender);
+                        System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name, v });
+                        var value = ConvFromViewModel(v, PropType[e.PropertyName]);
                         var control = _View.FindViewById<TextInputView>(ResId[e.PropertyName]);
                         
                         // VMからのイベントは循環しないように同じ値を設定しない
@@ -193,7 +227,8 @@ namespace GenericMvvm.Droid
             {
                 _View.FindViewById<TextInputView>(item.Key).TextChanged += TextChanged;
 
-                var value = _VM.GetType().GetProperty(item.Value).GetValue(_VM) as string;
+                var v = _VM.GetType().GetProperty(item.Value).GetValue(_VM);
+                var value = ConvFromViewModel(v, PropType[item.Value]);
                 _View.FindViewById<TextInputView>(item.Key).Text = value;
             }
         }
