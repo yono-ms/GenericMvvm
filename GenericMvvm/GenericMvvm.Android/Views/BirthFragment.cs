@@ -30,20 +30,32 @@ namespace GenericMvvm.Droid
         /// バインド情報
         /// </summary>
         TextInputViewBind _TextInputViewBind;
-
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
+        /// <param name="savedInstanceState"></param>
         public override void OnCreate(Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnCreate(savedInstanceState);
         }
-
+        /// <summary>
+        /// レイアウトからビューを構築する
+        /// </summary>
+        /// <param name="inflater"></param>
+        /// <param name="container"></param>
+        /// <param name="savedInstanceState"></param>
+        /// <returns></returns>
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
 
             return inflater.Inflate(Resource.Layout.Birth, container, false);
         }
-
+        /// <summary>
+        /// アクティビティを保存する
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnAttach(Context context)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -51,7 +63,9 @@ namespace GenericMvvm.Droid
 
             _MainActivity = context as MainActivity;
         }
-
+        /// <summary>
+        /// アクティビティをクリアする
+        /// </summary>
         public override void OnDetach()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -59,7 +73,10 @@ namespace GenericMvvm.Droid
 
             _MainActivity = null;
         }
-
+        /// <summary>
+        /// フォアグラウンド復帰
+        /// この画面の生成
+        /// </summary>
         public override void OnResume()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -70,9 +87,30 @@ namespace GenericMvvm.Droid
 
             // カスタムコントロールバインド情報
             _TextInputViewBind = new TextInputViewBind(View, _VM);
-            _TextInputViewBind.Add(nameof(_VM.Year), Resource.Id.textInputViewYear, _VM.YearTitle, TextInputViewBind.ConverterType.INT);
-            _TextInputViewBind.Add(nameof(_VM.Month), Resource.Id.textInputViewMonth, _VM.MonthTitle, TextInputViewBind.ConverterType.INT);
-            _TextInputViewBind.Add(nameof(_VM.Day), Resource.Id.textInputViewDay, _VM.DayTitle, TextInputViewBind.ConverterType.INT);
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.Year),
+                PropType = TextInputViewBind.ConverterType.INT,
+                ResId = Resource.Id.textInputViewYear,
+                InputType = Android.Text.InputTypes.ClassNumber,
+                Hint = _VM.YearTitle
+            });
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.Month),
+                PropType = TextInputViewBind.ConverterType.INT,
+                ResId = Resource.Id.textInputViewMonth,
+                InputType = Android.Text.InputTypes.ClassNumber,
+                Hint = _VM.MonthTitle
+            });
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName=nameof(_VM.Day),
+                PropType = TextInputViewBind.ConverterType.INT,
+                ResId = Resource.Id.textInputViewDay,
+                InputType = Android.Text.InputTypes.ClassNumber,
+                Hint = _VM.DayTitle
+            });
 
             // VMイベント
             _VM.PropertyChanged += _VM_PropertyChanged;
@@ -85,15 +123,14 @@ namespace GenericMvvm.Droid
             View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Text = _VM.CommitLabel;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
-            // 初期値設定 EditText
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewYear).InputType = Android.Text.InputTypes.ClassNumber;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewMonth).InputType = Android.Text.InputTypes.ClassNumber;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewDay).InputType = Android.Text.InputTypes.ClassNumber;
 
-            // TwoWay初期値設定
+            // 初期値設定 TwoWay
             _TextInputViewBind.Start();
         }
-
+        /// <summary>
+        /// バックグラウンド移行
+        /// この画面の廃棄
+        /// </summary>
         public override void OnPause()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -110,30 +147,43 @@ namespace GenericMvvm.Droid
 
             _VM = null;
         }
-
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
         public override void OnDestroy()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
         }
-
+        /// <summary>
+        /// ボタンイベント
+        /// この画面はボタンが1個
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BirthFragment_Click(object sender, EventArgs e)
         {
             _VM.Commit();
         }
-
+        /// <summary>
+        /// VMからの状態変化通知
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
+            //System.Diagnostics.Debug.WriteLine("-- BirthFragment {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
             switch (e.PropertyName)
             {
                 case nameof(_VM.CanCommit):
+                    // ボタン活性化
                     View.FindViewById<Button>(Resource.Id.buttonCommit).Enabled = _VM.CanCommit;
                     break;
 
                 default:
                     if (_TextInputViewBind.ContainsKey(e.PropertyName))
                     {
+                        // カスタムコントロールの状態変化
                         _TextInputViewBind.PropertyChanged(sender, e);
                     }
                     else

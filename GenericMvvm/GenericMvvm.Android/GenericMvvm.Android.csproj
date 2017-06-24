@@ -98,7 +98,6 @@
     <Compile Include="Views\FinishFragment.cs" />
     <Compile Include="Views\ConfirmFragment.cs" />
     <Compile Include="Views\AddressFragment.cs" />
-    <Compile Include="BindingInfo.cs" />
     <Compile Include="Views\BirthFragment.cs" />
     <Compile Include="CustomApplication.cs" />
     <Compile Include="Controls\TextInputView.cs" />

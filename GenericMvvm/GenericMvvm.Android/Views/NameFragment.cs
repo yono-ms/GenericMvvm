@@ -29,13 +29,22 @@ namespace GenericMvvm.Droid
         /// VMに依存するためバインド情報もフォアグラウンド復帰で生成しなおす
         /// </summary>
         TextInputViewBind _TextInputViewBind;
-
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
+        /// <param name="savedInstanceState"></param>
         public override void OnCreate(Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnCreate(savedInstanceState);
         }
-
+        /// <summary>
+        /// レイアウトからビューを構築する
+        /// </summary>
+        /// <param name="inflater"></param>
+        /// <param name="container"></param>
+        /// <param name="savedInstanceState"></param>
+        /// <returns></returns>
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -46,7 +55,10 @@ namespace GenericMvvm.Droid
             //var li = inflater.CloneInContext(wrapper);
             //return li.Inflate(Resource.Layout.Name, container, false);
         }
-
+        /// <summary>
+        /// アクティビティを保存する
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnAttach(Context context)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -54,7 +66,9 @@ namespace GenericMvvm.Droid
 
             _MainActivity = context as MainActivity;
         }
-
+        /// <summary>
+        /// アクティビティをクリアする
+        /// </summary>
         public override void OnDetach()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -76,8 +90,20 @@ namespace GenericMvvm.Droid
 
             // カスタムコントロールバインド情報
             _TextInputViewBind = new TextInputViewBind(View, _VM);
-            _TextInputViewBind.Add(nameof(_VM.LastName), Resource.Id.textInputViewLastName, _VM.LastNameTitle);
-            _TextInputViewBind.Add(nameof(_VM.FirstName), Resource.Id.textInputViewFirstName, _VM.FirstNameTitle);
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.LastName),
+                ResId = Resource.Id.textInputViewLastName,
+                InputType = Android.Text.InputTypes.ClassText,
+                Hint = _VM.LastNameTitle
+            });
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.FirstName),
+                ResId = Resource.Id.textInputViewFirstName,
+                InputType = Android.Text.InputTypes.ClassText,
+                Hint = _VM.FirstNameTitle
+            });
 
             // VMイベント
             _VM.PropertyChanged += _VM_PropertyChanged;
@@ -101,7 +127,7 @@ namespace GenericMvvm.Droid
             base.OnPause();
 
             // ここでバインド解除する
-            View.FindViewById<Button>(Resource.Id.buttonCommit).Click += NameFragment_Click;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Click -= NameFragment_Click;
 
             _TextInputViewBind.Stop();
 
@@ -111,13 +137,19 @@ namespace GenericMvvm.Droid
 
             _VM = null;
         }
-
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
         public override void OnDestroy()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
         }
-
+        /// <summary>
+        /// ボタンイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NameFragment_Click(object sender, System.EventArgs e)
         {
             var v = sender as Button;
@@ -134,13 +166,14 @@ namespace GenericMvvm.Droid
         }
 
         /// <summary>
+        /// VMからの状態変化通知
         /// VMからのイベントは循環しないように同じ値を設定しない
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
+            //System.Diagnostics.Debug.WriteLine("-- NameFragment {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
             switch (e.PropertyName)
             {
                 case nameof(_VM.CanCommit):
