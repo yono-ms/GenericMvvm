@@ -28,23 +28,35 @@ namespace GenericMvvm.Droid
         /// </summary>
         AddressViewModel _VM;
         /// <summary>
-        /// VMのプロパティ名からコントロールのリソースIDを得る辞書
+        /// バインド情報
         /// </summary>
-        Dictionary<string, int> _ResouceIds = new Dictionary<string, int>();
-
+        TextInputViewBind _TextInputViewBind;
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
+        /// <param name="savedInstanceState"></param>
         public override void OnCreate(Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnCreate(savedInstanceState);
         }
-
+        /// <summary>
+        /// レイアウトからビューを構築する
+        /// </summary>
+        /// <param name="inflater"></param>
+        /// <param name="container"></param>
+        /// <param name="savedInstanceState"></param>
+        /// <returns></returns>
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
 
             return inflater.Inflate(Resource.Layout.Address, container, false);
         }
-
+        /// <summary>
+        /// アクティビティを保存する
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnAttach(Context context)
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -52,7 +64,9 @@ namespace GenericMvvm.Droid
 
             _MainActivity = context as MainActivity;
         }
-
+        /// <summary>
+        /// アクティビティをクリアする
+        /// </summary>
         public override void OnDetach()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -60,7 +74,9 @@ namespace GenericMvvm.Droid
 
             _MainActivity = null;
         }
-
+        /// <summary>
+        /// フォアグラウンド復帰
+        /// </summary>
         public override void OnResume()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -69,18 +85,34 @@ namespace GenericMvvm.Droid
             // ビューモデル生成
             _VM = _MainActivity.BizLogic.GetViewModel<AddressViewModel>();
 
-            // 辞書作成
-            _ResouceIds.Add(nameof(_VM.PostalCode), Resource.Id.textInputViewPostalCode);
-            _ResouceIds.Add(nameof(_VM.Address), Resource.Id.textInputViewAddress);
-            _ResouceIds.Add(nameof(_VM.AddressKana), Resource.Id.textInputViewAddressKana);
+            // カスタムコントロールバインド情報
+            _TextInputViewBind = new TextInputViewBind(View, _VM);
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.PostalCode),
+                ResId = Resource.Id.textInputViewPostalCode,
+                InputType = Android.Text.InputTypes.ClassNumber,
+                Hint = _VM.PostalCodeTitle
+            });
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.Address),
+                ResId = Resource.Id.textInputViewAddress,
+                InputType = Android.Text.InputTypes.ClassText,
+                Hint = _VM.AddressTitle
+            });
+            _TextInputViewBind.Add(new TextInputViewBind.Info
+            {
+                PropName = nameof(_VM.AddressKana),
+                ResId = Resource.Id.textInputViewAddressKana,
+                InputType = Android.Text.InputTypes.ClassText,
+                Hint = _VM.AddressKanaTitle
+            });
 
             // VMイベント
             _VM.PropertyChanged += _VM_PropertyChanged;
 
             // コントロールイベント
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).TextChanged += AddressFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).TextChanged += AddressFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).TextChanged += AddressFragment_TextChanged;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click += AddressFragment_Click;
             View.FindViewById<Button>(Resource.Id.buttonGet).Click += AddressFragment_Click;
             View.FindViewById<Button>(Resource.Id.buttonCopy).Click += AddressFragment_Click;
@@ -93,16 +125,10 @@ namespace GenericMvvm.Droid
             View.FindViewById<Button>(Resource.Id.buttonGet).Enabled = _VM.CanCommandGet;
             View.FindViewById<Button>(Resource.Id.buttonCopy).Text = _VM.CommanCopyLabel;
             View.FindViewById<Button>(Resource.Id.buttonCopy).Enabled = _VM.CanCommandCopy;
-            // 初期値設定 EditText
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Text = _VM.PostalCode;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Hint = _VM.PostalCodeTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).InputType = Android.Text.InputTypes.ClassNumber;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Text = _VM.Address;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Hint = _VM.AddressTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).InputType = Android.Text.InputTypes.ClassText;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Text = _VM.AddressKana;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Hint = _VM.AddressKanaTitle;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).InputType = Android.Text.InputTypes.ClassText;
+
+            // 初期値設定 TwoWay
+            _TextInputViewBind.Start();
+
             // 初期値設定 Recycler
             if (string.IsNullOrEmpty(_VM.ResponseResultHeader))
             {
@@ -119,35 +145,42 @@ namespace GenericMvvm.Droid
             adapter.ItemClick += Adapter_ItemClick;
             recyclerView.SetAdapter(adapter);
         }
-
+        /// <summary>
+        /// バックグラウンド移行
+        /// </summary>
         public override void OnPause()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnPause();
 
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).TextChanged -= AddressFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).TextChanged -= AddressFragment_TextChanged;
-            View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).TextChanged -= AddressFragment_TextChanged;
             View.FindViewById<Button>(Resource.Id.buttonCommit).Click -= AddressFragment_Click;
             View.FindViewById<Button>(Resource.Id.buttonGet).Click -= AddressFragment_Click;
             View.FindViewById<Button>(Resource.Id.buttonCopy).Click -= AddressFragment_Click;
+
+            _TextInputViewBind.Stop();
 
             var recyclerView = View.FindViewById<RecyclerView>(Resource.Id.recyclerView);
             (recyclerView.GetAdapter() as AddressAdapter).ItemClick -= Adapter_ItemClick;
 
             _VM.PropertyChanged -= _VM_PropertyChanged;
 
-            _ResouceIds.Clear();
+            _TextInputViewBind = null;
 
             _VM = null;
         }
-
+        /// <summary>
+        /// ここでは何もしない
+        /// </summary>
         public override void OnDestroy()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
         }
-
+        /// <summary>
+        /// ボタンイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddressFragment_Click(object sender, EventArgs e)
         {
             var view = sender as Button;
@@ -170,35 +203,21 @@ namespace GenericMvvm.Droid
                     break;
             }
         }
-
+        /// <summary>
+        /// リサイクラーイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Adapter_ItemClick(object sender, AddressAdapterClickEventArgs e)
         {
             _VM.SelectedIndex = e.Position;
         }
 
-        private void AddressFragment_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            var view = sender as TextInputView;
-            switch (view.Id)
-            {
-                case Resource.Id.textInputViewPostalCode:
-                    _VM.PostalCode = View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Text;
-                    break;
-
-                case Resource.Id.textInputViewAddress:
-                    _VM.Address = View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Text;
-                    break;
-
-                case Resource.Id.textInputViewAddressKana:
-                    _VM.AddressKana = View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Text;
-                    break;
-
-                default:
-                    System.Diagnostics.Debug.WriteLine("unknown CTRL EVENT " + view.Id);
-                    break;
-            }
-        }
-
+        /// <summary>
+        /// VMからの状態変化通知
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -213,18 +232,6 @@ namespace GenericMvvm.Droid
 
                 case nameof(_VM.CanCommandCopy):
                     View.FindViewById<Button>(Resource.Id.buttonCopy).Enabled = _VM.CanCommandCopy;
-                    break;
-
-                case nameof(_VM.Errors):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).Errors = _VM.Errors?[nameof(_VM.PostalCode)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).Errors = _VM.Errors?[nameof(_VM.Address)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).Errors = _VM.Errors?[nameof(_VM.AddressKana)];
-                    break;
-
-                case nameof(_VM.IsError):
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewPostalCode).IsError = _VM.IsError[nameof(_VM.PostalCode)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewAddress).IsError = _VM.IsError[nameof(_VM.Address)];
-                    View.FindViewById<TextInputView>(Resource.Id.textInputViewAddressKana).IsError = _VM.IsError[nameof(_VM.AddressKana)];
                     break;
 
                 case nameof(_VM.ResponseResultHeader):
@@ -248,16 +255,10 @@ namespace GenericMvvm.Droid
                     break;
 
                 default:
-                    if (_ResouceIds.ContainsKey(e.PropertyName))
+                    if (_TextInputViewBind.ContainsKey(e.PropertyName))
                     {
-                        System.Diagnostics.Debug.WriteLine("-- PropertyChanged {0} {1}", new[] { MethodBase.GetCurrentMethod().Name, e.PropertyName });
-                        var v = sender.GetType().GetProperty(e.PropertyName).GetValue(sender).ToString();
-                        var c = View.FindViewById<TextInputView>(_ResouceIds[e.PropertyName]);
-                        if (!v.Equals(c.Text))
-                        {
-                            c.Text = v;
-                            System.Diagnostics.Debug.WriteLine("{0}={1}", new[] { e.PropertyName, v});
-                        }
+                        // カスタムコントロールの状態変化
+                        _TextInputViewBind.PropertyChanged(sender, e);
                     }
                     else
                     {

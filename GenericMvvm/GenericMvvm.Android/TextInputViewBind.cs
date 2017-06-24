@@ -219,6 +219,11 @@ namespace GenericMvvm.Droid
         /// <returns></returns>
         private string ConvFromViewModel(object v, ConverterType converterType)
         {
+            if (v == null)
+            {
+                return "";
+            }
+
             // ToStringで処理しきれない型は個別に実装が必要
             if (converterType == ConverterType.INT)
             {
