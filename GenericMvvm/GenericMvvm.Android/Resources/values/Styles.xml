@@ -10,6 +10,10 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
 
+    <!-- ボタン -->
+    <item name="colorButtonNormal">@color/colorButtonNormal</item>
+    <item name="colorControlHighlight">@color/colorControlHighlight</item>
+
     <!-- ここが有効になってない -->
     <item name="android:fragmentEnterTransition">@transition/enter_transition</item>
     <item name="android:fragmentExitTransition">@transition/exit_transition</item>

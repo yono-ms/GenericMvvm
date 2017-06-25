@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#1A237E</color>
-  <color name="colorAccent">#2020FF</color>
+  <color name="colorPrimary">#673AB7</color>
+  <color name="colorPrimaryDark">#512DA8</color>
+  <color name="colorAccent">#3D5AFE</color>
   
-  <color name="colorGuard">#20FF0000</color>
+  <color name="colorButtonNormal">#B39DDB</color>
+  <color name="colorControlHighlight">#F48FB1</color>
+  
+  <color name="colorGuard">#10FF0000</color>
 
-  <color name="colorDescription">#2000FF00</color>
-  <color name="colorTextInputView">#2000FFFF</color>
+  <color name="colorDescription">#40B39DDB</color>
+  <color name="colorTextInputView">#40D1C4E9</color>
   
 </resources>
