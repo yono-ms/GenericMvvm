@@ -102,6 +102,7 @@ namespace GenericMvvm.Droid
                 PropName = nameof(_VM.FirstName),
                 ResId = Resource.Id.textInputViewFirstName,
                 InputType = Android.Text.InputTypes.ClassText,
+                ImeOption = Android.Views.InputMethods.ImeAction.Done,
                 Hint = _VM.FirstNameTitle
             });
 

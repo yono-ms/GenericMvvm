@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Reflection;
+using Android.Views.InputMethods;
+using Android.Text;
 
 namespace GenericMvvm.Droid
 {
@@ -55,7 +57,11 @@ namespace GenericMvvm.Droid
             /// <summary>
             /// コントロールの入力タイプ
             /// </summary>
-            public Android.Text.InputTypes InputType { get; set; }
+            public InputTypes InputType { get; set; }
+            /// <summary>
+            /// コントロールのIMEアクション
+            /// </summary>
+            public ImeAction ImeOption { get; set; }
             /// <summary>
             /// コントロールのタイトルテキスト
             /// </summary>
@@ -68,6 +74,9 @@ namespace GenericMvvm.Droid
             {
                 // 変換タイプは指定しなければ無変換
                 PropType = ConverterType.NONE;
+
+                // IMEアクションは指定しなければNext
+                ImeOption = ImeAction.Next;
             }
             /// <summary>
             /// デバッグ用表示
@@ -142,6 +151,7 @@ namespace GenericMvvm.Droid
             PropType.Add(info.PropName, info.PropType);
             _View.FindViewById<TextInputView>(info.ResId).Hint = info.Hint;
             _View.FindViewById<TextInputView>(info.ResId).InputType = info.InputType;
+            _View.FindViewById<TextInputView>(info.ResId).ImeOptions = info.ImeOption;
         }
         /// <summary>
         /// VMのプロパティ名で検索

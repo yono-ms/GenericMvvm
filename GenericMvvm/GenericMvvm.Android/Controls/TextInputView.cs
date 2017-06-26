@@ -12,12 +12,21 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.Design.Widget;
 using Android.Text;
+using static Android.Widget.TextView;
+using Android.Views.InputMethods;
+using System.Reflection;
 
 namespace GenericMvvm.Droid
 {
     public class TextInputView : LinearLayout
     {
         public event EventHandler<Android.Text.TextChangedEventArgs> TextChanged;
+
+        public ImeAction ImeOptions
+        {
+            get { return FindViewById<TextInputEditText>(Resource.Id.textInputEditText).ImeOptions; }
+            set { FindViewById<TextInputEditText>(Resource.Id.textInputEditText).ImeOptions = value; }
+        }
 
         public InputTypes InputType
         {
@@ -63,12 +72,44 @@ namespace GenericMvvm.Droid
         {
             Inflate(Context, Resource.Layout.TextInputView, this);
 
-            FindViewById<TextInputEditText>(Resource.Id.textInputEditText).TextChanged += TextInputView_TextChanged;
+            var textInputEditText = FindViewById<TextInputEditText>(Resource.Id.textInputEditText);
+
+            textInputEditText.TextChanged += TextInputView_TextChanged;
+            textInputEditText.SetOnEditorActionListener(new OnEditorActionListener());
         }
 
         private void TextInputView_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             TextChanged?.Invoke(this, e);
+        }
+
+        public class OnEditorActionListener : Java.Lang.Object, IOnEditorActionListener
+        {
+            public bool OnEditorAction(TextView v, [GeneratedEnum] ImeAction actionId, KeyEvent e)
+            {
+                System.Diagnostics.Debug.WriteLine("{0} ACTION={1} EVENT={2}", new[]
+                {
+                    MethodBase.GetCurrentMethod().Name,
+                    actionId.ToString(),
+                    e?.ToString()
+                });
+
+                if (actionId == ImeAction.Done)
+                {
+                    // 終わりのアクション
+                    var imm = v.Context.GetSystemService(Context.InputMethodService) as InputMethodManager;
+                    imm.HideSoftInputFromWindow(v.WindowToken, HideSoftInputFlags.None);
+
+                    // ここでクリアすると先頭に移動するらしい
+                    v.ClearFocus();
+
+                    // イベント消費完了の場合は真を返す
+                    return true;
+                }
+
+                // ここでは何もせずにシステムに渡すときは偽を返す
+                return false;
+            }
         }
     }
 }
