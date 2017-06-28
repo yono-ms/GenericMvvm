@@ -254,6 +254,10 @@ namespace GenericMvvm.Droid
                     recyclerView.SetAdapter(adapter);
                     break;
 
+                case nameof(_VM.SelectedIndex):
+                    (View.FindViewById<RecyclerView>(Resource.Id.recyclerView).GetAdapter() as AddressAdapter).SelectedIndex = _VM.SelectedIndex;
+                    break;
+
                 default:
                     if (_TextInputViewBind.ContainsKey(e.PropertyName))
                     {
