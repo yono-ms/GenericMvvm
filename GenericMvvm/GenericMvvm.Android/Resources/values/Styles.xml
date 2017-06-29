@@ -14,10 +14,5 @@
     <item name="colorButtonNormal">@color/colorButtonNormal</item>
     <item name="colorControlHighlight">@color/colorControlHighlight</item>
 
-    <!-- ここが有効になってない -->
-    <item name="android:fragmentEnterTransition">@transition/enter_transition</item>
-    <item name="android:fragmentExitTransition">@transition/exit_transition</item>
-    <item name="android:fragmentReenterTransition">@transition/reenter_transition</item>
-    <item name="android:fragmentReturnTransition">@transition/return_transition</item>
   </style>
 </resources>

@@ -4399,12 +4399,6 @@ namespace GenericMvvm.Droid
 			// aapt resource value: 0x7f060001
 			public const int exit_transition = 2131099649;
 			
-			// aapt resource value: 0x7f060002
-			public const int reenter_transition = 2131099650;
-			
-			// aapt resource value: 0x7f060003
-			public const int return_transition = 2131099651;
-			
 			static Transition()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

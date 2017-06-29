@@ -45,8 +45,6 @@ namespace GenericMvvm.Droid
             var ti = TransitionInflater.From(this);
             firstFragment.EnterTransition = ti.InflateTransition(Resource.Transition.enter_transition);
             firstFragment.ExitTransition = ti.InflateTransition(Resource.Transition.exit_transition);
-            firstFragment.ReenterTransition = ti.InflateTransition(Resource.Transition.reenter_transition);
-            firstFragment.ReturnTransition = ti.InflateTransition(Resource.Transition.return_transition);
             SupportFragmentManager.BeginTransaction().Add(Resource.Id.frameLayoutContent, firstFragment).Commit();
 
             // この構成ではBizLogicの状態だけでやりなす必要があるかを判断できる
@@ -161,14 +159,14 @@ namespace GenericMvvm.Droid
         /// <param name="forward"></param>
         public void NavigateTo(Type page, bool forward)
         {
-            var fragment = Activator.CreateInstance(page) as Fragment;
+            var next = Activator.CreateInstance(page) as Fragment;
+            var prev = SupportFragmentManager.FindFragmentById(Resource.Id.frameLayoutContent);
+
             // ソースで書かないとトランジッションアニメーションが効かない
             var ti = TransitionInflater.From(this);
-            fragment.EnterTransition = ti.InflateTransition(Resource.Transition.enter_transition);
-            fragment.ExitTransition = ti.InflateTransition(Resource.Transition.exit_transition);
-            fragment.ReenterTransition = ti.InflateTransition(Resource.Transition.reenter_transition);
-            fragment.ReturnTransition = ti.InflateTransition(Resource.Transition.return_transition);
-            SupportFragmentManager.BeginTransaction().Replace(Resource.Id.frameLayoutContent, fragment).Commit();
+            next.EnterTransition = ti.InflateTransition(forward ? Resource.Transition.enter_transition : Resource.Transition.exit_transition);
+            prev.ExitTransition = ti.InflateTransition(forward ? Resource.Transition.exit_transition : Resource.Transition.enter_transition);
+            SupportFragmentManager.BeginTransaction().Replace(Resource.Id.frameLayoutContent, next).Commit();
         }
 
         protected override void OnRestart()

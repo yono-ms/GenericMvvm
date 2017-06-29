@@ -212,12 +212,6 @@
     <AndroidResource Include="Resources\transition\exit_transition.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\transition\return_transition.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\transition\reenter_transition.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\background_01.xml" />
   </ItemGroup>
   <ItemGroup>
