@@ -92,6 +92,7 @@ namespace GenericMvvm.Droid
                 PropName = nameof(_VM.PostalCode),
                 ResId = Resource.Id.textInputViewPostalCode,
                 InputType = Android.Text.InputTypes.ClassNumber,
+                ImeOption = Android.Views.InputMethods.ImeAction.Done,
                 Hint = _VM.PostalCodeTitle
             });
             _TextInputViewBind.Add(new TextInputViewBind.Info
