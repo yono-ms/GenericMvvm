@@ -7,7 +7,7 @@
   <color name="colorButtonNormal">#B39DDB</color>
   <color name="colorControlHighlight">#F48FB1</color>
   
-  <color name="colorGuard">#10FF0000</color>
+  <color name="colorGuard">#10000000</color>
 
   <color name="colorDescription">#40B39DDB</color>
   <color name="colorTextInputView">#40D1C4E9</color>
