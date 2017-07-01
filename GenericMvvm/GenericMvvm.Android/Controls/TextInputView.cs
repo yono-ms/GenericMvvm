@@ -15,6 +15,10 @@ using Android.Text;
 using static Android.Widget.TextView;
 using Android.Views.InputMethods;
 using System.Reflection;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V4.Content;
 
 namespace GenericMvvm.Droid
 {
@@ -56,7 +60,7 @@ namespace GenericMvvm.Droid
         }
         /// <summary>
         /// プレースホルダー兼タイトル
-        /// マテリアルの場合はタイトルが未入力時のプレースホルダーになっている
+        /// フローティングラベルの場合はタイトルが未入力時のプレースホルダーになっている
         /// </summary>
         public string Hint
         {
@@ -68,15 +72,69 @@ namespace GenericMvvm.Droid
         /// </summary>
         public IEnumerable<string> Errors
         {
-            set { FindViewById<TextInputLayout>(Resource.Id.textInputLayout).Error = (value==null) ? null : string.Join("\n", value); }
+            set
+            {
+                // フローティングラベルが未入力エラー時に誤動作する対応
+                // 必須バリデーションの判定
+                if (value != null && value.Count() > 0 && string.IsNullOrEmpty(Text))
+                {
+                    // 必須でエラーの場合
+                    FindViewById<TextInputLayout>(Resource.Id.textInputLayout).Error = null;
+                }
+                else
+                {
+                    FindViewById<TextInputLayout>(Resource.Id.textInputLayout).Error = (value == null) ? null : string.Join("\n", value);
+                }
+            }
         }
         /// <summary>
         /// エラー発生中は真
         /// </summary>
         public bool IsError
         {
-            set { FindViewById<TextInputLayout>(Resource.Id.textInputLayout).ErrorEnabled = value; }
+            set
+            {
+                // フローティングラベルが未入力エラー時に誤動作する対応
+                if (value)
+                {
+                    // エラー
+                    if (string.IsNullOrEmpty(Text))
+                    {
+                        // 必須エラー
+                        FindViewById<TextInputLayout>(Resource.Id.textInputLayout).ErrorEnabled = false;
+                        FindViewById<ImageView>(Resource.Id.imageViewRequired).SetImageDrawable(GetRequiredDrawable(Resource.Color.colorRequiredError));
+                    }
+                    else
+                    {
+                        // その他のエラー
+                        FindViewById<TextInputLayout>(Resource.Id.textInputLayout).ErrorEnabled = value;
+                        FindViewById<ImageView>(Resource.Id.imageViewRequired).SetImageDrawable(GetRequiredDrawable(Resource.Color.colorRequiredInfo));
+                    }
+
+                    FindViewById<ImageView>(Resource.Id.imageViewRequired).Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    // 正常
+                    FindViewById<TextInputLayout>(Resource.Id.textInputLayout).ErrorEnabled = value;
+                    FindViewById<ImageView>(Resource.Id.imageViewRequired).Visibility = ViewStates.Gone;
+                }
+            }
         }
+        /// <summary>
+        /// 着色した必須アイコン画像を得る
+        /// 下位互換のためサポートライブラリで着色する
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        private Drawable GetRequiredDrawable(int c)
+        {
+            var d = DrawableCompat.Wrap(ContextCompat.GetDrawable(Context, Android.Resource.Drawable.IcDialogAlert));
+            DrawableCompat.SetTint(d, ContextCompat.GetColor(Context, c));
+            DrawableCompat.SetTintMode(d, PorterDuff.Mode.SrcIn);
+            return d;
+        }
+
         /// <summary>
         /// コンストラクタ２
         /// </summary>

@@ -9,6 +9,9 @@
   
   <color name="colorGuard">#10000000</color>
 
+  <color name="colorRequiredError">#FF0000</color>
+  <color name="colorRequiredInfo">#FFFF00</color>
+
   <color name="colorDescription">#40B39DDB</color>
   <color name="colorTextInputView">#40D1C4E9</color>
   

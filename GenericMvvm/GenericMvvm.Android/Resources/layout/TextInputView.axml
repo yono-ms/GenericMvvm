@@ -7,6 +7,11 @@
     android:padding="8dp"
     android:background="@color/colorTextInputView"
     android:focusable="true">
+    <ImageView
+        android:src="@android:drawable/ic_dialog_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewRequired" />
     <android.support.design.widget.TextInputLayout
         android:minWidth="25px"
         android:minHeight="25px"
