@@ -109,6 +109,7 @@ namespace GenericMvvm.Droid
                 PropType = TextInputViewBind.ConverterType.INT,
                 ResId = Resource.Id.textInputViewDay,
                 InputType = Android.Text.InputTypes.ClassNumber,
+                ImeOption = Android.Views.InputMethods.ImeAction.Done,
                 Hint = _VM.DayTitle
             });
 
