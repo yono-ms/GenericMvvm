@@ -146,6 +146,11 @@ namespace GenericMvvm.Droid
             var adapter = new AddressAdapter(_VM.ResponseResults);
             adapter.ItemClick += Adapter_ItemClick;
             recyclerView.SetAdapter(adapter);
+
+            if (_VM.ResponseResults != null)
+            {
+                _VM.ResponseResults.CollectionChanged += ResponseResults_CollectionChanged;
+            }
         }
         /// <summary>
         /// バックグラウンド移行
@@ -163,6 +168,11 @@ namespace GenericMvvm.Droid
 
             var recyclerView = View.FindViewById<RecyclerView>(Resource.Id.recyclerView);
             (recyclerView.GetAdapter() as AddressAdapter).ItemClick -= Adapter_ItemClick;
+
+            if (_VM.ResponseResults != null)
+            {
+                _VM.ResponseResults.CollectionChanged -= ResponseResults_CollectionChanged;
+            }
 
             _VM.PropertyChanged -= _VM_PropertyChanged;
 
