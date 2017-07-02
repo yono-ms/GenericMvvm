@@ -25,8 +25,8 @@ namespace GenericMvvm.Droid
                 var oldIndex = _SelectedIndex;
                 _SelectedIndex = value;
 
-                NotifyItemChanged(oldIndex);
                 NotifyItemChanged(_SelectedIndex);
+                NotifyItemChanged(oldIndex);
             }
         }
 
