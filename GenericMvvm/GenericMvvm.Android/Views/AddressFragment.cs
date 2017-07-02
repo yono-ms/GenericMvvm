@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using System.Reflection;
 using Android.Support.V7.Widget;
+using System.Collections.Specialized;
 
 namespace GenericMvvm.Droid
 {
@@ -253,6 +254,7 @@ namespace GenericMvvm.Droid
                     var adapter = new AddressAdapter(_VM.ResponseResults);
                     adapter.ItemClick += Adapter_ItemClick;
                     recyclerView.SetAdapter(adapter);
+                    _VM.ResponseResults.CollectionChanged += ResponseResults_CollectionChanged;
                     break;
 
                 case nameof(_VM.SelectedIndex):
@@ -269,6 +271,49 @@ namespace GenericMvvm.Droid
                     {
                         System.Diagnostics.Debug.WriteLine("unknown VM EVENT " + e.PropertyName);
                     }
+                    break;
+            }
+        }
+
+        private void ResponseResults_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var recyclerView = View.FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            var adapter = recyclerView.GetAdapter() as AddressAdapter;
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (e.NewItems.Count > 1)
+                    {
+                        // ï°êî
+                        adapter.NotifyItemRangeInserted(e.NewStartingIndex, e.NewItems.Count);
+                    }
+                    else
+                    {
+                        // íPêî
+                        adapter.NotifyItemInserted(e.NewStartingIndex);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    if (e.OldItems.Count > 1)
+                    {
+                        // ï°êî
+                        adapter.NotifyItemRangeRemoved(e.OldStartingIndex, e.OldItems.Count);
+                    }
+                    else
+                    {
+                        // íPêî
+                        adapter.NotifyItemRemoved(e.OldStartingIndex);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    adapter.NotifyDataSetChanged();
+                    break;
+
+                default:
+                    System.Diagnostics.Debug.WriteLine("unknown ACTION " + e.Action);
                     break;
             }
         }

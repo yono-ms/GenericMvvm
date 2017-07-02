@@ -474,14 +474,30 @@ namespace GenericMvvm
                             }
                             else
                             {
+                                // 結果クリア
+                                avm.ResponseResultHeader = null;
                                 if (avm.ResponseResults == null)
                                 {
                                     avm.ResponseResults = new ObservableCollection<ZipCloudResponse.result>();
                                 }
-                                // プロパティ更新
-                                foreach (var item in resp.results)
+                                else
                                 {
-                                    avm.ResponseResults.Add(item);
+                                    avm.ResponseResults.Clear();
+                                }
+
+                                // 検索結果有無
+                                if (resp.results != null)
+                                {
+                                    // プロパティ更新
+                                    foreach (var item in resp.results)
+                                    {
+                                        avm.ResponseResults.Add(item);
+                                    }
+                                }
+                                else
+                                {
+                                    // プロパティ更新
+                                    avm.ResponseResultHeader = "住所がありません";
                                 }
                             }
                         }
