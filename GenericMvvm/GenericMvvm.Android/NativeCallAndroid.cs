@@ -13,6 +13,10 @@ using System.Threading;
 
 namespace GenericMvvm.Droid
 {
+    /// <summary>
+    /// AndroidのOS依存部分
+    /// この実装ではMainActivityの存在が前提となっている
+    /// </summary>
     class NativeCallAndroid : INativeCall
     {
         private MainActivity _Activity;
@@ -21,7 +25,10 @@ namespace GenericMvvm.Droid
         private const string KEY = "AppPreference";
 
         private Dictionary<string, Type> _StringToPages;
-
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="activity"></param>
         public NativeCallAndroid(MainActivity activity)
         {
             _Activity = activity;
@@ -56,6 +63,7 @@ namespace GenericMvvm.Droid
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Toast.MakeText(_Activity, ex.Message, ToastLength.Long).Show();
             }
             finally
             {
@@ -63,7 +71,11 @@ namespace GenericMvvm.Droid
             }
             return result;
         }
-
+        /// <summary>
+        /// 画面遷移
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="forward"></param>
         public void NavigateTo(string page, bool forward)
         {
             if (_StringToPages.ContainsKey(page))
@@ -72,7 +84,9 @@ namespace GenericMvvm.Droid
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("NO PAGE " + page);
+                var message = string.Format("ページ {0} が存在しません。", page);
+                System.Diagnostics.Debug.WriteLine(message);
+                Toast.MakeText(_Activity, message, ToastLength.Long).Show();
             }
         }
 
@@ -108,6 +122,7 @@ namespace GenericMvvm.Droid
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Toast.MakeText(_Activity, ex.Message, ToastLength.Long).Show();
             }
             finally
             {
@@ -135,12 +150,17 @@ namespace GenericMvvm.Droid
             var result = await tcs.Task;
             return result;
         }
-
+        /// <summary>
+        /// UIスレッドで実行する
+        /// </summary>
+        /// <param name="callback"></param>
         public void RunUIThread(Action callback)
         {
             _Activity.RunOnUiThread(callback);
         }
-
+        /// <summary>
+        /// アプリを終了する
+        /// </summary>
         public void ExitApplication()
         {
             _Activity.MoveTaskToBack(true);
