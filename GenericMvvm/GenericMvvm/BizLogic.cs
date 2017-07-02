@@ -436,8 +436,15 @@ namespace GenericMvvm
             var avm = _Instances[typeof(AddressViewModel)] as AddressViewModel;
 
             // エラークリア
-            mvm.ObjectErrors = null;
-            mvm.ObjectErrors = new ObservableCollection<string>();
+            if (mvm.ObjectErrors == null)
+            {
+                mvm.ObjectErrors = new ObservableCollection<string>();
+            }
+            else
+            {
+                mvm.ObjectErrors.Clear();
+            }
+            
 
             if (avm != null)
             {
@@ -467,8 +474,15 @@ namespace GenericMvvm
                             }
                             else
                             {
+                                if (avm.ResponseResults == null)
+                                {
+                                    avm.ResponseResults = new ObservableCollection<ZipCloudResponse.result>();
+                                }
                                 // プロパティ更新
-                                avm.ResponseResults = resp.results;
+                                foreach (var item in resp.results)
+                                {
+                                    avm.ResponseResults.Add(item);
+                                }
                             }
                         }
                         else

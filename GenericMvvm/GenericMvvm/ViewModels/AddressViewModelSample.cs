@@ -36,7 +36,7 @@ namespace GenericMvvm
                 kana3 = "ﾋﾟﾖﾋﾟﾖﾑﾗ"
             });
 
-            ResponseResults = list;
+            ResponseResults = new ObservableCollection<ZipCloudResponse.result>(list);
             ResponseResultHeader = "検索結果のヘッダ";
 
             _Dict.Add("PostalCode", new ObservableCollection<string>(new[] { "エラーサンプル1", "サンプル2" }));

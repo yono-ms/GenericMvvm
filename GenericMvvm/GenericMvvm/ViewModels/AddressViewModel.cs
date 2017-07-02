@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -56,11 +57,11 @@ namespace GenericMvvm
             set { _AddressKana = value; ValidateProperty(nameof(AddressKana), value); }
         }
 
-        private IEnumerable<ZipCloudResponse.result> _ResponseResults;
+        private ObservableCollection<ZipCloudResponse.result> _ResponseResults;
         /// <summary>
         /// 検索結果
         /// </summary>
-        public IEnumerable<ZipCloudResponse.result> ResponseResults
+        public ObservableCollection<ZipCloudResponse.result> ResponseResults
         {
             get { return _ResponseResults; }
             set
