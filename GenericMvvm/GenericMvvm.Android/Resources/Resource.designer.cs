@@ -1641,6 +1641,9 @@ namespace GenericMvvm.Droid
 			// aapt resource value: 0x7f070007
 			public const int abc_text_size_title_material_toolbar = 2131165191;
 			
+			// aapt resource value: 0x7f07008d
+			public const int check_icon_size = 2131165325;
+			
 			// aapt resource value: 0x7f07008b
 			public const int content_horizontal_margin = 2131165323;
 			
