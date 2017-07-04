@@ -41,19 +41,19 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/buttonGet"
                 android:layout_marginBottom="@dimen/content_vertical_margin" />
-            <TextView
+            <TextView xmlns:tools="http://schemas.android.com/tools"
                 android:text="リストヘッダ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewHeader"
-                xmlns:tools="http://schemas.android.com/tools"
                 tools:visibility="visible"
                 android:visibility="gone" />
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recyclerView"
-                android:layout_marginBottom="@dimen/content_vertical_margin" />
+                android:layout_marginBottom="@dimen/content_vertical_margin"
+                android:background="#A0FFFFFF" />
             <Button
                 android:text="コピー"
                 android:layout_width="match_parent"

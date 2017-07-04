@@ -142,7 +142,10 @@ namespace GenericMvvm.Droid
                 View.FindViewById<TextView>(Resource.Id.textViewHeader).Visibility = ViewStates.Visible;
             }
             var recyclerView = View.FindViewById<RecyclerView>(Resource.Id.recyclerView);
-            recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+            var layoutManager = new LinearLayoutManager(Context);
+            recyclerView.SetLayoutManager(layoutManager);
+            var divider = new DividerItemDecoration(Context, layoutManager.Orientation);
+            recyclerView.AddItemDecoration(divider);
             var adapter = new AddressAdapter(_VM.ResponseResults);
             adapter.ItemClick += Adapter_ItemClick;
             recyclerView.SetAdapter(adapter);
