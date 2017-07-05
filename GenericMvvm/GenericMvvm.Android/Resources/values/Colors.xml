@@ -6,6 +6,8 @@
   
   <color name="colorButtonNormal">#B39DDB</color>
   <color name="colorControlHighlight">#F48FB1</color>
+
+  <color name="colorSecondary">#90CAF9</color>
   
   <color name="colorGuard">#10000000</color>
 
