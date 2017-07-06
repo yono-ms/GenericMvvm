@@ -52,6 +52,12 @@ namespace GenericMvvm.Droid
             {
                 System.Diagnostics.Debug.WriteLine("BizLogic復元ルート");
 
+                // 回転対応のためにクリア
+                var current = SupportFragmentManager.FindFragmentById(Resource.Id.frameLayoutContent);
+                if (current != null) {
+                    SupportFragmentManager.BeginTransaction().Remove(current).Commit();
+                }
+
                 // アプリケーションを復元する
                 Task.Run(async () =>
                 {
@@ -193,6 +199,11 @@ namespace GenericMvvm.Droid
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnStop();
+        }
+        protected override void OnDestroy()
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnDestroy();
         }
     }
 }
