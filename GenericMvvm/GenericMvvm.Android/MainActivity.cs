@@ -20,7 +20,7 @@ using System.ComponentModel;
 
 namespace GenericMvvm.Droid
 {
-	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/AppTheme")]
+	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/AppTheme", WindowSoftInputMode = SoftInput.AdjustPan)]
 	public class MainActivity : AppCompatActivity
 	{
         const string FORMAT = "----ActivityEvent---- {0}";
