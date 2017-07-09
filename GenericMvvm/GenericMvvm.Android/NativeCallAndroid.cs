@@ -136,15 +136,19 @@ namespace GenericMvvm.Droid
 
             _Activity.RunOnUiThread(() =>
             {
-                var dialog = new AlertDialog.Builder(_Activity);
-                dialog.SetTitle(title);
-                dialog.SetMessage(message);
-                dialog.SetPositiveButton(labelYes, (s, e) => { tcs.SetResult(true); });
-                if (!string.IsNullOrEmpty(labelNo))
+                var fragment = CustomDialogFragment.NewInstance(title, message, labelYes, labelNo);
+                _Activity.DialogClick += (s, e) =>
                 {
-                    dialog.SetNegativeButton(labelNo, (s, e) => { tcs.SetResult(false); });
-                }
-                dialog.Show();
+                    if (e.Label.Equals(labelYes))
+                    {
+                        tcs.TrySetResult(true);
+                    }
+                    else
+                    {
+                        tcs.TrySetResult(false);
+                    }
+                };
+                fragment.Show(_Activity.SupportFragmentManager, "dialog");
             });
 
             var result = await tcs.Task;

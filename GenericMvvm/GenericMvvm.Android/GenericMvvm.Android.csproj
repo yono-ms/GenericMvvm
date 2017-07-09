@@ -94,6 +94,7 @@
     <Compile Include="Adapters\AddressAdapter.cs" />
     <Compile Include="Adapters\ConfirmAdapter.cs" />
     <Compile Include="Adapters\ErrorAdapter.cs" />
+    <Compile Include="CustomDialogFragment.cs" />
     <Compile Include="TextInputViewBind.cs" />
     <Compile Include="Views\FinishFragment.cs" />
     <Compile Include="Views\ConfirmFragment.cs" />

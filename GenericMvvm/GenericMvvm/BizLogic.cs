@@ -384,6 +384,11 @@ namespace GenericMvvm
             var vmi = _ViewModelInfos[CurrentPage];
             var page = _Instances[vmi.Type];
             mvm.ObjectErrors = page.ObjectErrors;
+            Task.Run(async () =>
+            {
+                var result = await _NC.ShowAlertAsync("入力エラー", "エラー項目を確認して入力しなおしてください。", "OK", null);
+                System.Diagnostics.Debug.WriteLine("RESULT=" + result);
+            });
         }
 
         /// <summary>

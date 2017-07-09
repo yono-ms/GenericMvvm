@@ -205,6 +205,27 @@ namespace GenericMvvm.Droid
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
         }
+        /// <summary>
+        /// カスタムダイアログフラグメントのボタンイベント
+        /// ボタン押下時にフラグメントから実行する
+        /// </summary>
+        /// <param name="label">押されたボタンのラベル</param>
+        public void OnDialogClick(string label)
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            DialogClick?.Invoke(this, new DialogEventArgs() { Label = label });
+        }
+        /// <summary>
+        /// カスタムダイアログフラグメントのボタンイベント引数
+        /// </summary>
+        public class DialogEventArgs : EventArgs
+        {
+            public string Label { get; set; }
+        }
+        /// <summary>
+        /// カスタムダイアログフラグメントのボタンイベントハンドラ
+        /// </summary>
+        public event EventHandler<DialogEventArgs> DialogClick;
     }
 }
 
