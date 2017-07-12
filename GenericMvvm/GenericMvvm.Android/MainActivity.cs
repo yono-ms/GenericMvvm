@@ -205,6 +205,13 @@ namespace GenericMvvm.Droid
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnDestroy();
         }
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+
+            // 保存タイミングを知るイベントだけ必要
+            Task.Run(() => _BizLogic.SaveBizLogicAsync());
+        }
         /// <summary>
         /// カスタムダイアログフラグメントのボタンイベント
         /// ボタン押下時にフラグメントから実行する
