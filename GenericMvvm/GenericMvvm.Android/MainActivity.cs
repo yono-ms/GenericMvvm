@@ -210,7 +210,11 @@ namespace GenericMvvm.Droid
             base.OnSaveInstanceState(outState);
 
             // 保存タイミングを知るイベントだけ必要
-            Task.Run(() => _BizLogic.SaveBizLogicAsync());
+            if (!_BizLogic.CurrentPage.Equals("Finish"))
+            {
+                // 最終画面の場合はすでに消されているので保存させてはいけない
+                Task.Run(() => _BizLogic.SaveBizLogicAsync());
+            }
         }
         /// <summary>
         /// カスタムダイアログフラグメントのボタンイベント
