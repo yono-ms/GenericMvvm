@@ -61,6 +61,7 @@ namespace GenericMvvm
         /// <summary>
         /// 検索結果
         /// </summary>
+        [DataMember]
         public ObservableCollection<ZipCloudResponse.result> ResponseResults
         {
             get { return _ResponseResults; }
@@ -82,6 +83,7 @@ namespace GenericMvvm
         /// <summary>
         /// 検索結果ヘッダ
         /// </summary>
+        [DataMember]
         public string ResponseResultHeader
         {
             get { return _ResponseResultHeader; }
@@ -128,6 +130,7 @@ namespace GenericMvvm
         /// <summary>
         /// コピー可否
         /// </summary>
+        [DataMember]
         public bool CanCommandCopy
         {
             get { return _CanCommandCopy; }
@@ -140,6 +143,7 @@ namespace GenericMvvm
         /// <summary>
         /// 郵便番号検索結果の選択
         /// </summary>
+        [DataMember]
         public int SelectedIndex
         {
             get { return _SelectedIndex; }

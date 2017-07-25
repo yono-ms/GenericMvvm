@@ -138,19 +138,31 @@ namespace GenericMvvm
             // 保存情報がある場合はクローンを作成して渡す
             if (typeof(T) == typeof(MainViewModel))
             {
-                return DeepCopy<MainViewModel>(_SavedMainViewModel) as T;
+                return _SavedMainViewModel as T;
             }
             else if (typeof(T) == typeof(NameViewModel))
             {
-                return DeepCopy<NameViewModel>(_SavedNameViewModel) as T;
+                if (_TempNameViewModel == null)
+                {
+                    _TempNameViewModel = DeepCopy(_SavedNameViewModel);
+                }
+                return _TempNameViewModel as T;
             }
             else if (typeof(T) == typeof(BirthViewModel))
             {
-                return DeepCopy<BirthViewModel>(_SavedBirthViewModel) as T;
+                if (_TempBirthViewModel == null)
+                {
+                    _TempBirthViewModel = DeepCopy(_SavedBirthViewModel);
+                }
+                return _TempBirthViewModel as T;
             }
             else if (typeof(T) == typeof(AddressViewModel))
             {
-                return DeepCopy<AddressViewModel>(_SavedAddressViewModel) as T;
+                if (_TempAddressViewModel == null)
+                {
+                    _TempAddressViewModel = DeepCopy(_SavedAddressViewModel);
+                }
+                return _TempAddressViewModel as T;
             }
             else if (typeof(T) == typeof(ConfirmViewModel))
             {
@@ -210,15 +222,30 @@ namespace GenericMvvm
         [DataMember]
         NameViewModel _SavedNameViewModel;
         /// <summary>
+        /// コミット前の入力情報（Name）
+        /// </summary>
+        [DataMember]
+        NameViewModel _TempNameViewModel;
+        /// <summary>
         /// コミット済みの入力情報（Birth）
         /// </summary>
         [DataMember]
         BirthViewModel _SavedBirthViewModel;
         /// <summary>
+        /// コミット前の入力情報（Birth）
+        /// </summary>
+        [DataMember]
+        BirthViewModel _TempBirthViewModel;
+        /// <summary>
         /// コミット済みの入力情報（Address）
         /// </summary>
         [DataMember]
         AddressViewModel _SavedAddressViewModel;
+        /// <summary>
+        /// コミット前の入力情報（Address）
+        /// </summary>
+        [DataMember]
+        AddressViewModel _TempAddressViewModel;
         /// <summary>
         /// ViewModelのディープコピー
         /// </summary>
@@ -283,26 +310,25 @@ namespace GenericMvvm
         {
             if (CurrentPage.Equals("Name"))
             {
-                _SavedNameViewModel = DeepCopy(_Instances[typeof(NameViewModel)] as NameViewModel);
+                _SavedNameViewModel = DeepCopy(_TempNameViewModel);
                 // 不揮発領域に保存
                 NavigateTo("Birth", true);
             }
             else if (CurrentPage.Equals("Birth"))
             {
-                _SavedBirthViewModel = DeepCopy(_Instances[typeof(BirthViewModel)] as BirthViewModel);
+                _SavedBirthViewModel = DeepCopy(_TempBirthViewModel);
                 // 不揮発領域に保存
                 NavigateTo("Address", true);
             }
             else if (CurrentPage.Equals("Address"))
             {
-                _SavedAddressViewModel = DeepCopy(_Instances[typeof(AddressViewModel)] as AddressViewModel);
+                _SavedAddressViewModel = DeepCopy(_TempAddressViewModel);
                 // 不揮発領域に保存
                 NavigateTo("Confirm", true);
             }
             else if (CurrentPage.Equals("Confirm"))
             {
-                var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
-                mvm.ShowProgress = true;
+                _SavedMainViewModel.ShowProgress = true;
                 // エントリーする
                 Task.Run(async () =>
                 {
@@ -312,7 +338,7 @@ namespace GenericMvvm
                     // 結果画面に遷移
                     _NC.RunUIThread(() =>
                     {
-                        mvm.ShowProgress = false;
+                        _SavedMainViewModel.ShowProgress = false;
                         NavigateTo("Finish", true);
                     });
                 });
@@ -352,16 +378,14 @@ namespace GenericMvvm
         /// <param name="forward"></param>
         private void NavigateTo(string page, bool forward)
         {
-            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
-
             if (_ViewModelInfos.ContainsKey(page))
             {
-                mvm.ObjectErrors = null;
+                _SavedMainViewModel.ObjectErrors = null;
 
                 var vmi = _ViewModelInfos[page];
-                mvm.Title = vmi.Title;
-                mvm.Footer = vmi.Footer;
-                mvm.ShowBackButton = vmi.ShowBackButton;
+                _SavedMainViewModel.Title = vmi.Title;
+                _SavedMainViewModel.Footer = vmi.Footer;
+                _SavedMainViewModel.ShowBackButton = vmi.ShowBackButton;
 
                 _NC.NavigateTo(page, forward);
 
@@ -372,7 +396,7 @@ namespace GenericMvvm
             }
             else
             {
-                mvm.ObjectErrors = new ObservableCollection<string>(new[] { "unknown page " + page });
+                _SavedMainViewModel.ObjectErrors = new ObservableCollection<string>(new[] { "unknown page " + page });
             }
         }
         /// <summary>
@@ -380,10 +404,9 @@ namespace GenericMvvm
         /// </summary>
         public void ShowError()
         {
-            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
             var vmi = _ViewModelInfos[CurrentPage];
             var page = _Instances[vmi.Type];
-            mvm.ObjectErrors = page.ObjectErrors;
+            _SavedMainViewModel.ObjectErrors = page.ObjectErrors;
             Task.Run(async () =>
             {
                 var result = await _NC.ShowAlertAsync("入力エラー", "エラー項目を確認して入力しなおしてください。", "OK", null);
@@ -437,28 +460,25 @@ namespace GenericMvvm
         /// </summary>
         public void CommandGetZipCloud()
         {
-            var mvm = _Instances[typeof(MainViewModel)] as MainViewModel;
-            var avm = _Instances[typeof(AddressViewModel)] as AddressViewModel;
-
             // エラークリア
-            if (mvm.ObjectErrors == null)
+            if (_SavedMainViewModel.ObjectErrors == null)
             {
-                mvm.ObjectErrors = new ObservableCollection<string>();
+                _SavedMainViewModel.ObjectErrors = new ObservableCollection<string>();
             }
             else
             {
-                mvm.ObjectErrors.Clear();
+                _SavedMainViewModel.ObjectErrors.Clear();
             }
             
 
-            if (avm != null)
+            if (_TempAddressViewModel != null)
             {
                 // プログレス表示
-                mvm.ShowProgress = true;
+                _SavedMainViewModel.ShowProgress = true;
                 // パラメータ準備
                 var url = "http://zipcloud.ibsnet.co.jp/api/search";
                 var param = new Dictionary<string, string>();
-                param.Add("zipcode", avm.PostalCode);
+                param.Add("zipcode", _TempAddressViewModel.PostalCode);
 
                 // API実行
                 var client = new GetHttpClient();
@@ -473,21 +493,21 @@ namespace GenericMvvm
                             if (string.IsNullOrEmpty(resp.status))
                             {
                                 // とりあえず
-                                mvm.ObjectErrors.Add(resp.status);
-                                mvm.ObjectErrors.Add(resp.message);
-                                mvm.ObjectErrors.Add(client.Json);
+                                _SavedMainViewModel.ObjectErrors.Add(resp.status);
+                                _SavedMainViewModel.ObjectErrors.Add(resp.message);
+                                _SavedMainViewModel.ObjectErrors.Add(client.Json);
                             }
                             else
                             {
                                 // 結果クリア
-                                avm.ResponseResultHeader = null;
-                                if (avm.ResponseResults == null)
+                                _TempAddressViewModel.ResponseResultHeader = null;
+                                if (_TempAddressViewModel.ResponseResults == null)
                                 {
-                                    avm.ResponseResults = new ObservableCollection<ZipCloudResponse.result>();
+                                    _TempAddressViewModel.ResponseResults = new ObservableCollection<ZipCloudResponse.result>();
                                 }
                                 else
                                 {
-                                    avm.ResponseResults.Clear();
+                                    _TempAddressViewModel.ResponseResults.Clear();
                                 }
 
                                 // 検索結果有無
@@ -496,38 +516,38 @@ namespace GenericMvvm
                                     // プロパティ更新
                                     foreach (var item in resp.results)
                                     {
-                                        avm.ResponseResults.Add(item);
+                                        _TempAddressViewModel.ResponseResults.Add(item);
                                     }
                                 }
                                 else
                                 {
                                     // プロパティ更新
-                                    avm.ResponseResultHeader = "住所がありません";
+                                    _TempAddressViewModel.ResponseResultHeader = "住所がありません";
                                 }
                             }
                         }
                         else
                         {
                             // なぜかエラー
-                            mvm.ObjectErrors.Add("ZipCloudResponseがnullです");
+                            _SavedMainViewModel.ObjectErrors.Add("ZipCloudResponseがnullです");
                         }
                     }
                     else
                     {
                         foreach (var item in client.ErrorMessages)
                         {
-                            mvm.ObjectErrors.Add(item);
+                            _SavedMainViewModel.ObjectErrors.Add(item);
                         }
                     }
 
                     // プログレス非表示
-                    mvm.ShowProgress = false;
+                    _SavedMainViewModel.ShowProgress = false;
                 });
 
             }
             else
             {
-                mvm.ObjectErrors.Add("AddresViewModelが存在しません");
+                _SavedMainViewModel.ObjectErrors.Add("AddresViewModelが存在しません");
             }
         }
     }

@@ -149,6 +149,7 @@ namespace GenericMvvm.Droid
             var adapter = new AddressAdapter(_VM.ResponseResults);
             adapter.ItemClick += Adapter_ItemClick;
             recyclerView.SetAdapter(adapter);
+            adapter.SelectedIndex = _VM.SelectedIndex;
 
             if (_VM.ResponseResults != null)
             {
