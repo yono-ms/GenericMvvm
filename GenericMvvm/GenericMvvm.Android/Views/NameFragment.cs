@@ -49,11 +49,6 @@ namespace GenericMvvm.Droid
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             return inflater.Inflate(Resource.Layout.Name, container, false);
-
-            // テーマに設定したトランジッションアニメーションが効かないのでここでセットしてみるが無駄
-            //var wrapper = new ContextThemeWrapper(Activity, Resource.Style.AppTheme);
-            //var li = inflater.CloneInContext(wrapper);
-            //return li.Inflate(Resource.Layout.Name, container, false);
         }
         /// <summary>
         /// アクティビティを保存する
@@ -114,6 +109,7 @@ namespace GenericMvvm.Droid
 
             // 固定値設定
             View.FindViewById<TitleTextView>(Resource.Id.titleTextViewDescription).Text = _VM.Description;
+            View.FindViewById<Button>(Resource.Id.buttonCommit).Text = _VM.CommitLabel;
 
             // TwoWay初期値設定
             _TextInputViewBind.Start();
