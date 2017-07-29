@@ -58,7 +58,7 @@ namespace GenericMvvm.UWP
                 Task.Run(async () =>
                 {
                     // 非同期なので別スレッドで実行する
-                    _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallUWP(this));
+                    _BizLogic = BizLogic.LoadBizLogic(new NativeCallUWP(this));
 
                     // ページから参照できるようにアプリケーションのプロパティにセット
                     (Application.Current as App).BizLogic = _BizLogic;

@@ -78,16 +78,19 @@ namespace GenericMvvm.Droid
         /// <param name="forward"></param>
         public void NavigateTo(string page, bool forward)
         {
-            if (_StringToPages.ContainsKey(page))
+            _Activity.RunOnUiThread(() =>
             {
-                _Activity.NavigateTo(_StringToPages[page], forward);
-            }
-            else
-            {
-                var message = string.Format("ページ {0} が存在しません。", page);
-                System.Diagnostics.Debug.WriteLine(message);
-                Toast.MakeText(_Activity, message, ToastLength.Long).Show();
-            }
+                if (_StringToPages.ContainsKey(page))
+                {
+                    _Activity.NavigateTo(_StringToPages[page], forward);
+                }
+                else
+                {
+                    var message = string.Format("ページ {0} が存在しません。", page);
+                    System.Diagnostics.Debug.WriteLine(message);
+                    Toast.MakeText(_Activity, message, ToastLength.Long).Show();
+                }
+            });
         }
 
         public void Pop()
@@ -168,6 +171,28 @@ namespace GenericMvvm.Droid
         public void ExitApplication()
         {
             _Activity.MoveTaskToBack(true);
+        }
+        /// <summary>
+        /// 不揮発領域から取り出す
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string LoadFile(string name)
+        {
+            var sp = _Activity.GetSharedPreferences(KEY, FileCreationMode.Private);
+            return sp.GetString(name, null);
+        }
+        /// <summary>
+        /// 不揮発領域に保存する
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void SaveFile(string name, string data)
+        {
+            var sp = _Activity.GetSharedPreferences(KEY, FileCreationMode.Private);
+            var editor = sp.Edit();
+            editor.PutString(name, data);
+            editor.Apply();
         }
     }
 }

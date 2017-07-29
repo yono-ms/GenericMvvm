@@ -39,11 +39,23 @@ namespace GenericMvvm
         /// <returns>文字列</returns>
         Task<string> LoadFileAsync(string name);
         /// <summary>
+        /// ファイルから文字列を取り出す（同期）
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <returns>文字列</returns>
+        string LoadFile(string name);
+        /// <summary>
         /// 文字列をファイルに保存する
         /// </summary>
         /// <param name="name">ファイル名</param>
         /// <param name="data">文字列</param>
         Task SaveFileAsync(string name, string data);
+        /// <summary>
+        /// 文字列をファイルに保存する（同期）
+        /// </summary>
+        /// <param name="name">ファイル名</param>
+        /// <param name="data">文字列</param>
+        void SaveFile(string name, string data);
         /// <summary>
         /// UIスレッドに戻して実行する
         /// 戻り値なしでUIスレッドでawaitしながら処理する

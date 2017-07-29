@@ -27,7 +27,7 @@ namespace GenericMvvm
         /// </summary>
         INativeCall _NC;
         /// <summary>
-        /// 不揮発領域からロードする
+        /// 不揮発領域からロードする（非推奨）
         /// </summary>
         /// <param name="nc"></param>
         /// <returns></returns>
@@ -71,7 +71,41 @@ namespace GenericMvvm
             return result;
         }
         /// <summary>
-        /// 不揮発領域にセーブする
+        /// 不揮発領域からロードする（同期）
+        /// </summary>
+        /// <param name="nc"></param>
+        /// <returns></returns>
+        public static BizLogic LoadBizLogic(INativeCall nc)
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "LoadBizLogic START" });
+
+            BizLogic bizLogic;
+            var json = nc.LoadFile(Key);
+            if (string.IsNullOrEmpty(json))
+            {
+                bizLogic = new BizLogic();
+            }
+            else
+            {
+                try
+                {
+                    bizLogic = JsonConvert.DeserializeObject<BizLogic>(json);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.ToString());
+                    bizLogic = new BizLogic();
+                }
+            }
+            // 生成したインスタンスに引数を渡す
+            bizLogic._NC = nc;
+
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "LoadBizLogic END" });
+
+            return bizLogic;
+        }
+        /// <summary>
+        /// 不揮発領域にセーブする（非推奨）
         /// </summary>
         /// <returns></returns>
         public async Task SaveBizLogicAsync()
@@ -102,6 +136,26 @@ namespace GenericMvvm
             }
 
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "SaveBizLogicAsync END" });
+        }
+        /// <summary>
+        /// 不揮発領域にセーブする（同期）
+        /// </summary>
+        public void SaveBizLogic()
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "SaveBizLogic START" });
+
+            try
+            {
+                var json = JsonConvert.SerializeObject(this);
+                _NC.SaveFile(Key, json);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _SavedMainViewModel.ObjectErrors.Add(ex.Message);
+            }
+
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { "SaveBizLogic END" });
         }
         /// <summary>
         /// ViewModelのインスタンスを生成する
@@ -392,7 +446,7 @@ namespace GenericMvvm
                 CurrentPage = page;
 
                 // 画面遷移で保存
-                Task.Run(() => SaveBizLogicAsync());
+                SaveBizLogic();
             }
             else
             {

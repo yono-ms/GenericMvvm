@@ -20,6 +20,14 @@ using System.ComponentModel;
 
 namespace GenericMvvm.Droid
 {
+    /// <summary>
+    /// ActivityのonResumeに至るルートは５種類
+    /// １．onCreate(null) >> onResume　初期起動
+    /// ２．onCreate(bundle) >> onRestoreInstanceState(bundle) >> onResume　回転
+    /// ３．onNewIntent(bundle) >> onRestoreInstanceState(bundle) >> onResume　リサイクルで起動
+    /// ４．onRestoreInstanceState(bundle) >> onResume　onDestroyからの復帰
+    /// ５．（なし） >> onResume　onStopからの復帰
+    /// </summary>
 	[Activity (Label = "GenericMvvm.Android", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/AppTheme", WindowSoftInputMode = SoftInput.AdjustPan)]
 	public class MainActivity : AppCompatActivity
 	{
@@ -30,6 +38,8 @@ namespace GenericMvvm.Droid
 
         private MainViewModel _VM;
 
+        bool kickStart = false;
+
         protected override void OnCreate (Bundle bundle)
 		{
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -39,68 +49,58 @@ namespace GenericMvvm.Droid
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            // BizLogicが無くてもUIだけで表示できる初期ページを表示
-            var firstFragment = new FirstFragment();
-            // ソースで書かないとトランジッションアニメーションが効かない
-            var ti = TransitionInflater.From(this);
-            firstFragment.EnterTransition = ti.InflateTransition(Resource.Transition.enter_transition);
-            firstFragment.ExitTransition = ti.InflateTransition(Resource.Transition.exit_transition);
-            SupportFragmentManager.BeginTransaction().Add(Resource.Id.frameLayoutContent, firstFragment).Commit();
+            if (bundle == null)
+            {
+                System.Diagnostics.Debug.WriteLine("START NO BUNDLE");
+
+                // 初期起動／レイアウト復元なし／インスタンス変数なし
+
+                kickStart = true;
+
+                // BizLogicが無くてもUIだけで表示できる初期ページを表示
+                var firstFragment = new FirstFragment();
+                SupportFragmentManager.BeginTransaction()
+                    .Add(Resource.Id.frameLayoutContent, firstFragment)
+                    .Commit();
+
+                // インスタンス変数を復元する
+                RestoreInstanceState();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("START BUNDLE");
+
+                // リサイクル／レイアウト復元される／インスタンス変数なし
+
+                kickStart = false;
+
+                // onDestroy後にリサイクルされた場合はonRestartとなるため
+                // 一括してonRestoreInstanceStateでインスタンス変数を復元する
+            }
+
+		}
+        /// <summary>
+        /// 同期でインスタンス変数を復元する
+        /// </summary>
+        private void RestoreInstanceState()
+        {
+            System.Diagnostics.Debug.WriteLine("RestoreInstanceState START");
 
             // この構成ではBizLogicの状態だけでやりなす必要があるかを判断できる
             if (_BizLogic == null)
             {
                 System.Diagnostics.Debug.WriteLine("BizLogic復元ルート");
 
-                // 回転対応のためにクリア
-                var current = SupportFragmentManager.FindFragmentById(Resource.Id.frameLayoutContent);
-                if (current != null) {
-                    SupportFragmentManager.BeginTransaction().Remove(current).Commit();
-                }
-
                 // アプリケーションを復元する
-                Task.Run(async () =>
-                {
-                    _BizLogic = await BizLogic.LoadBizLogicAsync(new NativeCallAndroid(this));
-                    RunOnUiThread(() =>
-                    {
-                        Initialize();
-                    });
-                });
+                _BizLogic = BizLogic.LoadBizLogic(new NativeCallAndroid(this));
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("BizLogic生存ルート");
-
-                // アプリケーションが生きているのでUI再生成
-                Initialize();
+                // ここを通るのはおかしい
+                System.Diagnostics.Debug.WriteLine("BizLogic生存ルート !!!!!!!!");
             }
-		}
-        /// <summary>
-        /// UIの再構築
-        /// </summary>
-        private void Initialize()
-        {
-            // Mainに限りBizLogic生成を待ってからUI構築を行う
-            _VM = _BizLogic.GetViewModel<MainViewModel>();
 
-            // VMイベント
-            _VM.PropertyChanged += _VM_PropertyChanged;
-
-            // コントロールイベントは戻るボタンしかない
-
-            // 初期値設定
-            FindViewById<TextView>(Resource.Id.textViewFooter).Text = _VM.Footer;
-            SupportActionBar.Title = _VM.Title;
-            SupportActionBar.SetDisplayHomeAsUpEnabled(false);
-            // 初期値設定 Recycler
-            var adapter = new ErrorAdapter(_VM.ObjectErrors);
-            var recycler = FindViewById<RecyclerView>(Resource.Id.recyclerViewObjectErrors);
-            recycler.SetLayoutManager(new LinearLayoutManager(this));
-            recycler.SetAdapter(adapter);
-
-            // バインドし終わったら起動する
-            _VM.KickStart();
+            System.Diagnostics.Debug.WriteLine("RestoreInstanceState END");
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -174,7 +174,11 @@ namespace GenericMvvm.Droid
             prev.ExitTransition = ti.InflateTransition(forward ? Resource.Transition.exit_transition : Resource.Transition.enter_transition);
             SupportFragmentManager.BeginTransaction().Replace(Resource.Id.frameLayoutContent, next).Commit();
         }
-
+        protected override void OnNewIntent(Intent intent)
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnNewIntent(intent);
+        }
         protected override void OnRestart()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
@@ -189,11 +193,43 @@ namespace GenericMvvm.Droid
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnResume();
+
+            // Mainに限りBizLogic生成を待ってからUI構築を行う必要がある
+            // onCreate/onRestoreInstanceStateでBizLogicの永続性が確保されるため
+            // このイベントは必ずBizLogic生成後となる
+            _VM = _BizLogic.GetViewModel<MainViewModel>();
+
+            // VMイベント
+            _VM.PropertyChanged += _VM_PropertyChanged;
+
+            // コントロールイベントは戻るボタンしかない
+
+            // 初期値設定
+            FindViewById<TextView>(Resource.Id.textViewFooter).Text = _VM.Footer;
+            SupportActionBar.Title = _VM.Title;
+            SupportActionBar.SetDisplayHomeAsUpEnabled(_VM.ShowBackButton);
+            // 初期値設定 Recycler
+            var adapter = new ErrorAdapter(_VM.ObjectErrors);
+            var recycler = FindViewById<RecyclerView>(Resource.Id.recyclerViewObjectErrors);
+            recycler.SetLayoutManager(new LinearLayoutManager(this));
+            recycler.SetAdapter(adapter);
+
+            // バインドし終わったら起動する
+            if (kickStart)
+            {
+                kickStart = false;
+                // 遅延処理はハンドラーを使わないとうまく動かない
+                new Handler().PostDelayed(() => { _VM.KickStart(); }, 300);
+            }
         }
         protected override void OnPause()
         {
             System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnPause();
+
+            // バインド解除する
+            _VM.PropertyChanged -= _VM_PropertyChanged;
+            _VM = null;
         }
         protected override void OnStop()
         {
@@ -207,14 +243,23 @@ namespace GenericMvvm.Droid
         }
         protected override void OnSaveInstanceState(Bundle outState)
         {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
             base.OnSaveInstanceState(outState);
 
             // 保存タイミングを知るイベントだけ必要
             if (!_BizLogic.CurrentPage.Equals("Finish"))
             {
                 // 最終画面の場合はすでに消されているので保存させてはいけない
-                Task.Run(() => _BizLogic.SaveBizLogicAsync());
+                _BizLogic.SaveBizLogic();
             }
+        }
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            System.Diagnostics.Debug.WriteLine(FORMAT, new[] { MethodBase.GetCurrentMethod().Name });
+            base.OnRestoreInstanceState(savedInstanceState);
+
+            // インスタンス変数を復元する
+            RestoreInstanceState();
         }
         /// <summary>
         /// カスタムダイアログフラグメントのボタンイベント
